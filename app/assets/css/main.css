@@ -1,3 +1,16 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 @import "./tokens.css";
+
+.node-running {
+  outline: 2px solid currentColor;
+}
+
+.node-success {
+  outline: 2px solid currentColor;
+}
+
+.node-fail {
+  outline: 2px solid currentColor;
+  filter: saturate(1.2);
+}

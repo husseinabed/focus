@@ -10,6 +10,7 @@ const props = defineProps<{
     config: {
       trigger_type: string;
     };
+    runtime?: any;
   };
 
   selected?: boolean;
@@ -22,6 +23,7 @@ const props = defineProps<{
   :data="{
     schema: manualTriggerSchema,
     label: data.label,
+    runtime: data.runtime,
     execution: data.config,
     runtimePorts: manualTriggerSchema.ports,
   }"

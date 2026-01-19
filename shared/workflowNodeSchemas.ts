@@ -283,9 +283,9 @@ export const delayNodeSchema = {
       min: 1
     },
     unit: {
-      type: 'enum',
+      type: 'string',
       label: 'workflow.nodes.actions.delay.unit',
-      options: ['seconds', 'minutes', 'hours'],
+      enum: ['seconds', 'minutes', 'hours'],
       default: 'seconds'
     }
   },

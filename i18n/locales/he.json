@@ -10,7 +10,15 @@
     "export_json": "ייצוא JSON",
     "import_json": "ייבוא JSON",
     "select_workspace": "בחר סביבת עבודה",
-    "back": "חזור"
+    "back": "חזור",
+    "active": "פעיל",
+    "edit": "עריכה",
+    "description": "תיאור",
+    "no": "לא",
+    "last_updated": "עודכן לאחרונה",
+    "quick_actions": "פעולות מהירות",
+    "danger_zone": "אזור סכנה",
+    "delete": "מחק"
   },
   "auth": {
     "signOut": "התנתקות"
@@ -23,21 +31,22 @@
     "workflows": "תהליכי עבודה",
     "templates": "תבניות",
     "meetings": "פגישות",
-    "settings": {
-      "title": "הגדרות",
-      "nav": {
-        "profile": "Profile",
-        "workspace": "Workspace",
-        "integrations": "Integrations",
-        "billing": "Billing"
-      }
+    "settings": "הגדרות"
+  },
+  "settings": {
+    "nav": {
+      "profile": "פרופיל",
+      "workspace": "סביבת עבודה",
+      "integrations": "אינטגרציות",
+      "billing": "חיוב"
     }
   },
   "workflow": {
     "nodes": {
       "trigger": {
         "manual": {
-          "title": "טריגר ידני"
+          "title": "טריגר ידני",
+          "hint": "הפעל את תהליך העבודה באופן ידני."
         },
         "lead_added": {
           "title": "טריגר ליד נוסף",
@@ -61,6 +70,11 @@
           "cron_expression": "ביטוי Cron"
         }
       },
+      "utility": {
+        "logging": {
+          "hint": "רשום הודעות ליומן לצורכי ניפוי באגים ומעקב."
+        }
+      },
       "actions": {
         "log": {
           "title": "רישום לוג",
@@ -81,16 +95,26 @@
           }
         },
         "done": {
-          "title": "סיום"
+          "title": "סיום",
+          "hint": "סמן את סיום ביצוע הזרימה."
         },
         "decision": {
-          "title": "Decision"
+          "title": "החלטה",
+          "hint": "בצע פיצול בזרימה על סמך תנאי.",
+          "condition": "תנאי"
         },
         "delay": {
-          "title": "Delay"
+          "title": "השהייה",
+          "hint": "השהה את הזרימה למשך זמן מוגדר.",
+          "duration": "משך",
+          "unit": "יחידה"
         },
         "send_email": {
-          "title": "Send Email"
+          "title": "שליחת אימייל",
+          "hint": "שלח אימייל לנמען.",
+          "to": "אל",
+          "subject": "נושא",
+          "body": "תוכן ההודעה"
         }
       }
     }
@@ -130,6 +154,28 @@
       "lead_added": "ליד חדש נוסף",
       "inbound_reply": "תשובה נכנסת",
       "scheduled": "מתוזמן"
+    },
+    "tabs": {
+      "overview": "סקירה כללית",
+      "versions": "גרסאות",
+      "runs": "הרצות"
+    },
+    "overview": {
+      "no_description": "אין תיאור זמין."
+    },
+    "trust_note": "תהליכי עבודה פועלים עם ההרשאות שלך. הפעל רק תהליכי עבודה שאתה בוטח בהם.",
+    "stats": {
+      "latest_version": "גרסה אחרונה",
+      "published": "פורסם",
+      "total_runs": "סך הכל הרצות"
+    },
+    "status": {
+      "title": "סטטוס"
+    },
+    "trigger_type": "סוג טריגר",
+    "actions": {
+      "run_manual": "הרץ ידנית",
+      "open_editor": "פתח בעורך"
     }
   },
   "app": {
@@ -179,6 +225,7 @@
     },
     "inspector": {
       "title": "מפקח נוד",
+      "noFields": "לנוד זה אין שדות להגדרה.",
       "emptyState": {
         "title": "לא נבחר נוד",
         "description": "בחר נוד בקנבס כדי לערוך את המאפיינים שלו."

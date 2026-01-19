@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import { Handle, Position } from '@vue-flow/core'
-import type { FlowNode, NodeSchema, NodePort, StringI18n } from '~~/app/types/workflow_editor'
+import type { NodeSchema, NodePort } from '~/types/workflow_editor'
 import { useI18n } from 'vue-i18n'
-import { getTranslation } from '~~/app/utils/workflow'
+import { getTranslation } from '~/utils/workflow'
 
 const props = defineProps<{
   data: {
     schema: NodeSchema
     label?: string
     execution?: Record<string, any>
+    runtime?: {
+      status?: 'idle' | 'running' | 'success' | 'fail'
+      lastEvent?: any
+      error?: string
+      startedAt?: string
+      finishedAt?: string
+    }
     runtimePorts?: {
       inputs: NodePort[]
       outputs: NodePort[]
@@ -22,17 +29,34 @@ const { locale } = useI18n()
 const currentNodeSchema = computed(() => props.data.schema)
 
 const nodeTitle = computed(() => getTranslation(currentNodeSchema.value.title, locale.value))
-const nodeHint = computed(() => getTranslation(currentNodeSchema.value.hint as StringI18n, locale.value))
+const nodeHint = computed(() => getTranslation(currentNodeSchema.value.hint as string, locale.value))
 
 const inputPorts = computed(() => props.data.runtimePorts?.inputs || props.data.schema.ports.inputs)
 const outputPorts = computed(() => props.data.runtimePorts?.outputs || props.data.schema.ports.outputs)
+const runtimeStatus = computed(() => props.data.runtime?.status ?? 'idle')
+const runtimeError = computed(() => props.data.runtime?.error)
+const runtimeLabel = computed(() => {
+  switch (runtimeStatus.value) {
+    case 'running':
+      return 'Running'
+    case 'success':
+      return 'Success'
+    case 'fail':
+      return 'Failed'
+    default:
+      return ''
+  }
+})
 
 // Determine if the layout should be RTL
 const isRTL = computed(() => locale.value === 'he' || locale.value === 'ar')
 
 const nodeClass = computed(() => ({
   'border-primary-500 ring-primary-500': props.selected,
-  'border-gray-300 dark:border-gray-700': !props.selected,
+  'border-gray-300 dark:border-gray-700': !props.selected && runtimeStatus.value === 'idle',
+  'ring-2 ring-primary-400': !props.selected && runtimeStatus.value === 'running',
+  'border-green-500': !props.selected && runtimeStatus.value === 'success',
+  'border-red-500': !props.selected && runtimeStatus.value === 'fail',
   'flex-row-reverse': isRTL.value, // Apply RTL if locale is Hebrew or Arabic
 }))
 </script>
@@ -50,15 +74,31 @@ const nodeClass = computed(() => ({
     <template #header>
       <div class="flex items-center gap-2" :class="{ 'flex-row-reverse': isRTL }">
         <UIcon :name="currentNodeSchema.icon" class="flex-shrink-0" />
-        <span class="font-semibold text-sm truncate">{{ nodeTitle }}</span>
+        <span class="font-semibold text-sm truncate">{{ $t(currentNodeSchema.title) }}</span>
       </div>
     </template>
 
-    <div v-if="nodeHint" class="text-xs text-gray-500 dark:text-gray-400 mb-2" :class="{ 'text-right': isRTL }">
-      {{ nodeHint }}
+    <div v-if="currentNodeSchema?.hint" class="text-xs text-gray-500 dark:text-gray-400 mb-2" :class="{ 'text-right': isRTL }">
+    {{ $t(currentNodeSchema?.hint) }}
+  
     </div>
 
     <div class="flex flex-col gap-1">
+      <div v-if="runtimeStatus !== 'idle'">
+        <UBadge
+          :color="runtimeStatus === 'fail' ? 'error' : runtimeStatus === 'success' ? 'success' : 'primary'"
+          variant="subtle"
+          size="xs"
+          class="w-full"
+          :class="{ 'text-right': isRTL }"
+          :dir="isRTL ? 'rtl' : 'ltr'"
+        >
+          {{ runtimeLabel }}
+        </UBadge>
+      </div>
+      <div v-if="runtimeStatus === 'fail' && runtimeError" class="text-xs text-red-600" :class="{ 'text-right': isRTL }">
+        {{ runtimeError }}
+      </div>
       <div v-if="data.execution?.requiresApproval">
         <UBadge color="warning" variant="subtle" size="xs" class="w-full" :class="{ 'text-right': isRTL }">
           {{ isRTL ? 'דורש אישור' : 'Requires Approval' }}
@@ -117,3 +157,4 @@ const nodeClass = computed(() => ({
 <style scoped>
 /* Add any specific styles here if needed */
 </style>
+

@@ -152,8 +152,11 @@ const componentsMap: Record<string, any> = {
 
 const nodeComponentMap: Record<string, any> = {}
 
-list.forEach(schema => {
-  nodeComponentMap[schema.type] = schema.component
+list.forEach((schema) => {
+  const component = componentsMap[schema.component]
+  if (component) {
+    nodeComponentMap[schema.type] = component
+  }
 })
 </script>
 
@@ -210,8 +213,8 @@ list.forEach(schema => {
         <Background />
         <MiniMap v-if="options.showMiniMap" />
         <Controls v-if="options.showControls" />
-        <template v-for="(component, name) in nodeComponentMap" :key="name" #["node-"+name]="nodeProps">
-          <component :is="componentsMap[component]" v-bind="nodeProps" :node="nodeProps" />
+        <template v-for="(Comp, type) in nodeComponentMap" :key="type" #[`node-${type}`]="slotProps">
+          <component :is="Comp" v-bind="slotProps" :node="slotProps.node ?? slotProps" />
         </template>
       </VueFlow>
       <template #fallback>

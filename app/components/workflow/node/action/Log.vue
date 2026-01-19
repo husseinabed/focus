@@ -10,11 +10,12 @@ const props = defineProps<{
     config: {
       trigger_type: string;
     };
+    runtime?: any;
   };
 
   selected?: boolean;
 }>();
-console.log(loggingNodeSchema);
+ 
 
 </script>
 
@@ -23,6 +24,7 @@ console.log(loggingNodeSchema);
     :data="{
       schema: loggingNodeSchema,
       label: data.label,
+      runtime: data.runtime,
       execution: data.config,
       runtimePorts: loggingNodeSchema.ports,
     }"

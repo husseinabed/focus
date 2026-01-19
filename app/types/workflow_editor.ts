@@ -45,6 +45,13 @@ export interface FlowNode {
     label?: string
     notes?: string
     execution?: Record<string, any>
+    runtime?: {
+      status?: 'idle' | 'running' | 'success' | 'fail'
+      lastEvent?: any
+      error?: string
+      startedAt?: string
+      finishedAt?: string
+    }
     [key: string]: any // Allow other data properties
   }
 }

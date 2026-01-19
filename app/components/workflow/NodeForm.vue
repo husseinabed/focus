@@ -74,8 +74,8 @@ const setFieldValue = (key: string, value: any) => {
   <div class="space-y-4">
     <template v-for="field in formFields" :key="field.key">
       <UFormField
-        :label="field.type == 'boolean' ? undefined : $t(field.label)"
-        :help="$t(field.description)"
+        :label="field.type === 'boolean' ? undefined : (field.label ? $t(field.label) : undefined)"
+        :help="field.description ? $t(field.description) : undefined"
         :required="field.required && features.show_required_badges"
         :error="
           features.show_validation_inline ? 'Validation error placeholder' : undefined

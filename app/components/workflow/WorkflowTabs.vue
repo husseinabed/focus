@@ -31,7 +31,7 @@ watch(() => props.modelValue, (newValue) => {
 </script>
 
 <template>
-  <UTabs v-model="activeTab" :items="items.map(item => ({
+  <UTabs v-model="activeTab" variant="link" :items="items.map(item => ({
     value: item.id,
     label: t(item.label[locale.value] || item.label.en || item.id),
   }))">

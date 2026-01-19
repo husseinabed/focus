@@ -63,6 +63,11 @@
           "cron_expression": "Cron Expression"
         }
       },
+      "utility": {
+        "logging": {
+          "hint": "Log messages for debugging and tracking."
+        }
+      },
       "actions": {
         "log": {
           "title": "Log Message",
@@ -75,13 +80,22 @@
           "hint": "Marks the end of the workflow execution."
         },
         "decision": {
-          "title": "Decision"
+          "title": "Decision",
+          "hint": "Branch the flow based on a condition.",
+          "condition": "Condition"
         },
         "delay": {
-          "title": "Delay"
+          "title": "Delay",
+          "hint": "Pause the flow for a specified duration.",
+          "duration": "Duration",
+          "unit": "Unit"
         },
         "send_email": {
-          "title": "Send Email"
+          "title": "Send Email",
+          "hint": "Send an email to a recipient.",
+          "to": "To",
+          "subject": "Subject",
+          "body": "Body"
         }
       }
     }
@@ -90,5 +104,14 @@
     "back": "Back",
     "cancel": "Cancel",
     "error": "Error"
+  },
+  "ui": {
+    "inspector": {
+      "title": "Node Inspector",
+      "noFields": "This node has no configurable fields.",
+      "emptyState": {
+        "description": "Select a node on the canvas to inspect its properties."
+      }
+    }
   }
 }

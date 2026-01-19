@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { v4 as uuid } from "uuid";
+import { useWorkflowRunner, type RunEvent, type RunResult } from "~/composables/useWorkflowRunner";
 import type { Tables } from "~/types/supabase";
+
 
 // Page meta
 definePageMeta({
   layout: "app",
- 
 });
 
 const route = useRoute();
@@ -41,13 +43,18 @@ const { data, refresh, pending } = await useAsyncData<WorkflowDetail>(
     }),
   }
 );
- 
 
 const workflow = computed(() => data.value.workflow);
 const latestVersion = computed(() => data.value.versions[0] ?? null);
 const runs = computed(() => data.value.runs);
 
 const { t } = useI18n();
+const { runWorkflow: runWorkflowComposable } = useWorkflowRunner();
+
+const currentNodes = ref(latestVersion.value?.nodes || []);
+watch(latestVersion, (newVersion) => {
+  currentNodes.value = newVersion?.nodes || [];
+});
 
 // Tabs
 const tabs = computed(() => [
@@ -108,9 +115,99 @@ const stopRun = (id: string) => {
   console.log(`Stopping run ${id}...`);
 };
 
-const runManualWorkflow = () => {
-  // Implement manual workflow run logic
-  console.log("Running manual workflow...");
+const runManualWorkflow = async () => {
+  if (!workflow.value) {
+    return;
+  }
+
+  consoleClear();
+
+  try {
+    const result = await runWorkflowComposable(workflow.value.id, {
+      getNodes: () => currentNodes.value,
+      setNodes: (nodes) => {
+        currentNodes.value = nodes;
+      },
+      onEvent: (event, type) => {
+        const payload = JSON.parse(event.data);
+        switch (type) {
+          case "started":
+            consolePush({
+              id: uuid(),
+              type: "started",
+              message: "Run started",
+              payload,
+              ts: new Date().toISOString(),
+            });
+            break;
+          case "ping":
+            consolePush({
+              id: uuid(),
+              type: "ping",
+              message: "ping",
+              payload,
+              ts: new Date().toISOString(),
+            });
+            break;
+          case "node":
+            consolePush({
+              id: uuid(),
+              type: "node",
+              nodeId: payload.id,
+              nodeType: payload.node_type,
+              status: payload.status,
+              output: payload.output,
+              message:
+                payload.status === "start"
+                  ? "Node started"
+                  : payload.status === "success"
+                  ? "Node success"
+                  : payload.status === "fail"
+                  ? "Node failed"
+                  : "Node event",
+              payload,
+              ts: new Date().toISOString(),
+            });
+            break;
+          case "finished":
+            consolePush({
+              id: uuid(),
+              type: "finished",
+              message: `Run finished: ${payload.status}`,
+              payload,
+              ts: new Date().toISOString(),
+            });
+            break;
+          case "error":
+            consolePush({
+              id: uuid(),
+              type: "error",
+              message: payload?.message || "Run error",
+              payload,
+              ts: new Date().toISOString(),
+            });
+            break;
+        }
+      },
+    });
+    // This consolePush will be handled by the onEvent callback now
+    // consolePush({
+    //   id: uuid(),
+    //   type: "finished",
+    //   message: `Run finished: ${result.status}`,
+    //   payload: result,
+    //   ts: new Date().toISOString(),
+    // });
+  } catch (error: any) {
+    // This consolePush will be handled by the onEvent callback now
+    // consolePush({
+    //   id: uuid(),
+    //   type: "error",
+    //   message: error?.message || "Run error",
+    //   payload: error,
+    //   ts: new Date().toISOString(),
+    // });
+  }
 };
 
 const confirmDeleteWorkflow = () => {

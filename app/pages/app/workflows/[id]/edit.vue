@@ -7,7 +7,7 @@
       :actions="headerActions"
     />
 
-    <WorkflowTabs
+    <!-- <WorkflowTabs
       v-model="uiState.active_tab"
       :items="[
         { id: 'designer', label: { en: 'ui.workflows.editor.v1.tabs.designer' } },
@@ -15,10 +15,16 @@
         { id: 'settings', label: { en: 'ui.workflows.editor.v1.tabs.settings' } },
       ]"
       class="mt-4 mb-4 mx-auto max-w-[1600px]"
-    />
+    /> -->
 
-    <div class="workflow-canvas border-muted border">
-      <div v-if="uiState.active_tab === 'designer'" class="flex h-full">
+    <div class="workflow-canvas border-muted border mt-2">
+      <div
+        v-if="uiState.active_tab === 'designer'"
+        class="flex h-full"
+        :style="{
+          paddingBottom: (consoleState.open ? consoleState.height + 120 : 88) + 'px',
+        }"
+      >
         <div class="w-85 h-full p-6 border-muted border-e">
           <WorkflowNodePalette
             v-model:search="uiState.search_palette"
@@ -36,7 +42,10 @@
               showControls: uiState.show_controls,
               defaultZoom: uiState.zoom,
             }"
-            :validation="{ errors: validationState.errors, warnings: validationState.warnings }"
+            :validation="{
+              errors: validationState.errors,
+              warnings: validationState.warnings,
+            }"
             :empty="workflowState.definition.nodes.length === 0"
             @node-select="canvasActions.select_node"
             @edge-select="canvasActions.select_edge"
@@ -75,6 +84,22 @@
             :node-schema="selectedNodeSchema"
           />
         </div>
+
+        <!-- ✅ Fixed Bottom Run Console Dock (Designer tab only)
+             Insert inside the designer tab container (same scope as uiState/consoleState/uiState.running)
+             Recommended insertion point: near the end of the designer tab (after palette/canvas/inspector columns)
+        -->
+        <WorkflowRunConsoleDock
+          :active="uiState.active_tab === 'designer'"
+          :running="uiState.running"
+          :open="consoleState.open"
+          :height="consoleState.height"
+          :items="consoleState.items"
+          @clear="consoleClear()"
+          @go-runs="uiState.active_tab = 'runs'"
+          @open-change="(v) => (consoleState.open = v)"
+          @height-change="(h) => (consoleState.height = h)"
+        />
       </div>
 
       <div v-else-if="uiState.active_tab === 'runs'" class="h-full overflow-y-auto p-6">
@@ -84,7 +109,7 @@
               <div>
                 <div class="text-lg font-semibold">Run Input</div>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                  Latest version: {{ latestVersion?.version ?? 'N/A' }}
+                  Latest version: {{ latestVersion?.version ?? "N/A" }}
                 </p>
               </div>
             </template>
@@ -114,13 +139,20 @@
             <template #header>
               <div class="text-lg font-semibold">Run Response</div>
             </template>
-            <pre v-if="runState.output" class="text-xs whitespace-pre-wrap">{{ JSON.stringify(runState.output, null, 2) }}</pre>
-            <p v-else class="text-sm text-gray-500 dark:text-gray-400">No run output yet.</p>
+            <pre v-if="runState.output" class="text-xs whitespace-pre-wrap">{{
+              JSON.stringify(runState.output, null, 2)
+            }}</pre>
+            <p v-else class="text-sm text-gray-500 dark:text-gray-400">
+              No run output yet.
+            </p>
           </UCard>
         </div>
       </div>
 
-      <div v-else-if="uiState.active_tab === 'settings'" class="h-full overflow-y-auto p-6">
+      <div
+        v-else-if="uiState.active_tab === 'settings'"
+        class="h-full overflow-y-auto p-6"
+      >
         <div class="max-w-2xl">
           <UCard class="w-full">
             <template #header>
@@ -151,7 +183,7 @@
       </div>
     </div>
 
-    <WorkflowStickyStatusBar
+    <!-- <WorkflowStickyStatusBar
       :left="[
         { component: WorkflowToggle as any, props: { label: 'Snap', modelValue: uiState.snap_to_grid, 'onUpdate:modelValue': (val: boolean) => (uiState.snap_to_grid = val) } },
         { component: WorkflowToggle as any, props: { label: 'MiniMap', modelValue: uiState.show_minimap, 'onUpdate:modelValue': (val: boolean) => (uiState.show_minimap = val) } },
@@ -161,13 +193,13 @@
         { component: UBadge as any, props: { label: selectionLabel } },
         { component: UBadge as any, props: { label: runStatus } },
       ]"
-    />
+    /> -->
 
     <UModal v-model:open="isImportModalOpen" :title="t('common.import_json')">
       <template #body>
         <UCard>
           <template #header>
-            <h3 class="text-lg font-semibold">{{ t('common.import_json') }}</h3>
+            <h3 class="text-lg font-semibold">{{ t("common.import_json") }}</h3>
           </template>
           <UTextarea
             v-model="importJsonContent"
@@ -208,6 +240,7 @@ const route = useRoute();
 const workflowId = route.params.id as string;
 const { t, localeProperties } = useI18n();
 const toast = useToast();
+const { runWorkflow } = useWorkflowRunner();
 
 const nodesCatalog = ref<any[]>([]);
 const latestVersion = ref<any | null>(null);
@@ -215,6 +248,70 @@ const isHydrating = ref(true);
 const isImportModalOpen = ref(false);
 const importJsonContent = ref("");
 
+type ConsoleEntry = {
+  id: string;
+  type: "started" | "ping" | "node" | "finished" | "error";
+  ts: string;
+  nodeId?: string;
+  nodeType?: string;
+  status?: string;
+  message?: string;
+  output?: any;
+  payload?: any;
+};
+
+type RuntimeStatus = "idle" | "running" | "success" | "fail";
+type RuntimeState = {
+  status: RuntimeStatus;
+  startedAt?: string;
+  finishedAt?: string;
+  lastError?: string;
+};
+
+const runtime = reactive<RuntimeState>({
+  status: "idle",
+});
+
+const consoleState = reactive({
+  open: false,
+  height: 260,
+  items: [] as ConsoleEntry[],
+  max: 300,
+});
+
+const designerBottomPad = computed(() =>
+  consoleState.open ? consoleState.height + 80 : 80
+);
+
+function consolePush(entry: ConsoleEntry) {
+  consoleState.items.push(entry);
+  if (consoleState.items.length > consoleState.max) {
+    consoleState.items.splice(0, consoleState.items.length - consoleState.max);
+  }
+}
+
+function consoleClear() {
+  consoleState.items.splice(0, consoleState.items.length);
+}
+
+// 4) CREATE a proper handler for workflow runner events (NOT "onEvent(event)" inside run)
+function handleRunEvent(runEvent: any) {
+  // runEvent is your RunEvent from SSE: { nodeId, nodeType, status, output?, error?, timestamp }
+  consolePush({
+    id: uuid(),
+    type: "node",
+    ts: runEvent?.timestamp || new Date().toISOString(),
+    nodeId: runEvent?.nodeId,
+    nodeType: runEvent?.nodeType,
+    status: runEvent?.status,
+    message: runEvent?.error,
+    output: runEvent?.output,
+    payload: runEvent,
+  });
+
+  // open dock on first event
+  consoleState.open = true;
+}
 const uiState = reactive({
   dirty: false,
   saving: false,
@@ -269,29 +366,29 @@ const triggerTypeItems = [
   { label: "Scheduled", value: "scheduled" },
 ];
 
-const { data, refresh } = await useAsyncData(`workflow:editor:${workflowId}`, async () => {
-  const [workflow, versions, catalog] = await Promise.all([
-    $fetch(`/api/workflows/${workflowId}`),
-    $fetch(`/api/workflows/${workflowId}/versions`),
-    $fetch(`/api/workflow-nodes/catalog`),
-  ]);
- 
-  const latest = Array.isArray(versions) ? versions[0] : null;
-  return {
-    workflow,
-    latestVersion: latest,
-    catalog,
-  };
-});
+const { data, refresh } = await useAsyncData(
+  `workflow:editor:${workflowId}`,
+  async () => {
+    const [workflow, versions, catalog] = await Promise.all([
+      $fetch(`/api/workflows/${workflowId}`),
+      $fetch(`/api/workflows/${workflowId}/versions`),
+      $fetch(`/api/workflow-nodes/catalog`),
+    ]);
 
+    const latest = Array.isArray(versions) ? versions[0] : null;
+    return {
+      workflow,
+      latestVersion: latest,
+      catalog,
+    };
+  }
+);
 
-onBeforeMount(refresh) // refresh on page reload
+onBeforeMount(refresh); // refresh on page reload
 
 watch(
   () => data.value,
   (value) => {
- 
- 
     if (!value) return;
     isHydrating.value = true;
 
@@ -334,7 +431,12 @@ watch(
 );
 
 watch(
-  () => [workflowState.name, workflowState.description, workflowState.trigger_type, workflowState.is_active],
+  () => [
+    workflowState.name,
+    workflowState.description,
+    workflowState.trigger_type,
+    workflowState.is_active,
+  ],
   () => {
     if (!isHydrating.value) {
       uiState.dirty = true;
@@ -424,29 +526,65 @@ const validateDefinition = () => {
   const hasTrigger = nodes.some(
     (node) =>
       node.category === "trigger" ||
-      String(node.type || "").toLowerCase().includes("trigger")
+      String(node.type || "")
+        .toLowerCase()
+        .includes("trigger")
   );
 
   if (!hasTrigger) {
-    errors.push({ id: "missing-trigger", message: "Add a trigger node to start the workflow." });
+    errors.push({
+      id: "missing-trigger",
+      message: "Add a trigger node to start the workflow.",
+    });
   }
 
   edges.forEach((edge) => {
     if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) {
-      errors.push({ id: `dangling-${edge.id}`, message: "Remove dangling edges.", edge_id: edge.id });
+      errors.push({
+        id: `dangling-${edge.id}`,
+        message: "Remove dangling edges.",
+        edge_id: edge.id,
+      });
     }
   });
 
   nodes.forEach((node) => {
-    const connected = edges.some((edge) => edge.source === node.id || edge.target === node.id);
+    const connected = edges.some(
+      (edge) => edge.source === node.id || edge.target === node.id
+    );
     if (!connected && nodes.length > 1) {
-      warnings.push({ id: `isolated-${node.id}`, message: "Node is not connected.", node_id: node.id });
+      warnings.push({
+        id: `isolated-${node.id}`,
+        message: "Node is not connected.",
+        node_id: node.id,
+      });
     }
   });
 
   validationState.errors = errors;
   validationState.warnings = warnings;
   validationState.status = errors.length > 0 ? "invalid" : "valid";
+};
+
+// helper: reset nodes runtime + runtime state
+const resetRuntime = () => {
+  workflowState.definition.nodes = (workflowState.definition.nodes || []).map((node) => ({
+    ...node,
+    data: {
+      ...(node.data ?? {}),
+      runtime: {
+        ...(node.data?.runtime ?? {}),
+        status: "idle",
+        lastEvent: undefined,
+        error: undefined,
+      },
+    },
+  }));
+
+  runtime.status = "idle";
+  runtime.startedAt = undefined;
+  runtime.finishedAt = undefined;
+  runtime.lastError = undefined;
 };
 
 const workflowActions = {
@@ -477,7 +615,11 @@ const workflowActions = {
       latestVersion.value = version;
       runState.workflow_version_id = version?.id || runState.workflow_version_id;
       uiState.dirty = false;
-      toast.add({ title: t("common.save"), description: "Workflow saved.", color: "success" });
+      toast.add({
+        title: t("common.save"),
+        description: "Workflow saved.",
+        color: "success",
+      });
     } catch (error) {
       toast.add({ title: t("common.save"), description: "Save failed.", color: "error" });
     } finally {
@@ -487,43 +629,70 @@ const workflowActions = {
 
   validate: () => {
     validateDefinition();
-    toast.add({ title: "Validation", description: "Validation complete.", color: "info" });
+    toast.add({
+      title: "Validation",
+      description: "Validation complete.",
+      color: "info",
+    });
   },
 
   run: async () => {
-    uiState.running = true;
     let input: Record<string, any> = {};
     try {
       input = runState.input?.trim() ? JSON.parse(runState.input) : {};
-    } catch (error) {
+    } catch {
       toast.add({ title: "Run", description: "Input JSON is invalid.", color: "error" });
-      uiState.running = false;
       return;
     }
 
     try {
-      if (!runState.workflow_version_id || !runState.lead_id) {
-        toast.add({
-          title: "Run",
-          description: "Workflow version and lead ID are required.",
-          color: "error",
-        });
-        return;
-      }
+      // reset visual runtime + console
+      resetRuntime();
+      consoleClear();
 
-      const response: any = await $fetch(`/api/workflows/${workflowId}/runs`, {
-        method: "POST",
-        body: {
-          workflow_version_id: runState.workflow_version_id,
-          lead_id: runState.lead_id,
-          input,
+      // console "started"
+      const startedAt = new Date().toISOString();
+      runtime.status = "running";
+      runtime.startedAt = startedAt;
+      consolePush({ id: uuid(), type: "started", ts: startedAt, payload: { startedAt } });
+
+      uiState.running = true;
+
+      const result = await runWorkflow(workflowId, {
+        getNodes: () => workflowState.definition.nodes,
+        setNodes: (nodes) => {
+          workflowState.definition.nodes = nodes;
         },
+        input,
+        // ✅ IMPORTANT: useWorkflowRunner MUST support this callback
+        // If it doesn't yet, add it there (see note below).
+        onEvent: handleRunEvent,
+      } as any);
+
+      // finished ok
+      const finishedAt = new Date().toISOString();
+      runtime.status = result?.status === "fail" ? "fail" : "success";
+      runtime.finishedAt = finishedAt;
+      runtime.lastError = result?.status === "fail" ? "Run failed" : undefined;
+
+      consolePush({ id: uuid(), type: "finished", ts: finishedAt, payload: result });
+      runState.output = result as any;
+
+      toast.add({ title: "Run", description: "Run completed.", color: "success" });
+    } catch (err: any) {
+      const finishedAt = new Date().toISOString();
+      runtime.status = "fail";
+      runtime.finishedAt = finishedAt;
+      runtime.lastError = err?.message || "Workflow run failed.";
+
+      consolePush({
+        id: uuid(),
+        type: "error",
+        ts: finishedAt,
+        message: runtime.lastError,
+        payload: { message: runtime.lastError },
       });
 
-      runState.last_run_id = response?.id || null;
-      runState.output = response;
-      toast.add({ title: "Run", description: "Run started.", color: "success" });
-    } catch (error) {
       toast.add({ title: "Run", description: "Run failed.", color: "error" });
     } finally {
       uiState.running = false;
@@ -540,7 +709,11 @@ const workflowActions = {
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
-    toast.add({ title: t("common.export_json"), description: "Exported workflow JSON.", color: "success" });
+    toast.add({
+      title: t("common.export_json"),
+      description: "Exported workflow JSON.",
+      color: "success",
+    });
   },
 
   import_json: () => {
@@ -552,7 +725,11 @@ const workflowActions = {
       workflowState.definition.nodes = [];
       workflowState.definition.edges = [];
       uiState.dirty = true;
-      toast.add({ title: t("common.clear"), description: "Workflow cleared.", color: "info" });
+      toast.add({
+        title: t("common.clear"),
+        description: "Workflow cleared.",
+        color: "info",
+      });
     }
   },
 };
@@ -565,12 +742,24 @@ const handleImportWorkflowJson = () => {
       workflowState.definition.edges = imported.edges;
       uiState.dirty = true;
       isImportModalOpen.value = false;
-      toast.add({ title: t("common.import_json"), description: "Workflow imported.", color: "success" });
+      toast.add({
+        title: t("common.import_json"),
+        description: "Workflow imported.",
+        color: "success",
+      });
     } else {
-      toast.add({ title: t("common.import_json"), description: "Invalid workflow JSON.", color: "error" });
+      toast.add({
+        title: t("common.import_json"),
+        description: "Invalid workflow JSON.",
+        color: "error",
+      });
     }
   } catch (error) {
-    toast.add({ title: t("common.import_json"), description: "Invalid JSON.", color: "error" });
+    toast.add({
+      title: t("common.import_json"),
+      description: "Invalid JSON.",
+      color: "error",
+    });
   }
 };
 
@@ -613,13 +802,13 @@ const headerActions = computed(() => [
     color: "neutral",
     action: workflowActions.clear,
   },
-   {
+  {
     type: "UButton",
     label: t("common.back"),
     variant: "ghost",
     color: "neutral",
     icon: "i-lucide-arrow-big-left-dash",
-    action: () => navigateTo('/app/workflows'),
+    action: () => navigateTo("/app/workflows"),
   },
 ]);
 
@@ -627,11 +816,21 @@ const canvasActions = {
   add_node: (payload: { type: string; position?: { x: number; y: number } }) => {
     const schema = nodesCatalog.value.find((n: any) => n.type === payload.type);
     if (!schema) {
-      toast.add({ title: "Error", description: `Unknown node type: ${payload.type}`, color: "danger" });
+      toast.add({
+        title: "Error",
+        description: `Unknown node type: ${payload.type}`,
+        color: "danger",
+      });
       return;
     }
-    const newNode = createFlowNodeFromSchema(schema, payload.position || { x: 540, y: 240 });
-    newNode.data.label = getTranslation(schema.title, localeProperties.value?.code || 'en');
+    const newNode = createFlowNodeFromSchema(
+      schema,
+      payload.position || { x: 540, y: 240 }
+    );
+    newNode.data.label = getTranslation(
+      schema.title,
+      localeProperties.value?.code || "en"
+    );
     workflowState.definition.nodes.push(newNode);
   },
 
@@ -645,7 +844,10 @@ const canvasActions = {
     uiState.selected_node_id = null;
   },
 
-  update_node_position: (payload: { node_id: string; position: { x: number; y: number } }) => {
+  update_node_position: (payload: {
+    node_id: string;
+    position: { x: number; y: number };
+  }) => {
     const node = findById(workflowState.definition.nodes, payload.node_id);
     if (node) {
       node.position = payload.position;
@@ -653,11 +855,19 @@ const canvasActions = {
   },
 
   connect: (payload: Connection) => {
-    const sourceNode = workflowState.definition.nodes.find(n => n.id === payload.source);
-    const targetNode = workflowState.definition.nodes.find(n => n.id === payload.target);
+    const sourceNode = workflowState.definition.nodes.find(
+      (n) => n.id === payload.source
+    );
+    const targetNode = workflowState.definition.nodes.find(
+      (n) => n.id === payload.target
+    );
 
     if (!sourceNode || !targetNode) {
-      toast.add({ title: "Connection Error", description: "Source or target node not found.", color: "error" });
+      toast.add({
+        title: "Connection Error",
+        description: "Source or target node not found.",
+        color: "error",
+      });
       return;
     }
 
@@ -665,7 +875,11 @@ const canvasActions = {
     const targetSchema = targetNode.data.schema || catalogSchemaFor(targetNode.type);
 
     if (!sourceSchema?.ports || !targetSchema?.ports) {
-      toast.add({ title: "Connection Error", description: "Node schemas not found.", color: "error" });
+      toast.add({
+        title: "Connection Error",
+        description: "Node schemas not found.",
+        color: "error",
+      });
       return;
     }
 
@@ -680,17 +894,25 @@ const canvasActions = {
       targetHandle: targetHandleId,
     };
 
-    const sourcePort = sourceSchema.ports.outputs.find(p => p.id === sourceHandleId);
-    const targetPort = targetSchema.ports.inputs.find(p => p.id === targetHandleId);
+    const sourcePort = sourceSchema.ports.outputs.find((p) => p.id === sourceHandleId);
+    const targetPort = targetSchema.ports.inputs.find((p) => p.id === targetHandleId);
 
     if (!sourcePort || !targetPort) {
-      toast.add({ title: "Connection Error", description: "Source or target port not found.", color: "error" });
+      toast.add({
+        title: "Connection Error",
+        description: "Source or target port not found.",
+        color: "error",
+      });
       return;
     }
 
     // Validate connection using the canConnect utility
     if (!canConnect(sourcePort, targetPort)) {
-      toast.add({ title: "Connection Error", description: `Cannot connect ${sourcePort.dataType} to ${targetPort.dataType}. Type mismatch.`, color: "danger" });
+      toast.add({
+        title: "Connection Error",
+        description: `Cannot connect ${sourcePort.dataType} to ${targetPort.dataType}. Type mismatch.`,
+        color: "danger",
+      });
       return;
     }
 
@@ -715,10 +937,10 @@ const canvasActions = {
       );
     }
 
-    if (payload.nodes?.includes(uiState.selected_node_id || '')) {
+    if (payload.nodes?.includes(uiState.selected_node_id || "")) {
       uiState.selected_node_id = null;
     }
-    if (payload.edges?.includes(uiState.selected_edge_id || '')) {
+    if (payload.edges?.includes(uiState.selected_edge_id || "")) {
       uiState.selected_edge_id = null;
     }
   },
@@ -730,7 +952,8 @@ const canvasActions = {
       );
       workflowState.definition.edges = workflowState.definition.edges.filter(
         (edge) =>
-          edge.source !== uiState.selected_node_id && edge.target !== uiState.selected_node_id
+          edge.source !== uiState.selected_node_id &&
+          edge.target !== uiState.selected_node_id
       );
     } else if (uiState.selected_edge_id) {
       workflowState.definition.edges = workflowState.definition.edges.filter(
@@ -747,7 +970,7 @@ const canvasActions = {
 .workflow-canvas {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 225px);
+  height: calc(100% - 200px);
   background-color: var(--color-gray-50);
   overflow-y: auto;
 }
