@@ -1,0 +1,460 @@
+{
+  "$schema": "https://schemas.brandi.local/ui/workflow-editor.v1.json",
+  "id": "ui.workflows.editor.v1",
+  "page": {
+    "route": "/app/workflows/:id/edit",
+    "title": { "he": "עורך תהליך עבודה", "en": "Workflow Editor", "ar": "محرّر سير العمل" },
+    "direction": "rtl"
+  },
+
+  "layout": {
+    "type": "ThreePanel",
+    "container": "max-w-[1600px] mx-auto",
+    "panels": {
+      "inspector": { "side": "left", "width": "w-[360px]", "collapsible": true, "defaultOpen": true },
+      "canvas": { "center": true },
+      "palette": { "side": "right", "width": "w-[340px]", "collapsible": true, "defaultOpen": true }
+    },
+    "responsive": {
+      "mobile": { "stack": true, "order": ["canvas", "inspector", "palette"] }
+    }
+  },
+
+  "state": {
+    "ui": {
+      "dirty": false,
+      "saving": false,
+      "running": false,
+      "active_tab": "designer",
+      "inspector_open": true,
+      "palette_open": true,
+      "snap_to_grid": true,
+      "show_minimap": true,
+      "show_controls": true,
+      "zoom": 1,
+      "selected_node_id": null,
+      "selected_edge_id": null,
+      "search_palette": ""
+    },
+    "workflow": {
+      "id": null,
+      "name": "",
+      "status": "draft",
+      "description": "",
+      "tags": [],
+      "definition": {
+        "version": 1,
+        "nodes": [],
+        "edges": []
+      }
+    },
+    "validation": {
+      "status": "unknown",
+      "errors": [],
+      "warnings": []
+    },
+    "run": {
+      "last_run_id": null,
+      "mode": "dry_run",
+      "input": {},
+      "output": null,
+      "logs_count": 0
+    }
+  },
+
+  "data": {
+    "queries": [
+      {
+        "id": "q.workflow",
+        "resource": "workflows.get",
+        "params": { "id": "route.params.id" }
+      },
+      {
+        "id": "q.nodes_catalog",
+        "resource": "workflow_nodes.catalog"
+      }
+    ],
+    "mutations": [
+      { "id": "m.save", "resource": "workflows.update" },
+      { "id": "m.validate", "resource": "workflows.validate" },
+      { "id": "m.run", "resource": "workflows.run" },
+      { "id": "m.export_json", "resource": "workflows.export" },
+      { "id": "m.import_json", "resource": "workflows.import" }
+    ]
+  },
+
+  "ui": {
+    "header": {
+      "type": "PageHeader",
+      "titleFrom": "state.workflow.name",
+      "subtitle": {
+        "he": "בנו, חברו והריצו אוטומציות (עם אישור לפני שליחה)",
+        "en": "Build, connect and run automations (approval before sending)",
+        "ar": "ابنِ ووصل وشغّل الأتمتة (مع موافقة قبل الإرسال)"
+      },
+      "meta": [
+        { "type": "Chip", "bindTo": "state.workflow.status" },
+        {
+          "type": "Chip",
+          "toneFrom": "state.validation.status",
+          "textFrom": "state.validation.status",
+          "map": {
+            "valid": { "text": "Valid", "tone": "success" },
+            "invalid": { "text": "Invalid", "tone": "danger" },
+            "unknown": { "text": "Not checked", "tone": "neutral" }
+          }
+        },
+        { "type": "Chip", "visibleWhen": { "expr": "state.ui.dirty" }, "text": "● Unsaved" }
+      ],
+      "actions": [
+        { "type": "UButton", "label": "Save", "variant": "solid", "color": "neutral", "loadingFrom": "state.ui.saving", "action": "workflow.save" },
+        { "type": "UButton", "label": "Validate", "variant": "outline", "action": "workflow.validate" },
+        { "type": "UButton", "label": "Run", "variant": "outline", "loadingFrom": "state.ui.running", "action": "workflow.run_dry" },
+        {
+          "type": "UDropdown",
+          "label": "JSON",
+          "items": [
+            { "label": "Export JSON", "action": "workflow.export_json" },
+            { "label": "Import JSON", "action": "workflow.import_json" }
+          ]
+        },
+        { "type": "UButton", "label": "Clear", "variant": "ghost", "action": "workflow.clear" }
+      ]
+    },
+
+    "tabs": {
+      "type": "Tabs",
+      "bindTo": "state.ui.active_tab",
+      "items": [
+        { "id": "designer", "label": { "he": "עיצוב", "en": "Designer", "ar": "المصمم" } },
+        { "id": "runs", "label": { "he": "הרצות", "en": "Runs", "ar": "التشغيل" } },
+        { "id": "settings", "label": { "he": "הגדרות", "en": "Settings", "ar": "الإعدادات" } }
+      ]
+    },
+
+    "inspector": {
+      "type": "Panel",
+      "title": { "he": "מפקח נוד", "en": "Node Inspector", "ar": "مفتش العقدة" },
+      "emptyState": {
+        "visibleWhen": { "expr": "state.ui.selected_node_id == null" },
+        "title": { "he": "לא נבחר נוד", "en": "No node selected", "ar": "لم يتم اختيار عقدة" },
+        "description": {
+          "he": "בחר נוד בקנבס כדי לערוך את המאפיינים שלו.",
+          "en": "Click a node on the canvas to edit its properties.",
+          "ar": "اضغط على عقدة في اللوحة لتعديل خصائصها."
+        },
+        "secondary": {
+          "type": "WorkflowSummary",
+          "fields": [
+            { "label": "Nodes", "valueFrom": "len(state.workflow.definition.nodes)" },
+            { "label": "Edges", "valueFrom": "len(state.workflow.definition.edges)" },
+            { "label": "Trigger", "valueFrom": "computed.triggerTitle" }
+          ]
+        }
+      },
+      "content": [
+        {
+          "type": "NodeForm",
+          "visibleWhen": { "expr": "state.ui.selected_node_id != null" },
+          "nodeFrom": "computed.selectedNode",
+          "schemaFrom": "computed.selectedNodeSchema",
+          "features": {
+            "show_ports": true,
+            "show_required_badges": true,
+            "show_validation_inline": true
+          }
+        }
+      ]
+    },
+
+    "canvas": {
+      "type": "FlowCanvas",
+      "nodesFrom": "state.workflow.definition.nodes",
+      "edgesFrom": "state.workflow.definition.edges",
+      "options": {
+        "snapToGridFrom": "state.ui.snap_to_grid",
+        "showMiniMapFrom": "state.ui.show_minimap",
+        "showControlsFrom": "state.ui.show_controls",
+        "defaultZoomFrom": "state.ui.zoom"
+      },
+      "emptyCanvas": {
+        "visibleWhen": { "expr": "len(state.workflow.definition.nodes) == 0" },
+        "type": "EmptyCanvasCta",
+        "title": { "he": "התחל עם Trigger", "en": "Start with a Trigger", "ar": "ابدأ بـ Trigger" },
+        "actions": [
+          { "label": "ManualTrigger", "action": "canvas.add_node", "payload": { "type": "ManualTrigger" } },
+          { "label": "LeadAddedTrigger", "action": "canvas.add_node", "payload": { "type": "LeadAddedTrigger" } },
+          { "label": "InboundReplyTrigger", "action": "canvas.add_node", "payload": { "type": "InboundReplyTrigger" } }
+        ]
+      },
+      "events": {
+        "onNodeSelect": { "action": "canvas.select_node", "payload": { "node_id": "{{node.id}}" } },
+        "onEdgeSelect": { "action": "canvas.select_edge", "payload": { "edge_id": "{{edge.id}}" } },
+        "onNodeMove": { "action": "canvas.update_node_position" },
+        "onConnect": { "action": "canvas.connect" },
+        "onDelete": { "action": "canvas.delete_selection" }
+      },
+      "decorators": [
+        {
+          "type": "ValidationOverlay",
+          "errorsFrom": "state.validation.errors",
+          "warningsFrom": "state.validation.warnings"
+        }
+      ]
+    },
+
+    "palette": {
+      "type": "Panel",
+      "title": { "he": "פלטת נודים", "en": "Node Palette", "ar": "لوحة العقد" },
+      "search": {
+        "type": "UInput",
+        "placeholder": { "he": "חיפוש נוד…", "en": "Search nodes…", "ar": "بحث…" },
+        "icon": "i-lucide-search",
+        "bindTo": "state.ui.search_palette"
+      },
+      "groups": [
+        {
+          "id": "triggers",
+          "title": { "he": "טריגרים", "en": "Triggers", "ar": "Triggers" },
+          "itemsFrom": "computed.paletteGroups.triggers"
+        },
+        {
+          "id": "messaging",
+          "title": { "he": "הודעות", "en": "Messaging", "ar": "Messaging" },
+          "itemsFrom": "computed.paletteGroups.messaging"
+        },
+        {
+          "id": "logic",
+          "title": { "he": "לוגיקה", "en": "Logic", "ar": "Logic" },
+          "itemsFrom": "computed.paletteGroups.logic"
+        },
+        {
+          "id": "meetings",
+          "title": { "he": "פגישות", "en": "Meetings", "ar": "Meetings" },
+          "itemsFrom": "computed.paletteGroups.meetings"
+        }
+      ],
+      "item": {
+        "type": "PaletteNodeItem",
+        "draggable": true,
+        "fields": ["title", "icon", "hint", "compatibility"],
+        "onDrop": { "action": "canvas.add_node", "payload": { "typeFrom": "item.type" } }
+      }
+    },
+
+    "runs": {
+      "type": "RunPanel",
+      "visibleWhen": { "expr": "state.ui.active_tab == 'runs'" },
+      "sections": [
+        { "type": "RunInput", "bindTo": "state.run.input" },
+        { "type": "RunOutput", "sourceFrom": "state.run.output" },
+        { "type": "RunLogsLink", "to": "/app/workflows/:id/runs/:run_id/logs", "params": { "idFrom": "state.workflow.id", "run_idFrom": "state.run.last_run_id" } }
+      ]
+    },
+
+    "settings": {
+      "type": "SettingsPanel",
+      "visibleWhen": { "expr": "state.ui.active_tab == 'settings'" },
+      "fields": [
+        { "key": "name", "label": { "he": "שם", "en": "Name", "ar": "الاسم" }, "type": "UInput", "bindTo": "state.workflow.name" },
+        { "key": "description", "label": { "he": "תיאור", "en": "Description", "ar": "الوصف" }, "type": "UTextarea", "rows": 4, "bindTo": "state.workflow.description" },
+        {
+          "key": "status",
+          "label": { "he": "סטטוס", "en": "Status", "ar": "الحالة" },
+          "type": "USelectMenu",
+          "bindTo": "state.workflow.status",
+          "options": ["draft", "active", "paused", "archived"]
+        }
+      ]
+    },
+
+    "footer": {
+      "type": "StickyStatusBar",
+      "left": [
+        { "type": "Toggle", "label": "Snap", "bindTo": "state.ui.snap_to_grid" },
+        { "type": "Toggle", "label": "MiniMap", "bindTo": "state.ui.show_minimap" },
+        { "type": "Toggle", "label": "Controls", "bindTo": "state.ui.show_controls" }
+      ],
+      "right": [
+        { "type": "Chip", "textFrom": "computed.selectionLabel" },
+        { "type": "Chip", "textFrom": "computed.runStatus" }
+      ]
+    }
+  },
+
+  "computed": {
+    "selectedNode": "findById(state.workflow.definition.nodes, state.ui.selected_node_id)",
+    "selectedNodeSchema": "catalogSchemaFor(computed.selectedNode.type)",
+    "triggerTitle": "first(state.workflow.definition.nodes where category='trigger').title ?? 'None'",
+    "selectionLabel": "state.ui.selected_node_id ? 'Node selected' : 'No selection'",
+    "runStatus": "state.ui.running ? 'Running…' : 'Idle'",
+    "paletteGroups": {
+      "triggers": "filterCatalog(data.q.nodes_catalog.items, 'trigger', state.ui.search_palette)",
+      "messaging": "filterCatalog(data.q.nodes_catalog.items, 'messaging', state.ui.search_palette)",
+      "logic": "filterCatalog(data.q.nodes_catalog.items, 'logic', state.ui.search_palette)",
+      "meetings": "filterCatalog(data.q.nodes_catalog.items, 'meetings', state.ui.search_palette)"
+    }
+  },
+
+  "validation": {
+    "rules": [
+      { "id": "trigger.required", "severity": "error", "check": { "op": "hasTrigger", "nodesPath": "state.workflow.definition.nodes" } },
+      { "id": "edges.no_dangling", "severity": "warning", "check": { "op": "noDanglingEdges", "nodesPath": "state.workflow.definition.nodes", "edgesPath": "state.workflow.definition.edges" } },
+      { "id": "nodes.connected", "severity": "warning", "check": { "op": "noIsolatedNodes", "nodesPath": "state.workflow.definition.nodes", "edgesPath": "state.workflow.definition.edges" } },
+      { "id": "approval.before_send", "severity": "error", "check": { "op": "requiresApprovalBeforeSend", "nodesPath": "state.workflow.definition.nodes", "edgesPath": "state.workflow.definition.edges" } }
+    ]
+  },
+
+  "actions": {
+    "workflow.save": {
+      "type": "mutation",
+      "use": "m.save",
+      "payload": { "id": "route.params.id", "workflow": "state.workflow" },
+      "onStart": [{ "type": "state", "op": "set", "path": "state.ui.saving", "value": true }],
+      "onSuccess": [
+        { "type": "state", "op": "set", "path": "state.ui.saving", "value": false },
+        { "type": "state", "op": "set", "path": "state.ui.dirty", "value": false },
+        { "type": "toast", "op": "success", "message": "Saved" }
+      ],
+      "onError": [
+        { "type": "state", "op": "set", "path": "state.ui.saving", "value": false },
+        { "type": "toast", "op": "error", "message": "Save failed" }
+      ]
+    },
+
+    "workflow.validate": {
+      "type": "mutation",
+      "use": "m.validate",
+      "payload": { "definition": "state.workflow.definition" },
+      "onSuccess": [
+        { "type": "state", "op": "set", "path": "state.validation.status", "valueFrom": "result.status" },
+        { "type": "state", "op": "set", "path": "state.validation.errors", "valueFrom": "result.errors" },
+        { "type": "state", "op": "set", "path": "state.validation.warnings", "valueFrom": "result.warnings" }
+      ]
+    },
+
+    "workflow.run_dry": {
+      "type": "mutation",
+      "use": "m.run",
+      "payload": { "id": "route.params.id", "mode": "dry_run", "input": "state.run.input" },
+      "onStart": [{ "type": "state", "op": "set", "path": "state.ui.running", "value": true }],
+      "onSuccess": [
+        { "type": "state", "op": "set", "path": "state.ui.running", "value": false },
+        { "type": "state", "op": "set", "path": "state.run.last_run_id", "valueFrom": "result.run_id" },
+        { "type": "state", "op": "set", "path": "state.run.output", "valueFrom": "result.output" },
+        { "type": "state", "op": "set", "path": "state.run.logs_count", "valueFrom": "result.logs_count" }
+      ],
+      "onError": [
+        { "type": "state", "op": "set", "path": "state.ui.running", "value": false },
+        { "type": "toast", "op": "error", "message": "Run failed" }
+      ]
+    },
+
+    "workflow.export_json": {
+      "type": "mutation",
+      "use": "m.export_json",
+      "payload": { "id": "route.params.id" },
+      "onSuccess": [{ "type": "download", "op": "json", "filename": "workflow.json", "dataFrom": "result" }]
+    },
+
+    "workflow.import_json": {
+      "type": "mutation",
+      "use": "m.import_json",
+      "payload": { "jsonFrom": "ui.filepicker.json" },
+      "onSuccess": [
+        { "type": "state", "op": "set", "path": "state.workflow.definition", "valueFrom": "result.definition" },
+        { "type": "state", "op": "set", "path": "state.ui.dirty", "value": true }
+      ]
+    },
+
+    "workflow.clear": {
+      "type": "confirm",
+      "message": { "he": "למחוק את כל הנודים והקשרים?", "en": "Clear all nodes and edges?", "ar": "مسح כל העقد والروابط?" },
+      "then": [
+        { "type": "state", "op": "set", "path": "state.workflow.definition.nodes", "value": [] },
+        { "type": "state", "op": "set", "path": "state.workflow.definition.edges", "value": [] },
+        { "type": "state", "op": "set", "path": "state.ui.dirty", "value": true }
+      ]
+    },
+
+    "canvas.add_node": {
+      "type": "state",
+      "op": "append_node",
+      "path": "state.workflow.definition.nodes",
+      "payload": {
+        "id": "uuid()",
+        "typeFrom": "payload.type",
+        "position": { "x": 540, "y": 240 },
+        "data": {}
+      },
+      "after": [{ "type": "state", "op": "set", "path": "state.ui.dirty", "value": true }]
+    },
+
+    "canvas.select_node": {
+      "type": "state",
+      "op": "set",
+      "path": "state.ui.selected_node_id",
+      "valueFrom": "payload.node_id"
+    },
+
+    "canvas.select_edge": {
+      "type": "state",
+      "op": "set",
+      "path": "state.ui.selected_edge_id",
+      "valueFrom": "payload.edge_id"
+    },
+
+    "canvas.update_node_position": {
+      "type": "state",
+      "op": "update_node_position",
+      "nodesPath": "state.workflow.definition.nodes",
+      "payload": { "node_idFrom": "payload.node_id", "posFrom": "payload.position" },
+      "after": [{ "type": "state", "op": "set", "path": "state.ui.dirty", "value": true }]
+    },
+
+    "canvas.connect": {
+      "type": "state",
+      "op": "append_edge",
+      "path": "state.workflow.definition.edges",
+      "payload": {
+        "id": "uuid()",
+        "sourceFrom": "payload.source",
+        "targetFrom": "payload.target",
+        "sourceHandleFrom": "payload.sourceHandle",
+        "targetHandleFrom": "payload.targetHandle"
+      },
+      "after": [{ "type": "state", "op": "set", "path": "state.ui.dirty", "value": true }]
+    },
+
+    "canvas.delete_selection": {
+      "type": "state",
+      "op": "delete_selected",
+      "nodesPath": "state.workflow.definition.nodes",
+      "edgesPath": "state.workflow.definition.edges",
+      "selectedNodeIdFrom": "state.ui.selected_node_id",
+      "selectedEdgeIdFrom": "state.ui.selected_edge_id",
+      "after": [
+        { "type": "state", "op": "set", "path": "state.ui.selected_node_id", "value": null },
+        { "type": "state", "op": "set", "path": "state.ui.selected_edge_id", "value": null },
+        { "type": "state", "op": "set", "path": "state.ui.dirty", "value": true }
+      ]
+    }
+  },
+
+  "trust_first": {
+    "rules": [
+      "Any outbound message node must be preceded by an approval node on all reachable paths.",
+      "Run defaults to dry_run unless explicitly enabled by user.",
+      "Validation overlays show compliance errors directly on canvas."
+    ]
+  },
+
+  "acceptance_criteria": [
+    "Empty canvas shows Start with Trigger CTA",
+    "Palette supports search and drag-drop into canvas",
+    "Inspector renders dynamic form based on node schema",
+    "Validate shows errors/warnings and overlays them on canvas",
+    "Run produces a run_id + output + logs_count",
+    "RTL layout works (Inspector left, Palette right)"
+  ]
+}

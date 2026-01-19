@@ -1,0 +1,252 @@
+{
+  "common": {
+    "save": "שמירה",
+    "validate": "אימות",
+    "run": "הרצה",
+    "clear": "נקה",
+    "cancel": "ביטול",
+    "import": "ייבוא",
+    "json": "JSON",
+    "export_json": "ייצוא JSON",
+    "import_json": "ייבוא JSON",
+    "select_workspace": "בחר סביבת עבודה",
+    "back": "חזור"
+  },
+  "auth": {
+    "signOut": "התנתקות"
+  },
+  "nav": {
+    "dashboard": "דשבורד",
+    "leads": "לידים",
+    "inbox": "תיבת הודעות",
+    "approvals": "אישורים",
+    "workflows": "תהליכי עבודה",
+    "templates": "תבניות",
+    "meetings": "פגישות",
+    "settings": {
+      "title": "הגדרות",
+      "nav": {
+        "profile": "Profile",
+        "workspace": "Workspace",
+        "integrations": "Integrations",
+        "billing": "Billing"
+      }
+    }
+  },
+  "workflow": {
+    "nodes": {
+      "trigger": {
+        "manual": {
+          "title": "טריגר ידני"
+        },
+        "lead_added": {
+          "title": "טריגר ליד נוסף",
+          "hint": "מופעל כאשר ליד חדש מתווסף לסביבת העבודה, עם אפשרות סינון לפי מקור או עדיפות.",
+          "source": "מקור ליד",
+          "source.all": "כל המקורות",
+          "source.manual": "הזנה ידנית",
+          "source.scrape": "נאסף",
+          "source.import": "יבוא",
+          "min_priority": "עדיפות מינימלית"
+        },
+        "inbound_reply": {
+          "title": "טריגר תגובה נכנסת",
+          "hint": "מופעלת כאשר מתקבלת תגובה נכנסת, עם אפשרות סינון לפי תיבת דואר נכנס או מילות מפתח.",
+          "inbox_id": "מזהה תיבת דואר נכנס",
+          "keywords": "מילות מפתח (מופרדות בפסיקים)"
+        },
+        "scheduled": {
+          "title": "טריגר מתוזמן",
+          "hint": "מופעל בזמן ספציפי או בלוח זמנים קבוע.",
+          "cron_expression": "ביטוי Cron"
+        }
+      },
+      "actions": {
+        "log": {
+          "title": "רישום לוג",
+          "level": {
+            "label": "רמת לוג",
+            "description": "קובע את רמת החומרה שבה יירשם הלוג."
+          },
+
+          "message": {
+            "label": "הודעת לוג",
+            "description": "הטקסט שיירשם ביומן הפעילות של הזרימה.",
+            "placeholder": "הכנס הודעת לוג…"
+          },
+
+          "includeContext": {
+            "label": "כלול הקשר הרצה",
+            "description": "כאשר מופעל, נכללים בלוג נתוני הזרימה והקשר הריצה."
+          }
+        },
+        "done": {
+          "title": "סיום"
+        },
+        "decision": {
+          "title": "Decision"
+        },
+        "delay": {
+          "title": "Delay"
+        },
+        "send_email": {
+          "title": "Send Email"
+        }
+      }
+    }
+  },
+  "workflows": {
+    "new": {
+      "title": "יצירת תהליך עבודה חדש",
+      "subtitle": "בנה תהליך עבודה חדש מאפס",
+      "sections": {
+        "basic": "פרטים בסיסיים",
+        "trigger": "טריגר"
+      },
+      "actions": {
+        "create": "צור תהליך עבודה"
+      },
+      "preview": {
+        "title": "תצוגה מקדימה",
+        "trigger": {
+          "manual": "תהליך עבודה זה מתחיל באופן ידני. יהיה עליך להפעיל אותו בעצמך מדף פרטי תהליך העבודה.",
+          "lead_added": "תהליך עבודה זה מתחיל כאשר ליד חדש מתווסף לסביבת העבודה שלך. ניתן לחדד אותו עוד יותר לפי מקור ועדיפות מינימלית.",
+          "inbound_reply": "תהליך עבודה זה מתחיל כאשר מתקבלת תגובה נכנסת. באפשרותך לציין איזו תיבת דואר נכנס לנטר ולסנן לפי מילות מפתח.",
+          "scheduled": "תהליך עבודה זה מתחיל בזמן מתוזמן בהתבסס על ביטוי Cron. לדוגמה, הוא יכול לרוץ מדי יום, שבוע או חודש."
+        }
+      }
+    },
+
+    "fields": {
+      "name": "שם",
+      "description": "תיאור",
+      "trigger_type": "סוג טריגר",
+      "name_placeholder": "הכנס שם לתהליך העבודה",
+      "description_placeholder": "הכנס תיאור לתהליך העבודה"
+    },
+    "trigger": {
+      "hint": "בחר מתי תהליך העבודה יופעל",
+      "manual": "ידני",
+      "lead_added": "ליד חדש נוסף",
+      "inbound_reply": "תשובה נכנסת",
+      "scheduled": "מתוזמן"
+    }
+  },
+  "app": {
+    "title": "Brandi",
+    "sidebar": {
+      "footer": "כלום לא נשלח בלי אישור."
+    }
+  },
+  "page": {
+    "title": "עורך תהליך עבודה"
+  },
+  "ui": {
+    "workflows": {
+      "editor": {
+        "v1": {
+          "ui": {
+            "header": {
+              "subtitle": "נהל וערוך את תהליך העבודה שלך"
+            }
+          },
+          "page": {
+            "title": "עורך תהליך עבודה"
+          },
+          "tabs": {
+            "designer": "עיצוב",
+            "runs": "הרצות",
+            "settings": "הגדרות"
+          }
+        }
+      }
+    },
+    "header": {
+      "subtitle": "בנו, חברו והריצו אוטומציות (עם אישור לפני שליחה)"
+    },
+    "tabs": {
+      "items": {
+        "0": {
+          "label": "עיצוב"
+        },
+        "1": {
+          "label": "הרצות"
+        },
+        "2": {
+          "label": "הגדרות"
+        }
+      }
+    },
+    "inspector": {
+      "title": "מפקח נוד",
+      "emptyState": {
+        "title": "לא נבחר נוד",
+        "description": "בחר נוד בקנבס כדי לערוך את המאפיינים שלו."
+      }
+    },
+    "canvas": {
+      "emptyCanvas": {
+        "title": "התחל עם Trigger"
+      }
+    },
+    "palette": {
+      "title": "פלטת נודים",
+      "search": {
+        "placeholder": "חיפוש נוד…"
+      },
+      "groups": {
+        "0": {
+          "title": "טריגרים"
+        },
+        "1": {
+          "title": "הודעות"
+        },
+        "2": {
+          "title": "לוגיקה"
+        },
+        "3": {
+          "title": "פגישות"
+        }
+      }
+    },
+    "settings": {
+      "fields": {
+        "0": {
+          "label": "שם"
+        },
+        "1": {
+          "label": "תיאור"
+        },
+        "2": {
+          "label": "סטטוס"
+        }
+      }
+    }
+  },
+  "actions": {
+    "workflow": {
+      "clear": {
+        "message": "למחוק את כל הנודים והקשרים?"
+      }
+    }
+  },
+  "page.title": "עורך תהליך עבודה",
+  "ui.header.subtitle": "בנו, חברו והריצו אוטומציות (עם אישור לפני שליחה)",
+  "ui.tabs.items.0.label": "עיצוב",
+  "ui.tabs.items.1.label": "הרצות",
+  "ui.tabs.items.2.label": "הגדרות",
+  "ui.inspector.title": "מפקח נוד",
+  "ui.inspector.emptyState.title": "לא נבחר נוד",
+  "ui.inspector.emptyState.description": "בחר נוד בקנבס כדי לערוך את המאפיינים שלו.",
+  "ui.canvas.emptyCanvas.title": "התחל עם Trigger",
+  "ui.palette.title": "פלטת נודים",
+  "ui.palette.search.placeholder": "חיפוש נוד…",
+  "ui.palette.groups.0.title": "טריגרים",
+  "ui.palette.groups.1.title": "הודעות",
+  "ui.palette.groups.2.title": "לוגיקה",
+  "ui.palette.groups.3.title": "פגישות",
+  "ui.settings.fields.0.label": "שם",
+  "ui.settings.fields.1.label": "תיאור",
+  "ui.settings.fields.2.label": "סטטוס",
+  "actions.workflow.clear.message": "למחוק את כל הנודים והקשרים?"
+}

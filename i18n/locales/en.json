@@ -1,0 +1,94 @@
+{
+  "workflows": {
+    "new": {
+      "title": "New Workflow",
+      "subtitle": "Create a new automation workflow.",
+      "sections": {
+        "basic": "Basic Information",
+        "trigger": "Trigger Configuration"
+      },
+      "preview": {
+        "title": "Trigger Preview",
+        "trigger": {
+          "manual": "This workflow starts manually. You will need to trigger it yourself from the workflow details page.",
+          "lead_added": "This workflow starts when a new lead is added to your workspace. It can be further refined by source and minimum priority.",
+          "inbound_reply": "This workflow starts when an inbound reply is received. You can specify which inbox to monitor and filter by keywords.",
+          "scheduled": "This workflow starts at a scheduled time based on a cron expression. For example, it can run daily, weekly, or monthly."
+        }
+      },
+      "trust_note": "By creating this workflow, you agree to our terms of service and acknowledge that this workflow will consume credits based on its execution.",
+      "actions": {
+        "create": "Create Workflow"
+      }
+    },
+    "fields": {
+      "name": "Name",
+      "name_placeholder": "Enter workflow name",
+      "description": "Description",
+      "description_placeholder": "Describe your workflow (optional)",
+      "trigger_type": "Trigger Type"
+    },
+    "trigger": {
+      "hint": "Choose how this workflow will be activated.",
+      "manual": "Manual",
+      "lead_added": "Lead Added",
+      "inbound_reply": "Inbound Reply",
+      "scheduled": "Scheduled"
+    },
+    "nodes": {
+      "trigger": {
+        "manual": {
+          "title": "Manual Trigger",
+          "hint": "Manually start this workflow."
+        },
+        "lead_added": {
+          "title": "Lead Added Trigger",
+          "hint": "Triggers when a new lead is added to the workspace, optionally filtered by source or priority.",
+          "source": "Lead Source",
+          "source.all": "All Sources",
+          "source.manual": "Manual Entry",
+          "source.scrape": "Scraped",
+          "source.import": "Imported",
+          "min_priority": "Minimum Priority"
+        },
+        "inbound_reply": {
+          "title": "Inbound Reply Trigger",
+          "hint": "Triggers when an inbound reply is received, optionally filtered by inbox or keywords.",
+          "inbox_id": "Inbox ID",
+          "keywords": "Keywords (comma-separated)"
+        },
+        "scheduled": {
+          "title": "Scheduled Trigger",
+          "hint": "Triggers at a specific time or recurring schedule.",
+          "cron_expression": "Cron Expression"
+        }
+      },
+      "actions": {
+        "log": {
+          "title": "Log Message",
+          "level": "Level",
+          "message": "Message",
+          "includeContext": "Include Context"
+        },
+        "done": {
+          "title": "Done",
+          "hint": "Marks the end of the workflow execution."
+        },
+        "decision": {
+          "title": "Decision"
+        },
+        "delay": {
+          "title": "Delay"
+        },
+        "send_email": {
+          "title": "Send Email"
+        }
+      }
+    }
+  },
+  "common": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "error": "Error"
+  }
+}
