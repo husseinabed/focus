@@ -8,7 +8,7 @@ export interface Lead {
   phone_e164?: string;
   language: 'auto' | 'he' | 'ar' | 'en';
   city?: string;
-  source: 'manual' | 'import' | 'google_maps' | 'whatsapp_inbound';
+  source: 'manual' | 'import' | 'google_maps' | 'whatsapp_inbound' | 'website' | 'referral';
   status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'won' | 'lost';
   priority: 'low' | 'medium' | 'high';
   website?: string;
@@ -18,6 +18,8 @@ export interface Lead {
   custom_fields?: Record<string, any>;
   created_at?: string;
   updated_at?: string;
+  last_activity?: string;
+  whatsapp_capable?: boolean;
 }
 
 const phoneRegex = /^\+\d{10,15}$/; // Example regex for E.164, adjust as needed
@@ -28,7 +30,7 @@ export const LeadSchema = z.object({
   phone: z.string().trim().min(1, 'Phone number is required').regex(phoneRegex, 'Invalid phone number format. Must be E.164.'),
   language: z.enum(['auto', 'he', 'ar', 'en']).default('auto'),
   city: z.string().trim().optional(),
-  source: z.enum(['manual', 'import', 'google_maps', 'whatsapp_inbound']).default('manual'),
+  source: z.enum(['manual', 'import', 'google_maps', 'whatsapp_inbound', 'website', 'referral']).default('manual'),
   status: z.enum(['new', 'contacted', 'qualified', 'proposal', 'won', 'lost']).default('new'),
   priority: z.enum(['low', 'medium', 'high']).default('medium'),
   website: z.string().trim().url('Invalid URL format').optional().or(z.literal('')), 

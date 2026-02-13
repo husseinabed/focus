@@ -473,8 +473,10 @@ const paletteGroups = computed(() => ({
   triggers: filterCatalog(nodesCatalog.value, "trigger", uiState.search_palette),
   actions: filterCatalog(nodesCatalog.value, "actions", uiState.search_palette),
   // messaging: filterCatalog(nodesCatalog.value, "messaging", uiState.search_palette),
-  // logic: filterCatalog(nodesCatalog.value, "logic", uiState.search_palette),
+  logic: filterCatalog(nodesCatalog.value, "logic", uiState.search_palette),
   // meetings: filterCatalog(nodesCatalog.value, "meetings", uiState.search_palette),
+  development: filterCatalog(nodesCatalog.value, "development", uiState.search_palette),
+
 }));
 
 const selectionLabel = computed(() =>
@@ -788,7 +790,7 @@ const headerActions = computed(() => [
     action: workflowActions.run,
   },
   {
-    type: "UDropdown",
+    type: "UDropdownMenu",
     label: t("common.json"),
     items: [
       { label: t("common.export_json"), click: workflowActions.export_json },

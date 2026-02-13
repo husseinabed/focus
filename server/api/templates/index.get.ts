@@ -1,4 +1,6 @@
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server';
+import { createError } from 'h3';
+import { resolveWorkspaceId } from '~~/server/utils/workspace';
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
@@ -11,35 +13,35 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const workspaceId = user.app_metadata?.workspace_id;
-  if (!workspaceId) {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Forbidden: Missing workspace ID or workspace_id in app_metadata',
-    });
-  }
+  const workspaceId = user.app_metadata?.workspace_id || await resolveWorkspaceId(client, user);
 
-  const { q, category, language, active } = getQuery(event);
+  const { q, category, language, active, channel, status } = getQuery(event);
 
   let query = client
-    .from('templates')
+    .from('content_templates')
     .select('*')
     .eq('workspace_id', workspaceId);
 
   if (q) {
-    query = query.ilike('name', `%${q}%`);
+    query = query.or(`title.ilike.%${q}%,key.ilike.%${q}%`);
   }
 
   if (category && category !== 'all') {
     query = query.eq('category', category);
   }
 
-  if (language && language !== 'all') {
-    query = query.eq('language', language);
+  if (channel && channel !== 'all') {
+    query = query.eq('channel', channel);
   }
 
-  if (active && active !== 'all') {
-    query = query.eq('is_active', active === 'active');
+  if (status && status !== 'all') {
+    query = query.eq('status', status);
+  } else if (active && active !== 'all') {
+    if (active === 'active') {
+      query = query.eq('status', 'active');
+    } else {
+      query = query.in('status', ['draft', 'archived']);
+    }
   }
 
   const { data, error } = await query;
@@ -51,5 +53,12 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  return data;
+  const rows = data || [];
+  const normalizedLanguage = typeof language === 'string' ? language : undefined;
+  const filteredRows =
+    normalizedLanguage && normalizedLanguage !== 'all'
+      ? rows.filter((row: any) => row?.locales && normalizedLanguage in row.locales)
+      : rows;
+
+  return filteredRows;
 });

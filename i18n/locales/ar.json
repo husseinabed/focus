@@ -1,1 +1,226 @@
-{}
+{
+  "projects": {
+    "form": {
+      "labels": {
+        "business_name": "اسم النشاط التجاري",
+        "industry": "المجال",
+        "location": "الموقع / السوق",
+        "main_service": "الخدمة الرئيسية / المنتج",
+        "target_audience": "الجمهور المستهدف",
+        "audience_details": "تفاصيل الجمهور",
+        "primary_goal": "الهدف الأساسي",
+        "secondary_goals": "الأهداف الثانوية",
+        "languages_needed": "اللغات المطلوبة",
+        "default_language": "اللغة الافتراضية",
+        "rtl_support": "دعم الكتابة من اليمين لليسار (RTL)",
+        "enable_rtl": "تفعيل RTL",
+        "custom_audience_placeholder": "جمهور مخصص (سطر واحد)",
+        "audience_notes_placeholder": "ملاحظات اختيارية",
+        "select_service_placeholder": "اختر الخدمة",
+        "select_industry_first": "اختر المجال أولاً"
+      },
+      "actions": {
+        "cancel": "إلغاء",
+        "create": "إنشاء",
+        "save": "حفظ"
+      },
+      "industry": {
+        "law_firm": "مكتب محاماة",
+        "dental_clinic": "عيادة أسنان",
+        "medical_clinic": "عيادة طبية",
+        "accounting": "محاسبة / CPA",
+        "real_estate": "عقارات",
+        "marketing_agency": "وكالة تسويق",
+        "local_services": "خدمات محلية (سباك، كهربائي، إلخ)",
+        "ecommerce": "تارة إلكترونية",
+        "other": "أخرى"
+      },
+      "location": {
+        "IL": "إسرائيل",
+        "US": "الولايات المتحدة",
+        "GB": "المملكة المتحدة",
+        "AE": "الإمارات العربية المتحدة",
+        "SA": "المملكة العربية السعودية",
+        "EG": "مصر",
+        "JO": "الأردن",
+        "MA": "المغرب",
+        "FR": "فرنسا",
+        "DE": "ألمانيا",
+        "CA": "كندا"
+      },
+      "goals": {
+        "lead_generation_whatsapp": "توليد عملاء محتملين (واتساب)",
+        "lead_generation_forms": "توليد عملاء محتملين (نماذج)",
+        "build_trust": "بناء الثقة والمصداقية",
+        "brand_awareness": "زيادة الوعي بالعلامة التجارية",
+        "appointments": "حجز مواعيد عبر الإنترنت",
+        "showcase_services": "عرض المعرض / الخدمات",
+        "educate_market": "تثقيف السوق (مدونة / محتوى)",
+        "seo_visibility": "رؤية SEO",
+        "reviews": "المراجعات",
+        "multilingual": "متعدد اللغات",
+        "faster_response": "استجابة أسرع",
+        "reduce_noshows": "تقليل عدم الحضور"
+      },
+      "languages": {
+        "en": "الإنجليزية",
+        "he": "العبرية",
+        "ar": "العربية"
+      },
+      "services": {
+        "legal_consultation": "استشارة قانونية",
+        "personal_injury": "إصابات شخصية",
+        "family_law": "قانون الأسرة",
+        "criminal_defense": "دفاع جنائي",
+        "real_estate_law": "قانون العقارات",
+        "immigration": "هجرة",
+        "corporate_law": "قانون الشركات / تجاري",
+        "general_dentistry": "طب أسنان عام",
+        "dental_implants": "زراعة الأسنان",
+        "orthodontics": "تقويم الأسنان",
+        "teeth_whitening": "تبييض الأسنان",
+        "cosmetic_dentistry": "طب أسنان تجميلي",
+        "emergency_dental": "علاج أسنان طارئ",
+        "primary_care": "رعاية أولية",
+        "dermatology": "أمراض جلدية",
+        "aesthetics": "تجميل / عيادة تجميل",
+        "physiotherapy": "علاج طبيعي",
+        "pediatrics": "طب أطفال",
+        "gynecology": "طب نسائي",
+        "bookkeeping": "مسك دفاتر",
+        "tax_filing": "تقديم إقرارات ضريبية",
+        "payroll": "خدمات الرواتب",
+        "business_consulting": "استشارات أعمال",
+        "vat_compliance": "ضريبة القيمة المضافة / الامتثال",
+        "residential_sales": "مبيعات سكنية",
+        "residential_rentals": "إيجارات سكنية",
+        "commercial_real_estate": "عقارات تجارية",
+        "property_management": "إدارة ممتلكات",
+        "new_developments": "مشاريع جديدة",
+        "websites_landing_pages": "مواقع / صفحات هبوط",
+        "seo": "تحسين محركات البحث (SEO)",
+        "google_ads": "إعلانات جوجل (PPC)",
+        "social_ads": "إعلانات التواصل الاجتماعي",
+        "branding": "هوية تجارية (Branding)",
+        "marketing_automation": "أتمتة التسويق",
+        "plumbing": "سباكة",
+        "electrical": "كهرباء",
+        "hvac": "تكييف وتبريد",
+        "cleaning": "خدمات تنظيف",
+        "moving": "خدمات نقل",
+        "renovation": "تجديد منازل",
+        "online_store": "متجر إلكتروني",
+        "subscription_products": "منتجات اشتراك",
+        "dropshipping": "دروبشيبينغ",
+        "digital_products": "منتجات رقمية",
+        "brand_storefront": "واجهة متجر العلامة التجارية",
+        "general_services": "خدمات عامة",
+        "appointments_bookings": "مواعيد / حجوزات",
+        "courses_coaching": "دورات / تدريب",
+        "professional_profile": "ملف شخصي مهني"
+      },
+      "audience_presets": {
+        "local_smb_owners": {
+          "label": "أصحاب الأعمال الصغيرة والمتوسطة (افتراضي)",
+          "primary": "الشركات الصغيرة والمتوسطة المحلية (المالكون/المديرون)",
+          "secondary": "المهنيون المشغولون الذين يفضلون استفسارات الواتساب/الهاتف"
+        },
+        "lawyers": {
+          "label": "محامون / مكاتب محاماة",
+          "primary": "محامون ومكاتب محاماة",
+          "secondary": "أشخاص يبحثون عن مساعدة قانونية في المنطقة المحلية"
+        },
+        "dentists": {
+          "label": "أطباء أسنان / عيادات أسنان",
+          "primary": "عيادات الأسنان وأطباء الأسنان",
+          "secondary": "مرضى يبحثون عن علاجات ومواعيد"
+        },
+        "clinics": {
+          "label": "عيادات (طبية)",
+          "primary": "عيادات طبية وممارسون",
+          "secondary": "مرضى يبحثون عن استشارات وحجوزات"
+        },
+        "real_estate_agents": {
+          "label": "وكلاء عقارات",
+          "primary": "وكلاء عقارات وشركات وساطة",
+          "secondary": "مشترون/مستأجرون يبحثون عن عقارات"
+        },
+        "home_services": {
+          "label": "خدمات منزلية",
+          "primary": "مقدمو الخدمات المحلية (سباكة، كهرباء، إلخ)",
+          "secondary": "أصحاب منازل يحتاجون إلى عروض أسعار سريعة وحجوزات"
+        },
+        "ecommerce_owners": {
+          "label": "أصحاب المتاجر الإلكترونية",
+          "primary": "أصحاب العلامات التجارية للتجارة الإلكترونية",
+          "secondary": "المتسوقون عبر الإنترنت والعملاء المتكررون"
+        },
+        "custom": {
+          "label": "مخصص (اكتبه بنفسك)",
+          "primary": "",
+          "secondary": ""
+        }
+      }
+    }
+  },
+  "onboarding": {
+    "title": "دعنا نبني استراتيجية علامتك التجارية",
+    "subtitle": "سأساعدك في تحديد هوية عملك، والجمهور المستهدف، والأهداف.",
+    "header": {
+      "tag": "مخطط استراتيجية الذكاء الاصطناعي"
+    },
+    "step_counter": "الخطوة {step} من 3",
+    "status": {
+      "generating": "جاري الإنشاء...",
+      "ready": "جاهز"
+    },
+    "default_lang": "الافتراضي",
+    "validation": {
+      "name_required": "اسم النشاط التجاري مطلوب",
+      "desc_length": "يجب أن يكون الوصف 10 أحرف على الأقل",
+      "lang_required": "اختر لغة واحدة على الأقل",
+      "goal_required": "اختر هدفاً رئيسياً",
+      "incomplete": "يرجى إكمال جميع الحقول المطلوبة",
+      "failed": "فشل الإنشاء"
+    },
+    "chat": {
+      "initial_message": "مرحباً! أنا براندي. ما هو اسم نشاطك التجاري؟",
+      "describe_message": "رائع! أخبرني قليلاً عما تفعله.",
+      "options_message": "فهمت. دعنا نضبط بعض التفاصيل.",
+      "added_message": "تم التدوين.",
+      "saved_message": "تم الحفظ.",
+      "generating_message": "جاري إنشاء استراتيجية علامتك التجارية...",
+      "success_message": "تم الانتهاء! جاري إعادة التوجيه...",
+      "input_placeholder": "اكتب إجابتك...",
+      "skip_to_options": "تخطي إلى الخيارات",
+      "okay_options": "حسناً، دعنا ننتقل مباشرة إلى الخيارات."
+    },
+    "card": {
+      "industry": "المجال",
+      "industry_subtitle": "اختر مجالك",
+      "languages": "اللغات",
+      "languages_subtitle": "اختر اللغات",
+      "goals": "الأهداف",
+      "goals_subtitle": "اختر أهدافك",
+      "pick_match": "اختر الأنسب",
+      "choose_lang": "اختر اللغات",
+      "select_goals": "اختر أهدافك الرئيسية",
+      "done": "تم"
+    },
+    "details": {
+      "name": "الاسم:",
+      "default": "الافتراضي:",
+      "generate_btn": "إنشاء الاستراتيجية"
+    },
+    "features": {
+      "rtl": "دعم RTL",
+      "languages": "متعدد اللغات",
+      "whatsapp": "تكامل واتساب",
+      "seo": "جاهز لـ SEO"
+    }
+  },
+  "generate": {
+    "browser_search": "الوكيل يبحث في الويب",
+    "browser_visit": "الوكيل يتصفح الإنترنت"
+  }
+}

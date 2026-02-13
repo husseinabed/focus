@@ -9,8 +9,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (!user.value) {
     return navigateTo('/login');
   }
-
-  console.log('Auth middleware: User is authenticated. Bootstrapping workspace store...');
+ 
   await workspaceStore.bootstrap(user.value);
-  console.log('Auth middleware: Workspace store bootstrapped. activeWorkspaceId:', workspaceStore.activeWorkspaceId);
+ 
 });

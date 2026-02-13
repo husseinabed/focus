@@ -1,18 +1,16 @@
- 
-
 export type NodeCategory = 'trigger' | 'logic' | 'messaging' | 'action'
 
 export interface CatalogItem {
   type: string
   category: NodeCategory
-  title: string
+  title: string // i18n key
   icon: string
-  hint?: string
+  hint?: string // i18n key
 }
 
 export interface NodePort {
   id: string
-  label?: string
+  label?: string // i18n key
   dataType: 'flow' | 'string' | 'number' | 'boolean' | 'object' | 'any'
   required?: boolean
 }
@@ -22,27 +20,54 @@ export interface NodeSchema extends CatalogItem {
     inputs: NodePort[]
     outputs: NodePort[]
   }
+
+  // Inspector / config schema (optional)
+  config?: Record<
+    string,
+    | {
+        type: 'string'
+        label: string
+        description?: string
+        placeholder?: string
+        enum?: string[]
+        default?: string
+        format?: 'text' | 'textarea'
+        required?: boolean
+      }
+    | {
+        type: 'boolean'
+        label: string
+        description?: string
+        default?: boolean
+      }
+  >
+
   ui: {
-    renderer: string // e.g. 'trigger', 'base'
+    renderer: string // e.g. 'trigger', 'actions', 'base'
     tone?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'
     width?: number
   }
+
   execution: {
     requiresApproval?: boolean
     blocking?: boolean
+    sideEffect?: boolean
   }
+
   defaultData?: Record<string, any>
 }
 
-// Represents an instance of a node in the flow
+// ----------------------------
+// Flow graph runtime
+// ----------------------------
+
 export interface FlowNode {
   id: string
   type: string // references NodeSchema.type
   position: { x: number; y: number }
   data: {
-    // Structure requested: schema, label, notes, execution
-    schema?: NodeSchema // The full schema snapshot (optional but requested structure)
-    label?: string
+    schema?: NodeSchema
+    label?: string // i18n key
     notes?: string
     execution?: Record<string, any>
     runtime?: {
@@ -52,7 +77,7 @@ export interface FlowNode {
       startedAt?: string
       finishedAt?: string
     }
-    [key: string]: any // Allow other data properties
+    [key: string]: any
   }
 }
 
@@ -67,18 +92,18 @@ export interface FlowEdge {
   label?: string
 }
 
+// ----------------------------
 // Helpers
+// ----------------------------
 
 export function createNodeRegistry(schemas: NodeSchema[]): Map<string, NodeSchema> {
   const registry = new Map<string, NodeSchema>()
-  for (const schema of schemas) {
-    registry.set(schema.type, schema)
-  }
+  for (const schema of schemas) registry.set(schema.type, schema)
   return registry
 }
 
 export function createFlowNodeFromSchema(
-  schema: NodeSchema, 
+  schema: NodeSchema,
   position: { x: number; y: number } = { x: 0, y: 0 }
 ): FlowNode {
   return {
@@ -86,12 +111,12 @@ export function createFlowNodeFromSchema(
     type: schema.type,
     position,
     data: {
-      label: schema.title.en,
-      schema: schema,
+      label: schema.title, // resolved via $t() in UI
+      schema,
       notes: '',
       execution: {},
-      ...schema.defaultData
-    }
+      ...schema.defaultData,
+    },
   }
 }
 
@@ -100,14 +125,10 @@ export function canConnect(
   targetHandle: { dataType: string }
 ): boolean {
   if (!sourceHandle || !targetHandle) return false
-  
-  const source = sourceHandle.dataType
-  const target = targetHandle.dataType
 
-  if (source === 'any' || target === 'any') return true
-  // Flow connections are special, usually only flow-to-flow
-  if (source === 'flow' || target === 'flow') {
-    return source === target
+  if (sourceHandle.dataType === 'any' || targetHandle.dataType === 'any') return true
+  if (sourceHandle.dataType === 'flow' || targetHandle.dataType === 'flow') {
+    return sourceHandle.dataType === targetHandle.dataType
   }
-  return source === target
+  return sourceHandle.dataType === targetHandle.dataType
 }

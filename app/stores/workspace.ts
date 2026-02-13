@@ -62,10 +62,8 @@ export const useWorkspaceStore = defineStore('workspace', {
       this.loading = true
       this.error = null
       const currentUser = user || useSupabaseUser().value
-      console.log('WorkspaceStore: bootstrap - currentUser:', currentUser)
 
       if (!currentUser) {
-        console.log('WorkspaceStore: bootstrap - No current user, clearing workspace.')
         this.clear()
         this.loading = false
         return
@@ -73,35 +71,28 @@ export const useWorkspaceStore = defineStore('workspace', {
 
       await this.fetchMemberships(currentUser)
 
-      console.log('WorkspaceStore: bootstrap - activeWorkspaceId before check:', this.activeWorkspaceId)
-      console.log('WorkspaceStore: bootstrap - memberships before check:', this.memberships)
 
       if (
         !this.activeWorkspaceId ||
         !this.memberships.some((m) => m.workspace_id === this.activeWorkspaceId)
       ) {
         this.activeWorkspaceId = this.memberships[0]?.workspace_id || null
-        console.log('WorkspaceStore: bootstrap - activeWorkspaceId after (re)setting:', this.activeWorkspaceId)
       }
 
       this.loading = false
     },
 
     async fetchMemberships(user?: any) {
-      const incomingUserId = user?.id ?? user?.sub
-      console.log('WorkspaceStore: fetchMemberships - starting for user:', incomingUserId)
       this.loading = true
       this.error = null
       const client = useSupabaseClient()
       let effectiveUser = user; // Prioritize the user passed as argument
 
       if (!effectiveUser) {
-        console.log("WorkspaceStore: fetchMemberships - User argument is undefined. Attempting to get from useSupabaseUser().value.");
         effectiveUser = useSupabaseUser().value;
       }
 
       if (!effectiveUser) {
-        console.log("WorkspaceStore: fetchMemberships - No effective user found. Clearing memberships and returning.");
         this.memberships = [];
         this.loading = false;
         this.error = "User not available for fetching memberships.";
@@ -109,7 +100,6 @@ export const useWorkspaceStore = defineStore('workspace', {
       }
 
       const effectiveUserId = effectiveUser?.id ?? effectiveUser?.sub
-      console.log("WorkspaceStore: fetchMemberships - Using effective user ID:", effectiveUserId);
       if (!effectiveUserId) {
         this.memberships = [];
         this.loading = false;

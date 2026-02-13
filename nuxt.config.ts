@@ -5,11 +5,19 @@ export default defineNuxtConfig({
     compatibilityVersion: 4
   },
 
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxtjs/i18n', '@nuxtjs/supabase', '@pinia/nuxt'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/ui',
+    '@nuxtjs/i18n',
+    '@nuxtjs/supabase',
+    '@pinia/nuxt',
+    '@nuxtjs/google-fonts'
+  ],
 
   components: [
     { path: '~/components', extensions: ['.vue'], global: true },
-    { path: '~/components/inbox', extensions: ['.vue'], global: true }
+    { path: '~/components/inbox', extensions: ['.vue'], global: true },
+    { path: '~/components/leads', extensions: ['.vue'], global: true }
   ],
   supabase: {
     redirectOptions: {
@@ -64,6 +72,22 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: ['cookie']
+    },
+    server: {
+      allowedHosts: [
+        "dev-api.brandi-ai.com"
+      ]
     }
+  },
+
+  devServer: {
+    port: 3000,
+    host: '0.0.0.0' // Exposes to the local network
+  },
+
+  runtimeConfig: {
+    twilioAuthToken: process.env.TWILIO_AUTH_TOKEN,
+    googleGenerativeAiApiKey: process.env.GEMINI_API_KEY
   }
+
 })

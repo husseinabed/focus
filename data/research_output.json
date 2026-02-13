@@ -1,0 +1,196 @@
+{
+  "summary": "This research involved visiting six competitor websites (Webflow, Framer, Wix, Squarespace, Lovable, Bolt) to understand their competitive positioning, offers, CTA patterns, trust markers, implied objections, and language patterns. Key findings indicate a strong trend towards AI-powered website building across the board, with competitors emphasizing speed, ease of use, design flexibility, and comprehensive integrated features for various user segments (designers, developers, entrepreneurs, agencies). Focus AI has a distinct opportunity to differentiate through its hyper-local Israeli market focus, deep multilingual (EN/HE/AR) support, and unique WhatsApp-first lead capture mechanism for local SMBs and service businesses.",
+  "visited": [
+    "https://www.webflow.com (status: 200, ok: true)",
+    "https://www.framer.com (status: 200, ok: true)",
+    "https://www.wix.com (status: 200, ok: true)",
+    "https://www.squarespace.com (status: 200, ok: true)",
+    "https://www.lovable.dev (status: 200, ok: true)",
+    "https://www.bolt.new (status: 200, ok: true)"
+  ],
+  "market_insights": {
+    "schema_version": "1.0.0",
+    "visited": [
+      {
+        "url": "https://www.webflow.com",
+        "status": 200,
+        "responseOk": true,
+        "title": "Webflow: Create a custom website | Visual website builder",
+        "timingMs": 11072,
+        "notes": [
+          "Numerous console errors and request failures (ERR_CONNECTION_RESET, ERR_BLOCKED_BY_RESPONSE.NotSameOrigin, 401 Unauthorized) mainly related to third-party tracking/analytics scripts and content security policy violations. These did not prevent content extraction."
+        ]
+      },
+      {
+        "url": "https://www.framer.com",
+        "status": 200,
+        "responseOk": true,
+        "title": "Framer: Create a professional website, free. No code website builder loved by designers.",
+        "timingMs": 4077,
+        "notes": [
+          "Some console errors and request failures (401 Unauthorized, ERR_CONNECTION_RESET) were observed, largely related to third-party scripts. These did not hinder content extraction."
+        ]
+      },
+      {
+        "url": "https://www.wix.com",
+        "status": 200,
+        "responseOk": true,
+        "title": "Website Builder - Create a Free Website In Minutes | Wix.com",
+        "timingMs": 1875,
+        "notes": [
+          "Page loaded successfully with minimal console errors or request failures reported."
+        ]
+      },
+      {
+        "url": "https://www.squarespace.com",
+        "status": 200,
+        "responseOk": true,
+        "title": "Website Builder – Easily Create Your Own Website — Squarespace",
+        "timingMs": 2984,
+        "notes": [
+          "Page loaded successfully with minor console errors related to tracking scripts."
+        ]
+      },
+      {
+        "url": "https://www.lovable.dev",
+        "status": 200,
+        "responseOk": true,
+        "title": "Lovable - Build Apps & Websites with AI, Fast | No Code App Builder",
+        "timingMs": 2998,
+        "notes": ["Site loaded successfully with minimal console logs."]
+      },
+      {
+        "url": "https://www.bolt.new",
+        "status": 200,
+        "responseOk": true,
+        "title": "Bolt AI builder: Websites, apps & prototypes",
+        "timingMs": 6392,
+        "notes": [
+          "Site loaded successfully with minor console errors, primarily related to tracking."
+        ]
+      }
+    ],
+    "competitor_patterns": [
+      "Heavy adoption of AI for website creation, content generation, and optimization.",
+      "Emphasis on 'no-code' or 'low-code' visual building for ease of use and speed.",
+      "Positioning as all-in-one platforms with integrated CMS, SEO, analytics, and business tools.",
+      "Targeting diverse audiences including designers, developers, marketers, entrepreneurs, and agencies.",
+      "Strong focus on creative freedom, design flexibility, and professional aesthetics.",
+      "Highlighting collaboration features and streamlined workflows to eliminate handoffs.",
+      "Promises of scalability, reliability, and performance (hosting, security, uptime).",
+      "Extensive template libraries to kickstart projects.",
+      "Use of customer testimonials and quantifiable results (e.g., cost savings, traffic increase, reduced errors) as trust markers."
+    ],
+    "positioning_angles_seen": [
+      "AI-native / AI-powered creation (Webflow, Framer, Wix, Squarespace, Lovable, Bolt)",
+      "Visual website builder / Designer-friendly (Webflow, Framer, Squarespace, Wix)",
+      "Speed and efficiency ('build faster', 'minutes', 'hours', 'no wait on dev') (All)",
+      "All-in-one platform / Integrated solutions (Webflow, Framer, Wix, Squarespace, Bolt)",
+      "Creative freedom / Build exactly what you imagine (Webflow, Framer, Wix, Squarespace)",
+      "Scalability / For high-performing brands to startups (Webflow, Framer, Squarespace, Bolt)",
+      "Ease of use / No experience required / No code (Wix, Squarespace, Framer, Lovable)",
+      "Business growth / Drive real results (Webflow, Wix, Squarespace)",
+      "Empowering entrepreneurs / product builders (Squarespace, Bolt)",
+      "Focus on specific verticals (e.g., creative, health, home services, agencies) (Squarespace, Wix)",
+      "Robust hosting, security, and performance (Wix, Squarespace, Bolt, Webflow)"
+    ],
+    "offers_seen": [
+      "AI website builders for generating sites, layouts, and content (All)",
+      "Drag-and-drop editors and visual design tools (Wix, Squarespace, Webflow, Framer)",
+      "Extensive template libraries (Wix, Squarespace, Webflow, Framer, Lovable)",
+      "Integrated CMS for content management (All)",
+      "SEO and AEO (Answer Engine Optimization) tools (Webflow, Framer, Wix, Squarespace, Bolt)",
+      "Analytics and performance tracking (Webflow, Framer, Wix, Squarespace, Bolt)",
+      "Ecommerce capabilities (Wix, Squarespace)",
+      "Scheduling and booking features (Wix, Squarespace)",
+      "Email marketing tools (Wix, Squarespace)",
+      "Domain name registration and hosting (Wix, Squarespace, Bolt)",
+      "Collaboration tools for teams and clients (Webflow, Framer, Wix, Squarespace)",
+      "Customer support (24/7, help centers, forums, experts) (Wix, Squarespace, Webflow, Framer)",
+      "Partner/Agency programs (Webflow, Squarespace, Lovable, Bolt)",
+      "Backend infrastructure services (databases, user management) (Bolt, Webflow, Squarespace)",
+      "AI tools for images, text, sections, layouts, meta tags (Wix, Squarespace, Webflow)",
+      "Mobile app for business management (Wix)"
+    ],
+    "cta_patterns": [
+      {
+        "pattern": "Direct Action (Start/Get/Try)",
+        "examples": [
+          "Get started",
+          "Start for free",
+          "Start building",
+          "Start with AI",
+          "Sign in",
+          "Try Opus 4.6: free for 48 hours!",
+          "Build now"
+        ]
+      },
+      {
+        "pattern": "Informational/Exploratory (Learn/Discover/Read/Explore/View)",
+        "examples": [
+          "Learn more",
+          "Discover Webflow AI",
+          "Read story",
+          "Check your AEO readiness",
+          "Explore design systems",
+          "View Template",
+          "Explore the Blog",
+          "Discover apps"
+        ]
+      },
+      {
+        "pattern": "Sales/Contact",
+        "examples": ["Talk to sales", "Contact Sales"]
+      },
+      {
+        "pattern": "Role-based",
+        "examples": ["I'm a Marketer", "Designer", "Developer", "Agency"]
+      }
+    ],
+    "trust_markers_seen": [
+      "Customer testimonials with names, titles, and specific results/benefits (Webflow, Framer, Squarespace)",
+      "Quantifiable metrics and statistics (e.g., '10x in cost savings', '67% decrease in dev ticketing', '14M+ Entrepreneurs Served', '98% less errors') (Webflow, Squarespace, Bolt)",
+      "Logos of well-known companies/brands using the platform (implied 'Trusted by teams at' on Webflow)",
+      "Claims of industry leadership or being 'trusted by startups to Fortune 500' (Framer, Squarespace, Bolt)",
+      "References to awards or external validation (e.g., 'Blueprint AI, one of TIME’s Best Inventions of 2025' on Squarespace)",
+      "Promises of high uptime (e.g., '99.99% uptime', '99.98% uptime') (Wix, Squarespace, Webflow)",
+      "Emphasis on enterprise-grade security and reliable hosting (Wix, Squarespace, Bolt, Webflow)",
+      "Offer of 24/7 customer support (Wix, Squarespace, Webflow)",
+      "Community size or activity (implied by 'millions of entrepreneurs', presence on social media) (Squarespace, Lovable, Bolt)"
+    ],
+    "common_objections_implied": [
+      "Difficulty/complexity of website building: addressed by 'no code', 'AI builder', 'intuitive drag and drop', 'no experience required'.",
+      "Slow development cycles/developer reliance: addressed by 'build faster', 'no more waiting for dev resources', 'handoff-free'.",
+      "Limited creative control/design constraints: addressed by 'creative freedom', 'build exactly what you imagine', 'pixel-perfect precision'.",
+      "Fragmented tools and platforms: addressed by 'all-in-one platform', 'integrated solutions', 'scale without switching tools'.",
+      "Performance, security, and reliability concerns: addressed by 'top speed', 'enterprise-grade security', '99.99% uptime', 'rock-solid foundation'.",
+      "Cost of building/hiring developers: addressed by 'start for free', 'less than hiring a developer'.",
+      "Scalability for growing businesses/projects: addressed by 'build big without breaking', 'everything you need to scale built in'."
+    ],
+    "language_patterns": {
+      "en": [
+        "AI-native/AI-powered, visual builder, no-code, drag-and-drop, creative freedom, scale, integrated, all-in-one, enterprise-grade, fast, efficient, powerful, seamless, intuitive, optimize, convert, digital experience, professional, stunning, smart, tailored, empowering, revenue, growth, entrepreneurs, designers, marketers, agencies, developers.",
+        "Phrases often highlight speed, ease, and comprehensive capabilities: 'Smarter sites start here', 'Bring your ideas to life', 'Create a website without limits', 'Build better sites, faster', 'Everything you need on one platform', 'Go from insight to prototype in hours', 'Launch a full business in days'."
+      ],
+      "he": [],
+      "ar": []
+    },
+    "gaps_opportunities": [
+      "**Hyper-local focus (Israel):** Competitors mostly have global positioning. Focus AI can strongly emphasize its multi-city Israel presence and understanding of the local market needs.",
+      "**Deep Multilingual Support (EN/HE/AR):** While some competitors offer localization, none explicitly highlight integrated, high-converting multilingual (EN/HE/AR) capabilities as a core offering, which is a major differentiator for Focus AI.",
+      "**WhatsApp-first Lead Capture:** This is a unique and highly relevant lead capture mechanism for the Israeli market and SMBs that no competitors explicitly mention or feature prominently.",
+      "**SMB-specific Value Proposition:** Most competitors target a broad range from startups to enterprise/designers. Focus AI's explicit focus on 'local SMB owners', 'service businesses (lawyers, dentists, clinics, real estate, contractors)', and 'small agencies' allows for more tailored messaging and feature sets.",
+      "**CRO Emphasis as a Primary Benefit:** While competitors mention analytics and optimization, Focus AI can more directly position itself around 'high-converting' websites and a 'digital growth system' where CRO is a central, explicit outcome.",
+      "**Beyond Website Building to 'Digital Growth System':** Focus AI can differentiate by clearly articulating a holistic 'digital growth system' that encompasses more than just the website, potentially including local SEO, review management, and other growth levers crucial for SMBs, integrated with the website builder."
+    ],
+    "risk_flags": [
+      "Heavy competition in the AI-powered website builder space, with many platforms offering advanced features, templates, and integrated solutions.",
+      "Several competitors (Webflow, Wix, Squarespace) have very comprehensive offerings that cover many aspects of business operations and marketing, making it challenging to differentiate on feature parity alone.",
+      "The 'chatting with AI' interface for building (Lovable, Bolt) is a direct competitive approach that Focus AI also utilizes, indicating this method is becoming a standard expectation.",
+      "Many competitors use strong trust markers and quantifiable results, which Focus AI will need to match or exceed.",
+      "Minor console errors and request failures were noted on some sites, but these did not impede content extraction, indicating robust platforms overall."
+    ]
+  },
+  "next_inputs_needed": [],
+  "verification_notes": "All provided seed URLs were successfully visited and analyzed within the specified constraints. The market insights are based solely on the extracted page content. Further research could involve deep dives into competitor pricing, specific feature comparisons, and user reviews if needed to validate or expand on these initial findings."
+}

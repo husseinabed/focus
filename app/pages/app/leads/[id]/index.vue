@@ -49,13 +49,13 @@
         >
           {{ $t('leads.new.next_steps.book_proposal') }}
         </UButton>
-        <UDropdown :items="actionItems">
+        <UDropdownMenu :items="actionItems">
           <UButton
             color="neutral"
             variant="ghost"
             icon="i-heroicons-ellipsis-vertical"
           />
-        </UDropdown>
+        </UDropdownMenu>
       </div>
     </div>
 

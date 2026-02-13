@@ -1,0 +1,2544 @@
+{
+  "layout_patterns_library": [
+    {
+      "pattern_id": "P001_HeroFullWidth",
+      "name": "Hero Full Width",
+      "use_cases": ["Primary landing sections", "Page introductions"],
+      "structure": ["container", "content_block", "cta_block", "media_block"],
+      "responsive_behavior": {
+        "mobile": "Content stacked centrally or aligned to start, full-width media. CTAs stacked.",
+        "tablet": "Content aligned to start or centered, full-width or background media. CTAs inline or stacked.",
+        "desktop": "Content aligned to start or centered, full-width or background media. CTAs inline."
+      },
+      "rtl_notes": [
+        "Text and CTA alignment uses logical 'start' direction. If media is content-bearing, its position should be logical 'start' or 'end' if split."
+      ]
+    },
+    {
+      "pattern_id": "P002_ContentStack",
+      "name": "Content Stack Block",
+      "use_cases": [
+        "Problem statements",
+        "Solution overviews",
+        "Simple informational blocks",
+        "Benefits summaries",
+        "Short testimonials"
+      ],
+      "structure": ["container", "content_block", "media_block"],
+      "responsive_behavior": {
+        "mobile": "Single column, content stacked vertically.",
+        "tablet": "Single column, content stacked vertically.",
+        "desktop": "Single column, content stacked vertically, often with a max-width for readability."
+      },
+      "rtl_notes": ["Text alignment uses logical 'start' direction."]
+    },
+    {
+      "pattern_id": "P003_GridFeatures2Col",
+      "name": "Grid Features (1-2-3 Columns)",
+      "use_cases": [
+        "Value pillars",
+        "Feature lists",
+        "Short social proof/testimonials",
+        "FAQ summaries"
+      ],
+      "structure": ["container", "grid", "content_block"],
+      "responsive_behavior": {
+        "mobile": "1 column grid for cards/items.",
+        "tablet": "2 column grid for cards/items.",
+        "desktop": "3 column grid for cards/items. (Can be 2 or 3 based on content density)."
+      },
+      "rtl_notes": [
+        "Grid items flow naturally in the document direction. Content within each grid item aligns to logical 'start'."
+      ]
+    },
+    {
+      "pattern_id": "P004_ProcessVertical",
+      "name": "Process Steps Vertical",
+      "use_cases": ["How it works sections", "Detailed step-by-step guides"],
+      "structure": ["container", "stack", "content_block", "media_block"],
+      "responsive_behavior": {
+        "mobile": "Single column, steps stacked vertically.",
+        "tablet": "Single column, steps stacked vertically.",
+        "desktop": "Single column, steps stacked vertically, often with a max-width for readability."
+      },
+      "rtl_notes": [
+        "Numbers/icons placed at the logical 'start' of each step. Text aligns to logical 'start'."
+      ]
+    },
+    {
+      "pattern_id": "P005_CtaBannerPrimary",
+      "name": "Primary CTA Banner",
+      "use_cases": [
+        "Footer call-to-actions",
+        "Prominent mid-page conversion points"
+      ],
+      "structure": ["container", "content_block", "cta_block"],
+      "responsive_behavior": {
+        "mobile": "Full-width banner, stacked text and CTA.",
+        "tablet": "Full-width banner, text and CTA centered or aligned to start.",
+        "desktop": "Full-width banner, text and CTA centered or aligned to start."
+      },
+      "rtl_notes": ["Text and CTA alignment uses logical 'start' direction."]
+    },
+    {
+      "pattern_id": "P006_FaqAccordion",
+      "name": "FAQ Accordion List",
+      "use_cases": ["Frequently Asked Questions sections"],
+      "structure": ["container", "stack", "content_block"],
+      "responsive_behavior": {
+        "mobile": "Single column, stacked accordion items.",
+        "tablet": "Single column, stacked accordion items, often with a max-width for readability.",
+        "desktop": "Single column, stacked accordion items, often with a max-width for readability."
+      },
+      "rtl_notes": [
+        "Text alignment uses logical 'start' direction. Accordion icons should be direction-agnostic or mirrored."
+      ]
+    },
+    {
+      "pattern_id": "hero_split_media_text_pattern",
+      "name": "Hero - Split Text & Media",
+      "use_cases": [
+        "Prominent above-the-fold content",
+        "Page introductions with visual emphasis"
+      ],
+      "structure": ["container", "content_block", "media_block", "cta_block"],
+      "responsive_behavior": {
+        "mobile": "Vertical stack: Media (optional) on top, then text, then CTAs. Full width.",
+        "tablet": "Two columns: Text on one side, media on the other. Larger text/CTAs. 50/50 or 60/40 split.",
+        "desktop": "Two columns: Text on one side, media on the other. Optimized for readability. 50/50 or 60/40 split."
+      },
+      "rtl_notes": [
+        "Content order (text/media) should respect logical flow (e.g., text block 'start' position adapts to direction). Internal text aligns to start."
+      ]
+    },
+    {
+      "pattern_id": "content_stack_pattern",
+      "name": "Content - Stacked Blocks",
+      "use_cases": [
+        "Problem statements",
+        "Solution overviews",
+        "About sections",
+        "Simple benefit lists",
+        "Testimonials (single/paired)"
+      ],
+      "structure": ["container", "content_block"],
+      "responsive_behavior": {
+        "mobile": "Single column, content blocks stack vertically. Full width.",
+        "tablet": "Single column, wider content blocks. Centered or left-aligned.",
+        "desktop": "Single column, constrained max-width for readability. Centered or left-aligned."
+      },
+      "rtl_notes": [
+        "Text alignment for content_block should be 'start' (left in LTR, right in RTL)."
+      ]
+    },
+    {
+      "pattern_id": "grid_content_card_pattern",
+      "name": "Grid - Content Cards",
+      "use_cases": [
+        "Feature lists",
+        "Benefit lists",
+        "Grouped testimonials",
+        "Service offerings"
+      ],
+      "structure": ["container", "grid", "content_block"],
+      "responsive_behavior": {
+        "mobile": "Single column grid, cards stack vertically.",
+        "tablet": "Two-column grid.",
+        "desktop": "Two or three-column grid, depending on content density."
+      },
+      "rtl_notes": [
+        "Grid order flows correctly. Text within cards aligns to 'start'."
+      ]
+    },
+    {
+      "pattern_id": "process_steps_vertical_pattern",
+      "name": "Process - Vertical Steps",
+      "use_cases": [
+        "How-it-works sections",
+        "Onboarding guides",
+        "Multi-step processes"
+      ],
+      "structure": ["container", "stack", "content_block"],
+      "responsive_behavior": {
+        "mobile": "Single column, steps stack vertically, clear separator/numbering.",
+        "tablet": "Single column, steps stack vertically, possibly wider content.",
+        "desktop": "Single column, steps stack vertically, constrained max-width."
+      },
+      "rtl_notes": [
+        "Numbering/icons should precede content directionally (e.g., number-text in LTR, number-text in RTL, with text being RTL)."
+      ]
+    },
+    {
+      "pattern_id": "faq_accordion_pattern",
+      "name": "FAQ - Accordion Style",
+      "use_cases": ["Addressing common questions", "Objection handling"],
+      "structure": ["container", "content_block"],
+      "responsive_behavior": {
+        "mobile": "Single column, full width accordion items.",
+        "tablet": "Single column, wider accordion items.",
+        "desktop": "Single column, constrained max-width for readability."
+      },
+      "rtl_notes": [
+        "Accordion expand/collapse icon position adapts to 'end' of item. Text aligns 'start'."
+      ]
+    },
+    {
+      "pattern_id": "footer_cta_banner_pattern",
+      "name": "Footer - Call To Action Banner",
+      "use_cases": [
+        "Final conversion point on a page",
+        "Reinforcing primary CTA"
+      ],
+      "structure": ["container", "content_block", "cta_block"],
+      "responsive_behavior": {
+        "mobile": "Vertical stack: headline, then CTA. Centered.",
+        "tablet": "Centrally aligned text and CTA, potentially on a wider banner.",
+        "desktop": "Centrally aligned text and CTA, within a clear, distinct banner area."
+      },
+      "rtl_notes": [
+        "Text and CTA are horizontally centered, so direction agnostic."
+      ]
+    },
+    {
+      "pattern_id": "hero_banner",
+      "name": "Hero Banner Layout",
+      "use_cases": [
+        "Prominent page introduction",
+        "Main value proposition display",
+        "Primary call-to-action area"
+      ],
+      "structure": ["container", "content_block", "media_block", "cta_block"],
+      "responsive_behavior": {
+        "mobile": "Stack content and CTA below media. Text and CTA span full width.",
+        "tablet": "Content and CTA aligned with media (side-by-side or overlay). Text and CTA span ~60-80% width.",
+        "desktop": "Content and CTA aligned with media. Text and CTA span ~50-60% width for optimal readability."
+      },
+      "rtl_notes": [
+        "Text alignment within content_block should use logical properties (text-align-start).",
+        "If media and text are side-by-side, visual order should mirror in RTL."
+      ]
+    },
+    {
+      "pattern_id": "content_block_stack",
+      "name": "Stacked Content Block",
+      "use_cases": [
+        "Sequential information",
+        "FAQs",
+        "Lists",
+        "Introduction text",
+        "Summaries"
+      ],
+      "structure": ["container", "content_block"],
+      "responsive_behavior": {
+        "mobile": "Full width content stack.",
+        "tablet": "Full width content stack, possibly with wider max-width for readability.",
+        "desktop": "Full width content stack, with max-width for optimal readability (e.g., 60-70% of container width) centered or aligned start."
+      },
+      "rtl_notes": [
+        "Text alignment within content_block should use logical properties (text-align-start).",
+        "No specific visual mirroring needed beyond text direction."
+      ]
+    },
+    {
+      "pattern_id": "feature_grid_card",
+      "name": "Feature/Testimonial Grid Card",
+      "use_cases": [
+        "Displaying benefits",
+        "Showcasing features",
+        "Gallery of testimonials or client logos"
+      ],
+      "structure": ["container", "grid", "content_block"],
+      "responsive_behavior": {
+        "mobile": "1 column grid, full width cards.",
+        "tablet": "2 column grid.",
+        "desktop": "3 column grid."
+      },
+      "rtl_notes": [
+        "Grid flow should be consistent. Cards themselves should handle RTL text within their content_blocks. Logical spacing between cards."
+      ]
+    },
+    {
+      "pattern_id": "split_section_content_media",
+      "name": "Split Section (Content & Media)",
+      "use_cases": [
+        "Detailed feature explanation",
+        "Process step with visual",
+        "Case study detail",
+        "Solution overview"
+      ],
+      "structure": ["container", "grid", "content_block", "media_block"],
+      "responsive_behavior": {
+        "mobile": "Content block stacks above media block, both full width.",
+        "tablet": "2-column grid (50/50 or 60/40 split), content on one side, media on other.",
+        "desktop": "2-column grid (50/50 or 60/40 split), content on one side, media on other."
+      },
+      "rtl_notes": [
+        "Visual order of content and media should mirror in RTL (e.g., if LTR is text-image, RTL is image-text).",
+        "Text alignment within content_block should use logical properties."
+      ]
+    },
+    {
+      "pattern_id": "pricing_table_grid",
+      "name": "Pricing Table Grid",
+      "use_cases": [
+        "Presenting pricing plans",
+        "Comparing different service tiers"
+      ],
+      "structure": ["container", "grid", "content_block", "cta_block"],
+      "responsive_behavior": {
+        "mobile": "1 column grid, full width pricing cards.",
+        "tablet": "2 column grid.",
+        "desktop": "3 column grid."
+      },
+      "rtl_notes": [
+        "Grid flow should be consistent. Pricing cards themselves should handle RTL text within their content_blocks. Logical spacing between cards."
+      ]
+    },
+    {
+      "pattern_id": "cta_full_width_banner",
+      "name": "Full Width CTA Banner",
+      "use_cases": [
+        "Final call to action",
+        "Reinforcing primary CTA at page end"
+      ],
+      "structure": ["container", "content_block", "cta_block"],
+      "responsive_behavior": {
+        "mobile": "Full width banner, stacked text and CTA.",
+        "tablet": "Full width banner, text and CTA centered horizontally.",
+        "desktop": "Full width banner, text and CTA centered horizontally."
+      },
+      "rtl_notes": [
+        "Text alignment within content_block should use logical properties (text-align-center or text-align-start, depending on design). Direction-agnostic."
+      ]
+    },
+    {
+      "pattern_id": "hero_center",
+      "name": "Hero - Centered Content",
+      "use_cases": [
+        "Primary landing sections",
+        "Page introductions",
+        "Key announcements"
+      ],
+      "structure": ["container", "content_block", "cta_block"],
+      "responsive_behavior": {
+        "mobile": "Full width, content stacked and centered",
+        "tablet": "Full width, content stacked and centered",
+        "desktop": "Full width, content stacked and centered"
+      },
+      "rtl_notes": [
+        "Content is always horizontally centered, making it direction-agnostic."
+      ]
+    },
+    {
+      "pattern_id": "split_content_media",
+      "name": "Split - Content and Media",
+      "use_cases": [
+        "Solutions overviews",
+        "Feature highlights",
+        "Detailed process steps",
+        "About sections with visuals"
+      ],
+      "structure": ["container", "grid", "content_block", "media_block"],
+      "responsive_behavior": {
+        "mobile": "Single column stack: Media on top, Content below",
+        "tablet": "Two columns: Content and Media side-by-side",
+        "desktop": "Two columns: Content and Media side-by-side"
+      },
+      "rtl_notes": [
+        "Content and Media column order should reverse automatically based on text direction (start/end alignment)."
+      ]
+    },
+    {
+      "pattern_id": "grid_cards",
+      "name": "Grid - Multiple Cards",
+      "use_cases": [
+        "Benefits list",
+        "FAQ sections",
+        "Testimonials gallery",
+        "Pricing plans",
+        "Contact channels"
+      ],
+      "structure": [
+        "container",
+        "grid",
+        "content_block",
+        "media_block",
+        "cta_block"
+      ],
+      "responsive_behavior": {
+        "mobile": "Single column stack of cards",
+        "tablet": "Two-column grid",
+        "desktop": "Three or more column grid"
+      },
+      "rtl_notes": [
+        "Grid item order flows from logical start to end. Card content respects text direction."
+      ]
+    },
+    {
+      "pattern_id": "stacked_blocks",
+      "name": "Stacked - Vertical Content Blocks",
+      "use_cases": [
+        "Problem statements",
+        "Long feature lists",
+        "Contact forms",
+        "General informational text blocks"
+      ],
+      "structure": ["container", "content_block"],
+      "responsive_behavior": {
+        "mobile": "Full width, blocks stacked",
+        "tablet": "Full width, blocks stacked",
+        "desktop": "Full width, blocks stacked (potentially narrower central column)"
+      },
+      "rtl_notes": [
+        "Content within each block respects text direction. Overall stacking is vertical and direction-agnostic."
+      ]
+    },
+    {
+      "pattern_id": "process_steps_linear",
+      "name": "Process - Linear Steps",
+      "use_cases": [
+        "How it works overview",
+        "Onboarding process",
+        "Multi-step guides"
+      ],
+      "structure": ["container", "list", "content_block", "media_block"],
+      "responsive_behavior": {
+        "mobile": "Single column vertical list of steps",
+        "tablet": "Single column vertical list of steps",
+        "desktop": "Horizontal or vertical list depending on complexity, typically with icons/numbers guiding flow"
+      },
+      "rtl_notes": [
+        "Step numbers/icons and text flow from logical start to end. Visual connectors between steps should adapt to direction."
+      ]
+    },
+    {
+      "pattern_id": "full_width_cta",
+      "name": "Call to Action - Full Width Banner",
+      "use_cases": [
+        "Footer CTAs",
+        "Interim conversion points",
+        "Promotional banners"
+      ],
+      "structure": ["container", "content_block", "cta_block"],
+      "responsive_behavior": {
+        "mobile": "Full width, content and CTA stacked centered",
+        "tablet": "Full width, content and CTA stacked centered",
+        "desktop": "Full width, content and CTA horizontally aligned or stacked centered"
+      },
+      "rtl_notes": [
+        "Content and CTA within the banner should be centered or respect start/end alignment."
+      ]
+    }
+  ],
+  "page_layouts": [
+    {
+      "slug": "/",
+      "sections": [
+        {
+          "section_id": "hero_main",
+          "ux_type": "hero",
+          "layout_pattern_id": "P001_HeroFullWidth",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "headline",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "sub-headline",
+              "role": "subheading",
+              "max_width": "md"
+            },
+            {
+              "slot": "primary_cta",
+              "role": "cta",
+              "max_width": "sm"
+            },
+            {
+              "slot": "secondary_cta",
+              "role": "cta",
+              "max_width": "sm"
+            },
+            {
+              "slot": "visual",
+              "role": "media",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "Headline and sub-headline should be concise and benefit-led. CTAs should be prominent and immediately visible."
+          ]
+        },
+        {
+          "section_id": "problem_statement",
+          "ux_type": "problem",
+          "layout_pattern_id": "P002_ContentStack",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "pain_points_list",
+              "role": "list",
+              "max_width": "md"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Pain points should be presented as an unordered list, clearly addressing user challenges. Ensure sufficient vertical spacing between items."
+          ]
+        },
+        {
+          "section_id": "solution_overview",
+          "ux_type": "solution",
+          "layout_pattern_id": "P002_ContentStack",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "body",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "visual",
+              "role": "media",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Visual should support the solution narrative without being overly complex. Body text should be digestible and concise."
+          ]
+        },
+        {
+          "section_id": "value_pillars",
+          "ux_type": "benefits",
+          "layout_pattern_id": "P003_GridFeatures2Col",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 3
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "pillar_items",
+              "role": "list",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Each pillar item should consist of a heading, brief body text, and potentially an icon. Grid layout emphasizes distinct benefits."
+          ]
+        },
+        {
+          "section_id": "how_it_works_brief",
+          "ux_type": "process",
+          "layout_pattern_id": "P004_ProcessVertical",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "process_steps_list",
+              "role": "list",
+              "max_width": "md"
+            },
+            {
+              "slot": "micro_cta",
+              "role": "cta",
+              "max_width": "sm"
+            }
+          ],
+          "cta_emphasis": "secondary",
+          "notes": [
+            "Steps should be numbered or have clear icons. Micro-CTA should link to the full 'How It Works' page."
+          ]
+        },
+        {
+          "section_id": "social_proof_home",
+          "ux_type": "proof",
+          "layout_pattern_id": "P003_GridFeatures2Col",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 2
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "testimonials_list",
+              "role": "list",
+              "max_width": null
+            },
+            {
+              "slot": "micro_cta",
+              "role": "cta",
+              "max_width": "sm"
+            }
+          ],
+          "cta_emphasis": "secondary",
+          "notes": [
+            "Each testimonial should be a distinct card with text, name/photo (if available). Micro-CTA to 'Success Stories' page."
+          ]
+        },
+        {
+          "section_id": "faq_home",
+          "ux_type": "faq",
+          "layout_pattern_id": "P006_FaqAccordion",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "sm"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "faq_items",
+              "role": "list",
+              "max_width": "lg"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Questions should be clear, answers concise. Implement accordion functionality for desktop and mobile."
+          ]
+        },
+        {
+          "section_id": "footer_cta_home",
+          "ux_type": "footer_cta",
+          "layout_pattern_id": "P005_CtaBannerPrimary",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "primary_cta",
+              "role": "cta",
+              "max_width": "sm"
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "The primary CTA should be highly visible, reinforcing the main conversion path."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "/how-it-works",
+      "sections": [
+        {
+          "section_id": "hero_how_it_works",
+          "ux_type": "hero",
+          "layout_pattern_id": "P001_HeroFullWidth",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "headline",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "sub-headline",
+              "role": "subheading",
+              "max_width": "md"
+            },
+            {
+              "slot": "primary_cta",
+              "role": "cta",
+              "max_width": "sm"
+            },
+            {
+              "slot": "secondary_cta",
+              "role": "cta",
+              "max_width": "sm"
+            },
+            {
+              "slot": "visual",
+              "role": "media",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "Headline and sub-headline should clearly state the page's purpose. Visual should represent the ease of the process."
+          ]
+        },
+        {
+          "section_id": "process_steps",
+          "ux_type": "process",
+          "layout_pattern_id": "P004_ProcessVertical",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "detailed_process_list",
+              "role": "list",
+              "max_width": "lg"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Each step in the list should include a heading, detailed body, and a supporting visual (icon or screenshot). Ensure clear numbering or visual separation."
+          ]
+        },
+        {
+          "section_id": "key_features_detail",
+          "ux_type": "features",
+          "layout_pattern_id": "P003_GridFeatures2Col",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 3
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "feature_items",
+              "role": "list",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Each feature item should have a clear heading, explanatory body text, and an illustrative icon. Layout should highlight 3-5 key features."
+          ]
+        },
+        {
+          "section_id": "benefits_summary_how_it_works",
+          "ux_type": "benefits",
+          "layout_pattern_id": "P002_ContentStack",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "benefit_bullet_points",
+              "role": "list",
+              "max_width": "md"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Summarize key benefits in concise bullet points. Maintain a consistent visual hierarchy."
+          ]
+        },
+        {
+          "section_id": "social_proof_mini",
+          "ux_type": "proof",
+          "layout_pattern_id": "P002_ContentStack",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "mini_testimonials",
+              "role": "list",
+              "max_width": "md"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Present 1-2 concise quotes. Focus on ease of use or speed aspects. No photos needed for these mini-proofs."
+          ]
+        },
+        {
+          "section_id": "faq_process_specific",
+          "ux_type": "faq",
+          "layout_pattern_id": "P006_FaqAccordion",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "sm"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "faq_items",
+              "role": "list",
+              "max_width": "lg"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "FAQs should address specific questions about the process or technical implementation."
+          ]
+        },
+        {
+          "section_id": "footer_cta_how_it_works",
+          "ux_type": "footer_cta",
+          "layout_pattern_id": "P005_CtaBannerPrimary",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "primary_cta",
+              "role": "cta",
+              "max_width": "sm"
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "Final call to action, reiterating the main conversion path after detailed explanation."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "/how-it-works",
+      "sections": [
+        {
+          "section_id": "hero_how_it_works",
+          "ux_type": "hero",
+          "layout_pattern_id": "hero_split_media_text_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 2
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "hero_heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "hero_subheading",
+              "role": "subheading",
+              "max_width": "md"
+            },
+            {
+              "slot": "hero_primary_cta",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "hero_secondary_cta",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "hero_media",
+              "role": "media",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "Hero content block is paired with a media block, side-by-side on larger screens, stacked on mobile."
+          ]
+        },
+        {
+          "section_id": "process_steps",
+          "ux_type": "process",
+          "layout_pattern_id": "process_steps_vertical_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "section_heading",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "step_1_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "step_1_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "step_1_media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "step_2_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "step_2_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "step_2_media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "step_3_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "step_3_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "step_3_media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "step_4_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "step_4_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "step_4_media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "step_5_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "step_5_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "step_5_media",
+              "role": "media",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Each step is a self-contained content block, vertically stacked."
+          ]
+        },
+        {
+          "section_id": "key_features_detail",
+          "ux_type": "features",
+          "layout_pattern_id": "grid_content_card_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 2
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "section_heading",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "feature_1_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "feature_1_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "feature_1_media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "feature_2_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "feature_2_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "feature_2_media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "feature_3_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "feature_3_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "feature_3_media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "feature_4_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "feature_4_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "feature_4_media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "feature_5_heading",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "feature_5_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "feature_5_media",
+              "role": "media",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Features are displayed as content cards within a grid. With 5 features, the last item might span two columns on tablet/desktop, or flow into a new row."
+          ]
+        },
+        {
+          "section_id": "benefits_summary_how_it_works",
+          "ux_type": "benefits",
+          "layout_pattern_id": "content_stack_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "section_heading",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "benefits_list",
+              "role": "list",
+              "max_width": "lg"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Benefits presented as a simple heading followed by a bulleted list."
+          ]
+        },
+        {
+          "section_id": "social_proof_mini",
+          "ux_type": "proof",
+          "layout_pattern_id": "content_stack_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "testimonial_body",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "testimonial_author",
+              "role": "subheading",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "1-2 testimonials stacked vertically for concise social proof."
+          ]
+        },
+        {
+          "section_id": "faq_process_specific",
+          "ux_type": "faq",
+          "layout_pattern_id": "faq_accordion_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "section_heading",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "faq_list",
+              "role": "list",
+              "max_width": "lg"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": ["FAQs implemented as a list of accordion items."]
+        },
+        {
+          "section_id": "footer_cta_how_it_works",
+          "ux_type": "footer_cta",
+          "layout_pattern_id": "footer_cta_banner_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "xl"
+          },
+          "content_slots": [
+            {
+              "slot": "cta_headline",
+              "role": "subheading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "cta_button",
+              "role": "cta",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": ["Prominent, centered call-to-action banner."]
+        }
+      ],
+      "responsive_rules": [
+        {
+          "rule": "All layouts are mobile-first, adapting gracefully to tablet and desktop breakpoints.",
+          "applies_to": ["all_sections"]
+        },
+        {
+          "rule": "Content sections transition from single-column stacks on mobile to multi-column grids or wider single-column layouts on larger screens for optimal readability and utilization of space.",
+          "applies_to": ["all_sections_except_hero_footer_cta"]
+        },
+        {
+          "rule": "Interactive elements and CTAs maintain prominent sizing on mobile and scale appropriately for tablet/desktop to ensure tap/click target visibility.",
+          "applies_to": ["cta_blocks"]
+        }
+      ],
+      "rtl_rules": [
+        {
+          "rule": "All layouts inherently support RTL by using logical properties (e.g., 'start'/'end' for alignment, 'inline-start'/'inline-end' for spacing) instead of fixed 'left'/'right'.",
+          "applies_to": ["all_sections"]
+        },
+        {
+          "rule": "Visual elements (icons, images) and their associated text will adapt directionally without requiring separate layouts.",
+          "applies_to": ["all_media_blocks", "all_content_blocks"]
+        },
+        {
+          "rule": "Grid ordering will follow document flow, which naturally reverses in RTL contexts.",
+          "applies_to": ["all_grid_patterns"]
+        },
+        {
+          "rule": "Text alignment within content blocks will be 'start' to ensure natural reading direction.",
+          "applies_to": ["all_content_blocks"]
+        }
+      ],
+      "handoff_notes": {
+        "for_copy_agent": [
+          "Ensure all copy is concise, benefit-led, and aligns with the brand strategy's tone (Confident, Supportive, Professional, Outcome-focused, Direct). Pay special attention to multilingual content for EN/HE/AR, ensuring cultural appropriateness and clear calls to action for WhatsApp. Headlines should be impactful and subheadings should provide clear context."
+        ],
+        "for_codegen_agent": [
+          "Implement layouts using a component-based approach. Utilize CSS Grid for section-level layouts and Flexbox for internal component alignment. Prioritize semantic HTML. Ensure all spacing tokens (xs, sm, md, lg, xl) from brand identity are mapped to responsive CSS variables. Implement logical properties for RTL support (e.g., margin-inline-start instead of margin-left). All CTAs should have clear click areas and accessibility considerations. Media placeholders should be implemented responsively."
+        ]
+      }
+    },
+    {
+      "slug": "/success-stories",
+      "sections": [
+        {
+          "section_id": "hero_success_stories",
+          "ux_type": "hero",
+          "layout_pattern_id": "hero_split_media_text_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 2
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "hero_heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "hero_subheading",
+              "role": "subheading",
+              "max_width": "md"
+            },
+            {
+              "slot": "hero_primary_cta",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "hero_secondary_cta",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "hero_media",
+              "role": "media",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "Hero content block is paired with a media block, side-by-side on larger screens, stacked on mobile."
+          ]
+        },
+        {
+          "section_id": "introduction_value_proof",
+          "ux_type": "about",
+          "layout_pattern_id": "content_stack_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "section_body",
+              "role": "body",
+              "max_width": "lg"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "A single body text paragraph to introduce the page content, with a max-width for readability."
+          ]
+        },
+        {
+          "section_id": "featured_case_studies",
+          "ux_type": "case_studies",
+          "layout_pattern_id": "content_stack_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "xl"
+          },
+          "content_slots": [
+            {
+              "slot": "case_study_1_business_name",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_1_challenge",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_1_solution_results",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_1_quantifiable_results",
+              "role": "list",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_1_owner_quote_body",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_1_owner_quote_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_1_owner_photo",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_1_website_cta",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_2_business_name",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_2_challenge",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_2_solution_results",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_2_quantifiable_results",
+              "role": "list",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_2_owner_quote_body",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_2_owner_quote_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_2_owner_photo",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_2_website_cta",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_3_business_name",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_3_challenge",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_3_solution_results",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_3_quantifiable_results",
+              "role": "list",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_3_owner_quote_body",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_3_owner_quote_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_3_owner_photo",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_3_website_cta",
+              "role": "cta",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "micro",
+          "notes": [
+            "Each case study is a distinct, stacked content block. Max 3 detailed case studies per section."
+          ]
+        },
+        {
+          "section_id": "testimonial_gallery",
+          "ux_type": "proof",
+          "layout_pattern_id": "grid_content_card_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 3
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "section_heading",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "testimonial_1_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_1_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_2_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_2_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_3_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_3_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_4_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_4_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_5_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_5_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_6_body",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_6_author",
+              "role": "subheading",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "A gallery of 4-6 shorter testimonials displayed in a responsive grid."
+          ]
+        },
+        {
+          "section_id": "why_trust_summary",
+          "ux_type": "benefits",
+          "layout_pattern_id": "content_stack_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "section_heading",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "summary_list",
+              "role": "list",
+              "max_width": "lg"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Benefits summary presented as a heading followed by a bulleted list."
+          ]
+        },
+        {
+          "section_id": "footer_cta_success_stories",
+          "ux_type": "footer_cta",
+          "layout_pattern_id": "footer_cta_banner_pattern",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "xl"
+          },
+          "content_slots": [
+            {
+              "slot": "cta_headline",
+              "role": "subheading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "cta_button",
+              "role": "cta",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": ["Prominent, centered call-to-action banner."]
+        }
+      ],
+      "responsive_rules": [
+        {
+          "rule": "All layouts are mobile-first, adapting gracefully to tablet and desktop breakpoints.",
+          "applies_to": ["all_sections"]
+        },
+        {
+          "rule": "Content sections transition from single-column stacks on mobile to multi-column grids or wider single-column layouts on larger screens for optimal readability and utilization of space.",
+          "applies_to": ["all_sections_except_hero_footer_cta"]
+        },
+        {
+          "rule": "Interactive elements and CTAs maintain prominent sizing on mobile and scale appropriately for tablet/desktop to ensure tap/click target visibility.",
+          "applies_to": ["cta_blocks"]
+        }
+      ],
+      "rtl_rules": [
+        {
+          "rule": "All layouts inherently support RTL by using logical properties (e.g., 'start'/'end' for alignment, 'inline-start'/'inline-end' for spacing) instead of fixed 'left'/'right'.",
+          "applies_to": ["all_sections"]
+        },
+        {
+          "rule": "Visual elements (icons, images) and their associated text will adapt directionally without requiring separate layouts.",
+          "applies_to": ["all_media_blocks", "all_content_blocks"]
+        },
+        {
+          "rule": "Grid ordering will follow document flow, which naturally reverses in RTL contexts.",
+          "applies_to": ["all_grid_patterns"]
+        },
+        {
+          "rule": "Text alignment within content blocks will be 'start' to ensure natural reading direction.",
+          "applies_to": ["all_content_blocks"]
+        }
+      ],
+      "handoff_notes": {
+        "for_copy_agent": [
+          "Ensure all copy is concise, benefit-led, and aligns with the brand strategy's tone (Confident, Supportive, Professional, Outcome-focused, Direct). Pay special attention to multilingual content for EN/HE/AR, ensuring cultural appropriateness and clear calls to action for WhatsApp. Headlines should be impactful and subheadings should provide clear context."
+        ],
+        "for_codegen_agent": [
+          "Implement layouts using a component-based approach. Utilize CSS Grid for section-level layouts and Flexbox for internal component alignment. Prioritize semantic HTML. Ensure all spacing tokens (xs, sm, md, lg, xl) from brand identity are mapped to responsive CSS variables. Implement logical properties for RTL support (e.g., margin-inline-start instead of margin-left). All CTAs should have clear click areas and accessibility considerations. Media placeholders should be implemented responsively."
+        ]
+      }
+    },
+    {
+      "slug": "/success-stories",
+      "sections": [
+        {
+          "section_id": "hero_success_stories",
+          "ux_type": "hero",
+          "layout_pattern_id": "hero_banner",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "subheading",
+              "role": "subheading",
+              "max_width": "md"
+            },
+            {
+              "slot": "media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "cta_primary",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "cta_secondary",
+              "role": "cta",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "Hero section with a strong headline, visual, and prominent CTAs."
+          ]
+        },
+        {
+          "section_id": "introduction_value_proof",
+          "ux_type": "about",
+          "layout_pattern_id": "content_block_stack",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "body",
+              "role": "body",
+              "max_width": "md"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": ["A simple text block to introduce the success stories."]
+        },
+        {
+          "section_id": "featured_case_studies",
+          "ux_type": "case_studies",
+          "layout_pattern_id": "content_block_stack",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 2
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "case_study_1_title",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_1_body_challenge",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_1_body_solution",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_1_results",
+              "role": "list",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_1_quote",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_1_media",
+              "role": "media",
+              "max_width": null
+            },
+            {
+              "slot": "case_study_2_title",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_2_body_challenge",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_2_body_solution",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_2_results",
+              "role": "list",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_2_quote",
+              "role": "body",
+              "max_width": "md"
+            },
+            {
+              "slot": "case_study_2_media",
+              "role": "media",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "micro",
+          "notes": [
+            "Each case study uses a split-section-like structure (content and media/quote) stacked vertically. On desktop, two case studies can be displayed side-by-side if they are visually distinct blocks, otherwise maintain stack for clarity."
+          ]
+        },
+        {
+          "section_id": "testimonial_gallery",
+          "ux_type": "proof",
+          "layout_pattern_id": "feature_grid_card",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 3
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "testimonial_1_quote",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_1_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_2_quote",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_2_author",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_3_quote",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "testimonial_3_author",
+              "role": "subheading",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Grid of short testimonials, visually impactful. Could include photos/logos."
+          ]
+        },
+        {
+          "section_id": "why_trust_summary",
+          "ux_type": "benefits",
+          "layout_pattern_id": "content_block_stack",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "list",
+              "role": "list",
+              "max_width": "md"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "A summary of key benefits derived from the success stories, presented as bullet points."
+          ]
+        },
+        {
+          "section_id": "footer_cta_success_stories",
+          "ux_type": "footer_cta",
+          "layout_pattern_id": "cta_full_width_banner",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "cta_primary",
+              "role": "cta",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": ["Final prominent CTA to encourage engagement."]
+        }
+      ],
+      "responsive_rules": [
+        {
+          "rule": "For 'featured_case_studies', individual case study elements (text, image, quote) should stack vertically within their container on mobile and tablet for readability. On desktop, consider a 2-column split (e.g., text details on left, image/quote on right) for each case study.",
+          "applies_to": ["featured_case_studies"]
+        },
+        {
+          "rule": "All grid sections will collapse to a single column on mobile, with items spanning full width.",
+          "applies_to": [
+            "feature_grid_card",
+            "pricing_table_grid",
+            "hero_banner",
+            "split_section_content_media"
+          ]
+        }
+      ],
+      "rtl_rules": [
+        {
+          "rule": "All text content blocks will respect text direction (start/end) and align content logically (e.g., text-align: start).",
+          "applies_to": ["all"]
+        },
+        {
+          "rule": "For 'split_section_content_media', the visual order of content and media should be mirrored in RTL languages (e.g., if LTR is content-then-media, RTL becomes media-then-content).",
+          "applies_to": ["split_section_content_media"]
+        },
+        {
+          "rule": "Grid item order will maintain logical flow regardless of LTR/RTL, using grid-auto-flow: dense or flex-direction: row-reverse where necessary for mirroring.",
+          "applies_to": ["feature_grid_card", "pricing_table_grid"]
+        }
+      ],
+      "handoff_notes": {
+        "for_copy_agent": [
+          "Ensure all success stories are genuinely local Israeli businesses with quantifiable results.",
+          "For 'featured_case_studies', provide compelling narratives for each step (challenge, solution, results, quote).",
+          "Ensure FAQ answers are concise and reassuring."
+        ],
+        "for_codegen_agent": [
+          "Implement logical CSS properties for spacing (e.g., padding-inline-start) and text alignment to ensure native RTL support without manual intervention.",
+          "Ensure the 'featured_case_studies' section allows for flexible content ordering within each case study (e.g., quote can be integrated with text or visually separate)."
+        ]
+      }
+    },
+    {
+      "slug": "/pricing",
+      "sections": [
+        {
+          "section_id": "hero_pricing",
+          "ux_type": "hero",
+          "layout_pattern_id": "hero_banner",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "subheading",
+              "role": "subheading",
+              "max_width": "md"
+            },
+            {
+              "slot": "cta_primary",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "cta_secondary",
+              "role": "cta",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": ["Hero section focused on transparency and value."]
+        },
+        {
+          "section_id": "pricing_plans_display",
+          "ux_type": "pricing",
+          "layout_pattern_id": "pricing_table_grid",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 3
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "plan_1_name",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "plan_1_price",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "plan_1_features",
+              "role": "list",
+              "max_width": null
+            },
+            {
+              "slot": "plan_1_audience",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "plan_1_cta",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "plan_2_name",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "plan_2_price",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "plan_2_features",
+              "role": "list",
+              "max_width": null
+            },
+            {
+              "slot": "plan_2_audience",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "plan_2_cta",
+              "role": "cta",
+              "max_width": null
+            },
+            {
+              "slot": "plan_3_name",
+              "role": "heading",
+              "max_width": null
+            },
+            {
+              "slot": "plan_3_price",
+              "role": "subheading",
+              "max_width": null
+            },
+            {
+              "slot": "plan_3_features",
+              "role": "list",
+              "max_width": null
+            },
+            {
+              "slot": "plan_3_audience",
+              "role": "body",
+              "max_width": null
+            },
+            {
+              "slot": "plan_3_cta",
+              "role": "cta",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "A grid displaying 2-3 pricing cards with features and primary CTAs per card."
+          ]
+        },
+        {
+          "section_id": "value_comparison_included",
+          "ux_type": "comparison",
+          "layout_pattern_id": "content_block_stack",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "list_universal_inclusions",
+              "role": "list",
+              "max_width": "lg"
+            },
+            {
+              "slot": "body_roi_explanation",
+              "role": "body",
+              "max_width": "md"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "A section to highlight universal inclusions or ROI explanation, could be a simple list or descriptive text."
+          ]
+        },
+        {
+          "section_id": "faq_pricing_specific",
+          "ux_type": "faq",
+          "layout_pattern_id": "content_block_stack",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "faq_1_question",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "faq_1_answer",
+              "role": "body",
+              "max_width": "lg"
+            },
+            {
+              "slot": "faq_2_question",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "faq_2_answer",
+              "role": "body",
+              "max_width": "lg"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": ["Specific FAQs related to pricing and plans."]
+        },
+        {
+          "section_id": "footer_cta_pricing",
+          "ux_type": "footer_cta",
+          "layout_pattern_id": "cta_full_width_banner",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "cta_primary",
+              "role": "cta",
+              "max_width": null
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": ["Final prominent CTA to encourage engagement or inquiry."]
+        }
+      ],
+      "responsive_rules": [
+        {
+          "rule": "All grid sections will collapse to a single column on mobile, with items spanning full width.",
+          "applies_to": ["pricing_table_grid"]
+        },
+        {
+          "rule": "Pricing cards should adjust their internal content wrapping to ensure readability on smaller screens.",
+          "applies_to": ["pricing_table_grid"]
+        }
+      ],
+      "rtl_rules": [
+        {
+          "rule": "All text content blocks will respect text direction (start/end) and align content logically (e.g., text-align: start).",
+          "applies_to": ["all"]
+        },
+        {
+          "rule": "Grid item order will maintain logical flow regardless of LTR/RTL, using grid-auto-flow: dense or flex-direction: row-reverse where necessary for mirroring.",
+          "applies_to": ["pricing_table_grid"]
+        }
+      ],
+      "handoff_notes": {
+        "for_copy_agent": [
+          "Clearly define 2-3 pricing tiers, their exact costs (monthly/annually), and detailed features.",
+          "Highlight the target audience or primary benefit for each pricing plan.",
+          "Ensure FAQ answers for pricing are transparent and address common concerns like hidden fees, cancellation, and upgrades."
+        ],
+        "for_codegen_agent": [
+          "Ensure pricing cards are flexible enough to accommodate varying feature lists and highlight one plan as 'most popular' if specified.",
+          "Implement sticky headers/footers for pricing cards on scroll if feasible and beneficial for UX on mobile."
+        ]
+      }
+    },
+    {
+      "slug": "/contact",
+      "sections": [
+        {
+          "section_id": "hero_contact",
+          "ux_type": "hero",
+          "layout_pattern_id": "hero_center",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "subheading",
+              "role": "subheading",
+              "max_width": "lg"
+            },
+            {
+              "slot": "media",
+              "role": "media",
+              "max_width": "full"
+            },
+            {
+              "slot": "cta_primary",
+              "role": "cta",
+              "max_width": "sm"
+            },
+            {
+              "slot": "cta_secondary",
+              "role": "cta",
+              "max_width": "sm"
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "Primary and secondary CTAs for immediate action and alternative."
+          ]
+        },
+        {
+          "section_id": "primary_contact_channels",
+          "ux_type": "contact",
+          "layout_pattern_id": "grid_cards",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 3
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "channel_1_heading",
+              "role": "heading",
+              "max_width": "sm"
+            },
+            {
+              "slot": "channel_1_body",
+              "role": "body",
+              "max_width": "sm"
+            },
+            {
+              "slot": "channel_1_cta",
+              "role": "cta",
+              "max_width": "xs"
+            },
+            {
+              "slot": "channel_2_heading",
+              "role": "heading",
+              "max_width": "sm"
+            },
+            {
+              "slot": "channel_2_body",
+              "role": "body",
+              "max_width": "sm"
+            },
+            {
+              "slot": "channel_3_heading",
+              "role": "heading",
+              "max_width": "sm"
+            },
+            {
+              "slot": "channel_3_body",
+              "role": "body",
+              "max_width": "sm"
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "Each contact channel (WhatsApp, Phone, Email) will be a card within the grid. WhatsApp CTA emphasized."
+          ]
+        },
+        {
+          "section_id": "contact_form",
+          "ux_type": "contact",
+          "layout_pattern_id": "stacked_blocks",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "form_heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "form_area",
+              "role": "form",
+              "max_width": "md"
+            },
+            {
+              "slot": "form_privacy_body",
+              "role": "body",
+              "max_width": "md"
+            }
+          ],
+          "cta_emphasis": "secondary",
+          "notes": [
+            "Form elements will stack vertically. Consider a container to visually group the form."
+          ]
+        },
+        {
+          "section_id": "office_location",
+          "ux_type": "about",
+          "layout_pattern_id": "split_content_media",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 2,
+              "desktop": 2
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "location_heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "address_body",
+              "role": "body",
+              "max_width": "lg"
+            },
+            {
+              "slot": "map_media",
+              "role": "media",
+              "max_width": "full"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Content block for address and map media block. Layout should reverse for RTL."
+          ]
+        },
+        {
+          "section_id": "faq_general_support",
+          "ux_type": "faq",
+          "layout_pattern_id": "stacked_blocks",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "md"
+          },
+          "content_slots": [
+            {
+              "slot": "faq_heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "faq_list",
+              "role": "list",
+              "max_width": "lg"
+            }
+          ],
+          "cta_emphasis": "none",
+          "notes": [
+            "Each FAQ item is a distinct content block within the stack, likely implemented as an expandable accordion."
+          ]
+        },
+        {
+          "section_id": "footer_cta_contact",
+          "ux_type": "footer_cta",
+          "layout_pattern_id": "full_width_cta",
+          "grid": {
+            "columns": {
+              "mobile": 1,
+              "tablet": 1,
+              "desktop": 1
+            },
+            "gap_token": "lg"
+          },
+          "content_slots": [
+            {
+              "slot": "cta_heading",
+              "role": "heading",
+              "max_width": "md"
+            },
+            {
+              "slot": "cta_button",
+              "role": "cta",
+              "max_width": "sm"
+            }
+          ],
+          "cta_emphasis": "primary",
+          "notes": [
+            "Prominent call to action, usually with a strong background color or design."
+          ]
+        }
+      ],
+      "responsive_rules": [
+        {
+          "rule": "Grids_collapse_to_single_column_on_mobile",
+          "applies_to": ["all_grids"]
+        },
+        {
+          "rule": "Padding_around_sections_scales_with_viewport_size",
+          "applies_to": ["all_sections"]
+        },
+        {
+          "rule": "Text_sizes_adapt_according_to_brand_typography_scale",
+          "applies_to": ["all_text_content"]
+        }
+      ],
+      "rtl_rules": [
+        {
+          "rule": "All_text_content_should_align_to_logical_start_direction_based_on_language",
+          "applies_to": ["all_text_content"]
+        },
+        {
+          "rule": "Elements_in_split_layouts_should_visually_mirror_for_RTL",
+          "applies_to": ["split_content_media"]
+        },
+        {
+          "rule": "Icons_accompanying_text_should_be_positioned_on_the_logical_start_of_the_text_flow",
+          "applies_to": ["all_iconography_with_text"]
+        },
+        {
+          "rule": "Form_input_fields_should_support_RTL_text_entry_and_placeholder_alignment",
+          "applies_to": ["contact_form"]
+        },
+        {
+          "rule": "List_markers_and_numbered_steps_should_appear_on_the_logical_start_of_the_item",
+          "applies_to": ["process_steps_linear", "list_roles"]
+        }
+      ],
+      "handoff_notes": {
+        "for_copy_agent": [
+          "Ensure all contact details and FAQ answers are clear, concise, and reflect the supportive brand tone. Emphasize WhatsApp as the primary communication channel with benefit-led phrasing."
+        ],
+        "for_codegen_agent": [
+          "Implement layout patterns using CSS Grid or Flexbox, ensuring full responsiveness and RTL mirroring for split layouts. Utilize brand spacing tokens consistently. Form input fields require specific RTL handling for text direction."
+        ]
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { createError } from 'h3';
+import { v4 as uuidv4 } from 'uuid';
 
 type WorkflowNode = {
   id: string;
@@ -17,12 +18,15 @@ type WorkflowEdge = {
 export type RunEventStatus = 'start' | 'success' | 'fail';
 
 export type RunEvent = {
+  id: string;
+  type: 'node';
   nodeId: string;
   nodeType: string;
   status: RunEventStatus;
+  input?: any;
   output?: any;
-  error?: string;
-  timestamp: string;
+  error?: any;
+  ts: string;
 };
 
 export type WorkflowExecutionContext = {
@@ -325,18 +329,22 @@ export const executeWorkflow = async (
         stoppedAtNodeId: currentNode.id,
       };
     }
+    const nodeStartInput = currentInput;
     options.onEvent?.({
+      id: uuidv4(),
+      type: 'node',
       nodeId: currentNode.id,
       nodeType: currentNode.type,
       status: 'start',
-      timestamp: new Date().toISOString(),
+      input: nodeStartInput,
+      ts: new Date().toISOString(),
     });
 
     try {
-      context.current = (currentInput ?? {}) as Record<string, any>;
+      context.current = (nodeStartInput ?? {}) as Record<string, any>;
       const output = await executeNode(
         currentNode,
-        currentInput,
+        nodeStartInput,
         context,
         options.signal,
         options?.onLog
@@ -344,17 +352,20 @@ export const executeWorkflow = async (
       if (options.signal?.aborted) {
         return {
           status: 'fail',
-          output: currentInput,
+          output: nodeStartInput,
           context,
           stoppedAtNodeId: currentNode.id,
         };
       }
       options.onEvent?.({
+        id: uuidv4(),
+        type: 'node',
         nodeId: currentNode.id,
         nodeType: currentNode.type,
         status: 'success',
+        input: nodeStartInput,
         output,
-        timestamp: new Date().toISOString(),
+        ts: new Date().toISOString(),
       });
 
       if (currentNode.type === 'done') {
@@ -403,11 +414,14 @@ export const executeWorkflow = async (
       }
       const message = error?.message || 'Workflow node failed.';
       options.onEvent?.({
+        id: uuidv4(),
+        type: 'node',
         nodeId: currentNode.id,
         nodeType: currentNode.type,
         status: 'fail',
+        input: nodeStartInput,
         error: message,
-        timestamp: new Date().toISOString(),
+        ts: new Date().toISOString(),
       });
 
       return {

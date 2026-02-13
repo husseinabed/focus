@@ -1,0 +1,1027 @@
+{
+  "schema_version": "1.0.0",
+  "pipeline": {
+    "id": "website_gen_conversion_v1",
+    "goal": "Generate a highly converting, multilingual (en/he/ar), RTL-aware website from business details using a deterministic agent pipeline.",
+    "languages_supported": ["en", "he", "ar"],
+    "primary_market": "IL",
+    "primary_cta_types": ["whatsapp", "call", "booking", "lead_form"],
+    "global_envelope": {
+      "type": "AgentEnvelope",
+      "required": ["meta", "payload"],
+      "meta": {
+        "required": [
+          "schema_version",
+          "run_id",
+          "from",
+          "to",
+          "phase",
+          "ts",
+          "confidence"
+        ],
+        "properties": {
+          "schema_version": { "type": "string", "example": "1.0.0" },
+          "run_id": { "type": "string" },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "normalize",
+              "research",
+              "position",
+              "strategy",
+              "ux",
+              "copy",
+              "design",
+              "codegen",
+              "qa",
+              "deploy"
+            ]
+          },
+          "ts": { "type": "number", "description": "Unix ms" },
+          "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "assumptions": { "type": "array", "items": { "type": "string" } },
+          "warnings": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "error": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": { "type": "string" },
+          "message": { "type": "string" },
+          "details": { "type": "object" }
+        }
+      }
+    }
+  },
+  "shared_types": {
+    "LocaleText": {
+      "type": "object",
+      "required": ["en", "he", "ar"],
+      "properties": {
+        "en": { "type": "string" },
+        "he": { "type": "string" },
+        "ar": { "type": "string" }
+      }
+    },
+    "PrimaryCTA": {
+      "type": "object",
+      "required": ["type", "label", "action"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["whatsapp", "call", "booking", "lead_form"]
+        },
+        "label": { "$ref": "#/shared_types/LocaleText" },
+        "action": {
+          "type": "object",
+          "required": ["href"],
+          "properties": {
+            "href": {
+              "type": "string",
+              "description": "tel:, https://wa.me, booking url, or /contact"
+            },
+            "prefill_message": { "$ref": "#/shared_types/LocaleText" }
+          }
+        }
+      }
+    },
+    "TrustSignal": {
+      "type": "object",
+      "required": ["kind", "label"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "google_rating",
+            "years_experience",
+            "certification",
+            "insurance_hmo",
+            "media_logo",
+            "case_study",
+            "testimonial",
+            "guarantee",
+            "stat"
+          ]
+        },
+        "label": { "$ref": "#/shared_types/LocaleText" },
+        "value": { "type": "string" },
+        "evidence_url": { "type": "string" }
+      }
+    },
+    "Objection": {
+      "type": "object",
+      "required": ["id", "title", "answer"],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "$ref": "#/shared_types/LocaleText" },
+        "answer": { "$ref": "#/shared_types/LocaleText" }
+      }
+    },
+    "SEO": {
+      "type": "object",
+      "required": ["title", "description", "og_title", "og_description"],
+      "properties": {
+        "title": { "$ref": "#/shared_types/LocaleText" },
+        "description": { "$ref": "#/shared_types/LocaleText" },
+        "og_title": { "$ref": "#/shared_types/LocaleText" },
+        "og_description": { "$ref": "#/shared_types/LocaleText" },
+        "keywords": {
+          "type": "array",
+          "items": { "$ref": "#/shared_types/LocaleText" }
+        }
+      }
+    },
+    "ComponentBlock": {
+      "type": "object",
+      "required": ["id", "type", "props", "slots"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "description": "Your registry component name (PageHero, PageSection, PageGrid, PageCTA, PageFAQ, PageLogos, PageList, PageAccordion, PageColumns, PageAside, etc.)"
+        },
+        "props": { "type": "object" },
+        "slots": {
+          "type": "object",
+          "description": "Slot payloads are strings or structured objects that later map to copy_pack keys"
+        },
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "rtl_safe": { "type": "boolean" },
+            "max_chars": { "type": "object" }
+          }
+        }
+      }
+    }
+  },
+  "agents": [
+    {
+      "id": "brief_normalizer",
+      "phase": "normalize",
+      "input_schema": {
+        "type": "object",
+        "required": ["business_details"],
+        "properties": {
+          "business_details": {
+            "type": "object",
+            "required": [
+              "business_name",
+              "industry",
+              "location_market",
+              "main_service_product",
+              "languages",
+              "goals"
+            ],
+            "properties": {
+              "business_name": { "type": "string" },
+              "industry": { "type": "string" },
+              "location_market": {
+                "type": "string",
+                "description": "Country/City, e.g., IL / Tel Aviv"
+              },
+              "main_service_product": { "type": "string" },
+              "target_audience": {
+                "type": "object",
+                "properties": {
+                  "primary": { "type": "string" },
+                  "secondary": { "type": "string" }
+                }
+              },
+              "goals": {
+                "type": "object",
+                "required": ["primary_goal"],
+                "properties": {
+                  "primary_goal": { "type": "string" },
+                  "secondary_goals": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
+              },
+              "languages": {
+                "type": "object",
+                "required": ["needed", "default_language", "rtl_support"],
+                "properties": {
+                  "needed": {
+                    "type": "array",
+                    "items": { "type": "string", "enum": ["en", "he", "ar"] }
+                  },
+                  "default_language": {
+                    "type": "string",
+                    "enum": ["en", "he", "ar"]
+                  },
+                  "rtl_support": { "type": "boolean" }
+                }
+              },
+              "brand_assets": {
+                "type": "object",
+                "properties": {
+                  "logo_url": { "type": "string" },
+                  "images": { "type": "array", "items": { "type": "string" } },
+                  "colors": { "type": "array", "items": { "type": "string" } }
+                }
+              },
+              "constraints": {
+                "type": "object",
+                "properties": {
+                  "budget_level": {
+                    "type": "string",
+                    "enum": ["low", "mid", "high"]
+                  },
+                  "compliance_notes": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["brief"],
+        "properties": {
+          "brief": {
+            "type": "object",
+            "required": [
+              "business",
+              "audience",
+              "offer",
+              "goals",
+              "languages",
+              "constraints"
+            ],
+            "properties": {
+              "business": {
+                "type": "object",
+                "required": ["name", "industry", "market"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "industry": { "type": "string" },
+                  "market": { "type": "string" }
+                }
+              },
+              "audience": {
+                "type": "object",
+                "required": ["primary_segment"],
+                "properties": {
+                  "primary_segment": { "type": "string" },
+                  "secondary_segment": { "type": "string" },
+                  "top_pains": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "top_desires": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
+              },
+              "offer": {
+                "type": "object",
+                "required": ["main_service", "unique_angle"],
+                "properties": {
+                  "main_service": { "type": "string" },
+                  "unique_angle": { "type": "string" },
+                  "pricing_hint": { "type": "string" }
+                }
+              },
+              "goals": {
+                "type": "object",
+                "required": ["primary_conversion_goal"],
+                "properties": {
+                  "primary_conversion_goal": {
+                    "type": "string",
+                    "enum": ["whatsapp", "call", "booking", "lead_form"]
+                  },
+                  "secondary_goals": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
+              },
+              "languages": {
+                "type": "object",
+                "required": ["enabled", "default", "rtl"],
+                "properties": {
+                  "enabled": {
+                    "type": "array",
+                    "items": { "type": "string", "enum": ["en", "he", "ar"] }
+                  },
+                  "default": { "type": "string", "enum": ["en", "he", "ar"] },
+                  "rtl": { "type": "boolean" }
+                }
+              },
+              "constraints": { "type": "object" }
+            }
+          }
+        }
+      },
+      "gates": [
+        {
+          "name": "has_primary_goal",
+          "rule": "brief.goals.primary_conversion_goal must be present"
+        },
+        {
+          "name": "languages_valid",
+          "rule": "brief.languages.enabled includes default and rtl matches he/ar presence"
+        }
+      ]
+    },
+    {
+      "id": "market_evidence",
+      "phase": "research",
+      "tools_allowed": ["browser_search", "browser_visit"],
+      "input_schema": {
+        "type": "object",
+        "required": ["brief"],
+        "properties": {
+          "brief": { "type": "object" },
+          "research_hints": {
+            "type": "object",
+            "properties": {
+              "competitors": { "type": "array", "items": { "type": "string" } },
+              "city": { "type": "string" },
+              "keywords": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["market_evidence"],
+        "properties": {
+          "market_evidence": {
+            "type": "object",
+            "required": [
+              "competitors",
+              "patterns",
+              "cta_norms",
+              "trust_norms",
+              "claims_to_avoid",
+              "evidence"
+            ],
+            "properties": {
+              "competitors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "url"],
+                  "properties": {
+                    "name": { "type": "string" },
+                    "url": { "type": "string" },
+                    "notes": { "type": "string" }
+                  }
+                }
+              },
+              "patterns": { "type": "array", "items": { "type": "string" } },
+              "cta_norms": { "type": "array", "items": { "type": "string" } },
+              "trust_norms": { "type": "array", "items": { "type": "string" } },
+              "claims_to_avoid": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["type", "source", "value"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "competitor_snapshot",
+                        "pricing_reference",
+                        "cta_example",
+                        "review_source"
+                      ]
+                    },
+                    "source": { "type": "string" },
+                    "value": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "gates": [
+        {
+          "name": "min_competitors",
+          "rule": "market_evidence.competitors.length >= 3 OR provide warnings"
+        }
+      ]
+    },
+    {
+      "id": "positioning_offer",
+      "phase": "position",
+      "input_schema": {
+        "type": "object",
+        "required": ["brief"],
+        "properties": {
+          "brief": { "type": "object" },
+          "market_evidence": { "type": "object" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["positioning", "primary_cta"],
+        "properties": {
+          "positioning": {
+            "type": "object",
+            "required": [
+              "value_prop",
+              "differentiator",
+              "message_hierarchy",
+              "tone",
+              "proof_points"
+            ],
+            "properties": {
+              "value_prop": { "$ref": "#/shared_types/LocaleText" },
+              "differentiator": { "$ref": "#/shared_types/LocaleText" },
+              "message_hierarchy": {
+                "type": "object",
+                "required": ["headline", "subheadline", "bullets"],
+                "properties": {
+                  "headline": { "$ref": "#/shared_types/LocaleText" },
+                  "subheadline": { "$ref": "#/shared_types/LocaleText" },
+                  "bullets": {
+                    "type": "array",
+                    "items": { "$ref": "#/shared_types/LocaleText" }
+                  }
+                }
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "trustworthy",
+                  "premium",
+                  "friendly",
+                  "clinical",
+                  "bold",
+                  "minimal"
+                ]
+              },
+              "proof_points": {
+                "type": "array",
+                "items": { "$ref": "#/shared_types/TrustSignal" }
+              }
+            }
+          },
+          "primary_cta": { "$ref": "#/shared_types/PrimaryCTA" }
+        }
+      },
+      "gates": [
+        {
+          "name": "single_primary_cta",
+          "rule": "primary_cta.type must be exactly one of allowed"
+        },
+        {
+          "name": "headline_clarity",
+          "rule": "positioning.message_hierarchy.headline.en/he/ar must be non-empty"
+        }
+      ]
+    },
+    {
+      "id": "conversion_strategy",
+      "phase": "strategy",
+      "input_schema": {
+        "type": "object",
+        "required": ["brief", "positioning", "primary_cta"],
+        "properties": {
+          "brief": { "type": "object" },
+          "positioning": { "type": "object" },
+          "primary_cta": { "type": "object" },
+          "market_evidence": { "type": "object" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["conversion_plan"],
+        "properties": {
+          "conversion_plan": {
+            "type": "object",
+            "required": [
+              "page_type",
+              "sections_order",
+              "trust_stack",
+              "objections",
+              "sticky_cta",
+              "seo"
+            ],
+            "properties": {
+              "page_type": {
+                "type": "string",
+                "enum": ["single_landing", "multi_page_site"]
+              },
+              "sections_order": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "hero",
+                    "social_proof",
+                    "problem",
+                    "solution",
+                    "benefits",
+                    "services",
+                    "process",
+                    "pricing",
+                    "about",
+                    "faq",
+                    "cta_final",
+                    "contact"
+                  ]
+                }
+              },
+              "trust_stack": {
+                "type": "array",
+                "items": { "$ref": "#/shared_types/TrustSignal" }
+              },
+              "objections": {
+                "type": "array",
+                "items": { "$ref": "#/shared_types/Objection" }
+              },
+              "sticky_cta": {
+                "type": "object",
+                "required": ["enabled", "primary_cta_only"],
+                "properties": {
+                  "enabled": { "type": "boolean" },
+                  "primary_cta_only": { "type": "boolean" }
+                }
+              },
+              "seo": { "$ref": "#/shared_types/SEO" },
+              "analytics": {
+                "type": "object",
+                "properties": {
+                  "events": { "type": "array", "items": { "type": "string" } },
+                  "conversion_event": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "gates": [
+        {
+          "name": "cta_consistency",
+          "rule": "sticky_cta.primary_cta_only must be true"
+        },
+        {
+          "name": "has_faq_or_objections",
+          "rule": "conversion_plan.objections.length >= 3"
+        }
+      ]
+    },
+    {
+      "id": "ux_blocks",
+      "phase": "ux",
+      "input_schema": {
+        "type": "object",
+        "required": ["conversion_plan", "positioning", "primary_cta"],
+        "properties": {
+          "conversion_plan": { "type": "object" },
+          "positioning": { "type": "object" },
+          "primary_cta": { "type": "object" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["pages"],
+        "properties": {
+          "pages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["route", "blocks"],
+              "properties": {
+                "route": { "type": "string", "example": "/" },
+                "blocks": {
+                  "type": "array",
+                  "items": { "$ref": "#/shared_types/ComponentBlock" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "gates": [
+        {
+          "name": "hero_first",
+          "rule": "pages[0].blocks[0].type must be PageHero (or your hero equivalent)"
+        },
+        {
+          "name": "rtl_safe",
+          "rule": "all blocks constraints.rtl_safe must be true when brief.languages.rtl is true"
+        }
+      ]
+    },
+    {
+      "id": "copy_multilingual",
+      "phase": "copy",
+      "input_schema": {
+        "type": "object",
+        "required": ["pages", "positioning", "primary_cta", "conversion_plan"],
+        "properties": {
+          "pages": { "type": "array" },
+          "positioning": { "type": "object" },
+          "primary_cta": { "type": "object" },
+          "conversion_plan": { "type": "object" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["copy_pack"],
+        "properties": {
+          "copy_pack": {
+            "type": "object",
+            "required": ["strings", "cta", "faq", "whatsapp_scripts"],
+            "properties": {
+              "strings": {
+                "type": "object",
+                "description": "Key-value i18n strings, keys must match ux_blocks slot references",
+                "additionalProperties": { "$ref": "#/shared_types/LocaleText" }
+              },
+              "cta": { "$ref": "#/shared_types/PrimaryCTA" },
+              "faq": {
+                "type": "array",
+                "items": { "$ref": "#/shared_types/Objection" }
+              },
+              "whatsapp_scripts": {
+                "type": "object",
+                "properties": {
+                  "prefill": { "$ref": "#/shared_types/LocaleText" },
+                  "follow_up": { "$ref": "#/shared_types/LocaleText" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "gates": [
+        {
+          "name": "key_coverage",
+          "rule": "copy_pack.strings must include all referenced slot keys from ux_blocks"
+        },
+        {
+          "name": "cta_exact_match",
+          "rule": "copy_pack.cta.type and href must equal positioning.primary_cta.action.href"
+        }
+      ]
+    },
+    {
+      "id": "ui_theme_system",
+      "phase": "design",
+      "input_schema": {
+        "type": "object",
+        "required": ["brief", "positioning"],
+        "properties": {
+          "brief": { "type": "object" },
+          "positioning": { "type": "object" },
+          "brand_assets": { "type": "object" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["theme_tokens", "ui_specs"],
+        "properties": {
+          "theme_tokens": {
+            "type": "object",
+            "description": "Nuxt UI v4 theme config + Tailwind tokens (project-specific)",
+            "properties": {
+              "nuxt_ui_v4": { "type": "object" },
+              "tailwind_tokens": { "type": "object" }
+            }
+          },
+          "ui_specs": {
+            "type": "object",
+            "required": [
+              "layout_density",
+              "cta_style",
+              "typography",
+              "imagery_rules"
+            ],
+            "properties": {
+              "layout_density": {
+                "type": "string",
+                "enum": ["compact", "comfortable", "spacious"]
+              },
+              "cta_style": {
+                "type": "string",
+                "enum": ["solid", "soft", "outline"]
+              },
+              "typography": { "type": "object" },
+              "imagery_rules": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "gates": [
+        {
+          "name": "rtl_fonts",
+          "rule": "typography must define hebrew/arabic font fallbacks when rtl is enabled"
+        }
+      ]
+    },
+    {
+      "id": "codegen_nuxt",
+      "phase": "codegen",
+      "tools_allowed": ["nuxtMCP", "nuxtUIMCP", "github.write"],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "pages",
+          "copy_pack",
+          "theme_tokens",
+          "brief",
+          "conversion_plan"
+        ],
+        "properties": {
+          "pages": { "type": "array" },
+          "copy_pack": { "type": "object" },
+          "theme_tokens": { "type": "object" },
+          "brief": { "type": "object" },
+          "conversion_plan": { "type": "object" },
+          "repo": {
+            "type": "object",
+            "required": ["owner", "name"],
+            "properties": {
+              "owner": { "type": "string" },
+              "name": { "type": "string" }
+            }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["code_changes"],
+        "properties": {
+          "code_changes": {
+            "type": "object",
+            "required": ["files_written", "files_modified", "notes"],
+            "properties": {
+              "files_written": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "files_modified": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "notes": { "type": "array", "items": { "type": "string" } },
+              "i18n": {
+                "type": "object",
+                "properties": {
+                  "langDir_rule": {
+                    "type": "string",
+                    "const": "in nuxt.config.ts i18n.langDir = 'locales' always resolves to i18n/locales"
+                  },
+                  "locale_files": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "gates": [
+        {
+          "name": "locale_files_exist",
+          "rule": "must generate per-page locale JSON for en/he/ar under i18n/locales"
+        },
+        {
+          "name": "primary_cta_only",
+          "rule": "all CTA components must reference copy_pack.cta only (no extra primary CTAs)"
+        }
+      ]
+    },
+    {
+      "id": "qa_conversion_review",
+      "phase": "qa",
+      "input_schema": {
+        "type": "object",
+        "required": ["pages", "copy_pack", "brief", "conversion_plan"],
+        "properties": {
+          "pages": { "type": "array" },
+          "copy_pack": { "type": "object" },
+          "brief": { "type": "object" },
+          "conversion_plan": { "type": "object" },
+          "build_artifacts": {
+            "type": "object",
+            "properties": { "preview_url": { "type": "string" } }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["qa_report"],
+        "properties": {
+          "qa_report": {
+            "type": "object",
+            "required": [
+              "conversion_checks",
+              "rtl_checks",
+              "i18n_checks",
+              "seo_checks",
+              "a11y_checks",
+              "issues"
+            ],
+            "properties": {
+              "conversion_checks": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "rtl_checks": { "type": "array", "items": { "type": "string" } },
+              "i18n_checks": { "type": "array", "items": { "type": "string" } },
+              "seo_checks": { "type": "array", "items": { "type": "string" } },
+              "a11y_checks": { "type": "array", "items": { "type": "string" } },
+              "issues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["severity", "area", "message", "fix_suggestion"],
+                  "properties": {
+                    "severity": {
+                      "type": "string",
+                      "enum": ["low", "medium", "high"]
+                    },
+                    "area": {
+                      "type": "string",
+                      "enum": [
+                        "copy",
+                        "layout",
+                        "cta",
+                        "rtl",
+                        "i18n",
+                        "seo",
+                        "perf",
+                        "a11y"
+                      ]
+                    },
+                    "message": { "type": "string" },
+                    "fix_suggestion": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "gates": [
+        {
+          "name": "no_high_cta_issues",
+          "rule": "qa_report.issues must not include severity=high with area=cta"
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "brief_normalizer",
+      "to": "market_evidence",
+      "maps": { "brief": "payload.brief" },
+      "optional": true
+    },
+    {
+      "from": "brief_normalizer",
+      "to": "positioning_offer",
+      "maps": {
+        "brief": "payload.brief",
+        "market_evidence": "payload.market_evidence"
+      }
+    },
+    {
+      "from": "positioning_offer",
+      "to": "conversion_strategy",
+      "maps": {
+        "brief": "input.brief",
+        "positioning": "payload.positioning",
+        "primary_cta": "payload.primary_cta"
+      }
+    },
+    {
+      "from": "conversion_strategy",
+      "to": "ux_blocks",
+      "maps": {
+        "conversion_plan": "payload.conversion_plan",
+        "positioning": "input.positioning",
+        "primary_cta": "input.primary_cta"
+      }
+    },
+    {
+      "from": "ux_blocks",
+      "to": "copy_multilingual",
+      "maps": {
+        "pages": "payload.pages",
+        "positioning": "input.positioning",
+        "primary_cta": "input.primary_cta",
+        "conversion_plan": "input.conversion_plan"
+      }
+    },
+    {
+      "from": "positioning_offer",
+      "to": "ui_theme_system",
+      "maps": { "brief": "input.brief", "positioning": "payload.positioning" }
+    },
+    {
+      "from": "copy_multilingual",
+      "to": "codegen_nuxt",
+      "maps": {
+        "pages": "input.pages",
+        "copy_pack": "payload.copy_pack",
+        "theme_tokens": "input.theme_tokens",
+        "brief": "input.brief",
+        "conversion_plan": "input.conversion_plan"
+      }
+    },
+    {
+      "from": "codegen_nuxt",
+      "to": "qa_conversion_review",
+      "maps": {
+        "pages": "input.pages",
+        "copy_pack": "input.copy_pack",
+        "brief": "input.brief",
+        "conversion_plan": "input.conversion_plan"
+      }
+    }
+  ],
+  "orchestrator_validation": {
+    "hard_rules": [
+      "Exactly one primary CTA type per run (whatsapp/call/booking/lead_form).",
+      "All CTA components must reference copy_pack.cta (no custom primary CTAs).",
+      "All pages must have en/he/ar locale keys when those languages are enabled.",
+      "When rtl=true, ensure HTML dir switches per locale and all blocks are rtl_safe."
+    ],
+    "artifacts_expected": [
+      "ux_blocks.pages[]",
+      "copy_pack.strings",
+      "theme_tokens.nuxt_ui_v4",
+      "code_changes.files_written/files_modified",
+      "qa_report"
+    ]
+  },
+  "examples": {
+    "brief_normalizer_output_example": {
+      "meta": {
+        "schema_version": "1.0.0",
+        "run_id": "run_123",
+        "from": "brief_normalizer",
+        "to": "orchestrator",
+        "phase": "normalize",
+        "ts": 1760000000000,
+        "confidence": "high",
+        "assumptions": [],
+        "warnings": []
+      },
+      "payload": {
+        "brief": {
+          "business": {
+            "name": "Focus AI",
+            "industry": "Digital Marketing & AI Websites",
+            "market": "IL"
+          },
+          "audience": {
+            "primary_segment": "Local SMBs (lawyers, dentists, clinics, service providers)",
+            "secondary_segment": "Owners relying on phone/WhatsApp",
+            "top_pains": [
+              "Outdated websites",
+              "No steady leads",
+              "DIY complexity",
+              "RTL/i18n issues"
+            ],
+            "top_desires": [
+              "More WhatsApp leads",
+              "Trust & credibility",
+              "Fast launch",
+              "Multilingual reach"
+            ]
+          },
+          "offer": {
+            "main_service": "AI-powered multilingual websites with WhatsApp-first lead capture",
+            "unique_angle": "Israel-first RTL + WhatsApp funnel built-in",
+            "pricing_hint": "Subscription + onboarding"
+          },
+          "goals": {
+            "primary_conversion_goal": "whatsapp",
+            "secondary_goals": ["Trust", "Brand awareness"]
+          },
+          "languages": {
+            "enabled": ["en", "he", "ar"],
+            "default": "he",
+            "rtl": true
+          },
+          "constraints": {
+            "compliance_notes": "Avoid misleading guarantees; keep claims verifiable."
+          }
+        }
+      }
+    }
+  }
+}

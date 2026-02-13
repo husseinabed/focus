@@ -1,21 +1,26 @@
 <template>
-  <UCard>
+  <UCard :dir="isRtl ? 'rtl' : 'ltr'">
     <template #header>
       <div class="flex justify-between items-center">
-        <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-          Workflows
-        </h2>
+        <div>
+          <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
+            {{ t("ui.workflows.list.v1.header.title") }}
+          </h2>
+          <p class="text-sm text-gray-500">
+            {{ t("ui.workflows.list.v1.page.subtitle") }}
+          </p>
+        </div>
         <div class="flex gap-2">
           <UButton
-            icon="i-heroicons-plus"
-            label="New Workflow"
+            icon="i-lucide-plus"
+            :label="t('ui.workflows.list.v1.actions.new_workflow')"
             to="/app/workflows/new"
             color="primary"
           />
           <UButton
-            icon="i-heroicons-arrow-down-tray"
-            label="Import"
-            color="secondary"
+            icon="i-lucide-arrow-down-to-line"
+            :label="t('ui.workflows.list.v1.actions.import')"
+            color="neutral"
             @click="isImportModalOpen = true"
           />
         </div>
@@ -25,15 +30,15 @@
     <div class="flex flex-col md:flex-row gap-4 mb-4">
       <UInput
         v-model="filters.search"
-        placeholder="Search workflows..."
-        icon="i-heroicons-magnifying-glass"
+        :placeholder="t('ui.workflows.list.v1.filters.search')"
+        icon="i-lucide-search"
         class="w-full"
         debounce="300"
       />
       <USelect
         v-model="filters.active"
         :items="activeStatusOptions"
-        placeholder="Filter by status"
+        :placeholder="t('ui.workflows.list.v1.filters.active')"
         class="w-full"
         value-key="value"
         label-key="label"
@@ -41,7 +46,7 @@
       <USelect
         v-model="filters.triggerType"
         :items="triggerTypeOptions"
-        placeholder="Filter by trigger type"
+        :placeholder="t('ui.workflows.list.v1.filters.trigger_type')"
         class="w-full"
         value-key="value"
         label-key="label"
@@ -53,19 +58,35 @@
     </div>
 
     <div v-else-if="error" class="py-10 text-center">
-      <p class="text-lg text-red-500">Error loading workflows.</p>
-      <UButton label="Retry" @click="() => refresh()" class="mt-4" />
+      <p class="text-lg text-red-500">{{ t("ui.common.error") }}</p>
+      <p class="text-sm text-gray-500 mt-2">
+        {{ t("ui.workflows.list.v1.states.error.subtitle") }}
+      </p>
+      <UButton :label="t('ui.common.retry')" @click="() => refresh()" class="mt-4" />
     </div>
 
     <div v-else-if="workflows.length === 0 && !filtersApplied" class="py-10 text-center">
-      <p class="text-lg">No workflows yet.</p>
-      <p class="text-sm text-gray-500">Create your first workflow to get started.</p>
-      <UButton label="Create New Workflow" to="/app/workflows/new" class="mt-4" />
+      <p class="text-lg">{{ t("ui.workflows.list.v1.states.empty.title") }}</p>
+      <p class="text-sm text-gray-500">
+        {{ t("ui.workflows.list.v1.states.empty.subtitle") }}
+      </p>
+      <UButton
+        :label="t('ui.workflows.list.v1.actions.create_first')"
+        to="/app/workflows/new"
+        class="mt-4"
+      />
     </div>
 
     <div v-else-if="workflows.length === 0 && filtersApplied" class="py-10 text-center">
-      <p class="text-lg">No workflows found matching your criteria.</p>
-      <UButton label="Clear Filters" @click="clearFilters" class="mt-4" />
+      <p class="text-lg">{{ t("ui.workflows.list.v1.states.no_results.title") }}</p>
+      <p class="text-sm text-gray-500">
+        {{ t("ui.workflows.list.v1.states.no_results.subtitle") }}
+      </p>
+      <UButton
+        :label="t('ui.common.clear_filters')"
+        @click="clearFilters"
+        class="mt-4"
+      />
     </div>
 
     <div v-else>
@@ -73,30 +94,47 @@
         :columns="columns"
         :data="workflows"
         :empty-state="{
-          icon: 'i-heroicons-magnifying-glass',
-          label: 'No workflows found.',
+          icon: 'i-lucide-search-x',
+          label: t('ui.workflows.list.v1.states.no_results.title'),
         }"
       >
+        <template #name-cell="{ row }">
+          <div class="space-y-1">
+            <div class="font-medium text-gray-900 dark:text-white">
+              {{ row.original.name }}
+            </div>
+            <div class="text-sm text-gray-500">
+              {{ row.original.description || "-" }}
+            </div>
+          </div>
+        </template>
         <template #trigger-cell="{ row }">
           <UBadge
             :color="row.original.trigger === 'manual' ? 'neutral' : 'primary'"
             variant="subtle"
           >
-            {{ row.original.trigger }}
+            {{ triggerLabels[row.original.trigger] || row.original.trigger }}
           </UBadge>
         </template>
         <template #active-cell="{ row }">
           <UBadge :color="row.original.active ? 'success' : 'error'" variant="subtle">
-            {{ row.original.active ? "Active" : "Inactive" }}
+            {{
+              row.original.active
+                ? t("ui.common.active")
+                : t("ui.common.inactive")
+            }}
           </UBadge>
+        </template>
+        <template #created_at-cell="{ row }">
+          {{ formatDate(row.original.created_at) }}
         </template>
         <template #actions-cell="{ row }">
           <UDropdownMenu :items="rowActions(row.original)">
             <UButton
-              icon="i-heroicons-ellipsis-horizontal"
+              icon="i-lucide-ellipsis"
               color="neutral"
               variant="ghost"
-              aria-label="Workflow actions"
+              :aria-label="t('ui.common.actions')"
             />
           </UDropdownMenu>
         </template>
@@ -117,25 +155,37 @@
       <template #body>
         <UCard>
           <template #header>
-            <h3 class="text-lg font-semibold">Import Workflow</h3>
+            <h3 class="text-lg font-semibold">
+              {{ t("ui.workflows.import.title") }}
+            </h3>
           </template>
           <UTextarea
             v-model="importJson"
-            placeholder="Paste workflow JSON here..."
+            :placeholder="t('ui.workflows.import.placeholder')"
             class="w-full"
             :rows="10"
           />
-          <UCheckbox v-model="validateOnly" label="Validate only" class="mt-4" />
+          <UCheckbox
+            v-model="validateOnly"
+            :label="t('ui.workflows.import.validate_only')"
+            class="mt-4"
+          />
           <template #footer>
             <div class="flex justify-end gap-2">
               <UButton
-                label="Cancel"
+                :label="t('ui.common.cancel')"
                 color="neutral"
                 @click="isImportModalOpen = false"
               />
-              <UButton label="Validate" @click="validateImport" :disabled="!importJson" />
               <UButton
-                label="Import"
+                :label="t('ui.common.validate')"
+                color="neutral"
+                @click="validateImport"
+                :disabled="!importJson"
+              />
+              <UButton
+                :label="t('ui.common.import')"
+                color="primary"
                 @click="importWorkflow"
                 :disabled="!importJson || validateOnly"
               />
@@ -154,7 +204,13 @@ definePageMeta({
 });
 
 const router = useRouter();
+const { t, locale } = useI18n();
 const toast = useToast();
+const isRtl = computed(() => ["ar", "he"].includes(locale.value));
+
+useHead(() => ({
+  title: t("ui.workflows.list.v1.page.title"),
+}));
 
 interface Workflow {
   id: string;
@@ -182,27 +238,32 @@ const pagination = reactive({
   pageSize: 10,
 });
 
-const activeStatusOptions = [
-  { label: "All", value: null },
-  { label: "Active", value: "true" },
-  { label: "Inactive", value: "false" },
-];
+const activeStatusOptions = computed(() => [
+  { label: t("ui.common.all"), value: null },
+  { label: t("ui.common.active"), value: "true" },
+  { label: t("ui.common.inactive"), value: "false" },
+]);
 
-const triggerTypeOptions = [
-  { label: "All", value: null },
-  { label: "Manual", value: "manual" },
-  { label: "API", value: "api" },
-  { label: "Schedule", value: "schedule" },
-];
+const triggerTypeOptions = computed(() => [
+  { label: t("ui.common.all"), value: null },
+  { label: t("ui.workflows.trigger.manual"), value: "manual" },
+  { label: t("ui.workflows.trigger.api"), value: "api" },
+  { label: t("ui.workflows.trigger.schedule"), value: "schedule" },
+]);
 
-const columns = [
-  { id: "name", accessorKey: "name", header: "Name" },
-  { id: "description", accessorKey: "description", header: "Description" },
-  { id: "trigger", accessorKey: "trigger", header: "Trigger" },
-  { id: "active", accessorKey: "active", header: "Status" },
-  { id: "created_at", accessorKey: "created_at", header: "Created At" },
-  { id: "actions", header: "Actions" },
-];
+const triggerLabels = computed(() => ({
+  manual: t("ui.workflows.trigger.manual"),
+  api: t("ui.workflows.trigger.api"),
+  schedule: t("ui.workflows.trigger.schedule"),
+}));
+
+const columns = computed(() => [
+  { id: "name", accessorKey: "name", header: t("ui.common.name") },
+  { id: "trigger", accessorKey: "trigger", header: t("ui.workflows.columns.trigger") },
+  { id: "active", accessorKey: "active", header: t("ui.workflows.columns.status") },
+  { id: "created_at", accessorKey: "created_at", header: t("ui.common.created_at") },
+  { id: "actions", header: t("ui.common.actions") },
+]);
 
 const filtersApplied = computed(() => {
   return filters.search !== "" || filters.active !== null || filters.triggerType !== null;
@@ -235,8 +296,8 @@ const { data, pending, refresh } = useAsyncData(
       console.error(e);
       error.value = true;
       toast.add({
-        title: "Error",
-        description: "Failed to fetch workflows.",
+        title: t("ui.common.error"),
+        description: t("ui.workflows.toasts.fetch_failed"),
         color: "error",
       });
       return { data: [], count: 0 };
@@ -264,25 +325,25 @@ const clearFilters = () => {
 const rowActions = (row: Workflow) => [
   [
     {
-      label: "View",
-      icon: "i-heroicons-eye",
+      label: t("ui.common.view"),
+      icon: "i-lucide-eye",
       onSelect: () => router.push(`/app/workflows/${row.id}`),
     },
     {
-      label: "Edit",
-      icon: "i-heroicons-pencil-square",
+      label: t("ui.common.edit"),
+      icon: "i-lucide-pencil",
       onSelect: () => router.push(`/app/workflows/${row.id}/edit`),
     },
   ],
   [
     {
-      label: row.active ? "Deactivate" : "Activate",
-      icon: row.active ? "i-heroicons-x-circle" : "i-heroicons-check-circle",
+      label: row.active ? t("ui.common.deactivate") : t("ui.common.activate"),
+      icon: row.active ? "i-lucide-x-circle" : "i-lucide-check-circle",
       onSelect: () => toggleWorkflowStatus(row),
     },
     {
-      label: "Delete",
-      icon: "i-heroicons-trash",
+      label: t("ui.common.delete"),
+      icon: "i-lucide-trash",
       onSelect: () => deleteWorkflow(row.id),
     },
   ],
@@ -295,36 +356,41 @@ const toggleWorkflowStatus = async (workflow: Workflow) => {
       body: { active: !workflow.active },
     });
     toast.add({
-      title: "Success",
-      description: "Workflow status updated.",
+      title: t("ui.workflows.toasts.status_updated"),
       color: "success",
     });
     refresh();
   } catch (e) {
     toast.add({
-      title: "Error",
-      description: "Failed to update workflow status.",
+      title: t("ui.common.error"),
+      description: t("ui.workflows.toasts.status_failed"),
       color: "error",
     });
   }
 };
 
 const deleteWorkflow = async (id: string) => {
-  if (!confirm("Are you sure you want to delete this workflow?")) return;
+  if (
+    !confirm(
+      `${t("ui.workflows.confirm_delete.title")}\n${t(
+        "ui.workflows.confirm_delete.message"
+      )}`
+    )
+  )
+    return;
   try {
     await $fetch(`/api/workflows/${id}`, {
       method: "DELETE",
     });
     toast.add({
-      title: "Success",
-      description: "Workflow deleted successfully.",
+      title: t("ui.workflows.toasts.deleted"),
       color: "success",
     });
     refresh();
   } catch (e) {
     toast.add({
-      title: "Error",
-      description: "Failed to delete workflow.",
+      title: t("ui.common.error"),
+      description: t("ui.workflows.toasts.delete_failed"),
       color: "error",
     });
   }
@@ -341,14 +407,13 @@ const validateImport = () => {
       throw new Error("Workflow must contain nodes and edges arrays.");
     }
     toast.add({
-      title: "Success",
-      description: "Workflow JSON is valid.",
+      title: t("ui.workflows.toasts.import_valid"),
       color: "success",
     });
   } catch (e: any) {
     toast.add({
-      title: "Error",
-      description: "Invalid JSON: " + e.message,
+      title: t("ui.common.error"),
+      description: `${t("ui.workflows.toasts.import_invalid")}: ${e.message}`,
       color: "error",
     });
   }
@@ -357,13 +422,12 @@ const validateImport = () => {
 const importWorkflow = async () => {
   try {
     const json = JSON.parse(importJson.value);
-    const response = await $fetch("/api/workflows", {
+    await $fetch("/api/workflows", {
       method: "POST",
       body: json,
     });
     toast.add({
-      title: "Success",
-      description: "Workflow imported successfully!",
+      title: t("ui.workflows.toasts.imported"),
       color: "success",
     });
     isImportModalOpen.value = false;
@@ -371,11 +435,22 @@ const importWorkflow = async () => {
     refresh();
   } catch (e: any) {
     toast.add({
-      title: "Error",
-      description: "Failed to import workflow: " + e.message,
+      title: t("ui.common.error"),
+      description: `${t("ui.workflows.toasts.import_failed")}: ${e.message}`,
       color: "error",
     });
   }
+};
+
+const formatDate = (dateStr: string) => {
+  if (!dateStr) return "-";
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return dateStr;
+  return date.toLocaleDateString(locale.value, {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  });
 };
 
 watch(

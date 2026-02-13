@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { v4 as uuid } from "uuid";
-import { useWorkflowRunner, type RunEvent, type RunResult } from "~/composables/useWorkflowRunner";
+import { useWorkflowRunner } from "~/composables/useWorkflowRunner";
 import type { Tables } from "~/types/supabase";
-
 
 // Page meta
 definePageMeta({
@@ -11,6 +10,7 @@ definePageMeta({
 
 const route = useRoute();
 const headers = useRequestHeaders(["cookie"]);
+const { t } = useI18n();
 
 type WorkflowDetail = {
   workflow: Tables<"workflows"> | null;
@@ -47,28 +47,29 @@ const { data, refresh, pending } = await useAsyncData<WorkflowDetail>(
 const workflow = computed(() => data.value.workflow);
 const latestVersion = computed(() => data.value.versions[0] ?? null);
 const runs = computed(() => data.value.runs);
+const versions = computed(() => data.value.versions);
 
-const { t } = useI18n();
-const { runWorkflow: runWorkflowComposable } = useWorkflowRunner();
-
-const currentNodes = ref(latestVersion.value?.nodes || []);
-watch(latestVersion, (newVersion) => {
-  currentNodes.value = newVersion?.nodes || [];
-});
+// Local state for active switch
+const workflowIsActive = ref(false);
+watch(
+  workflow,
+  (newVal) => {
+    if (newVal) {
+      workflowIsActive.value = newVal.is_active ?? false;
+    }
+  },
+  { immediate: true }
+);
 
 // Tabs
-const tabs = computed(() => [
-  {
-    label: t("workflows.tabs.overview"),
-    key: "overview",
-  },
+const items = computed(() => [
   {
     label: t("workflows.tabs.versions"),
-    key: "versions",
+    slot: "versions",
   },
   {
     label: t("workflows.tabs.runs"),
-    key: "runs",
+    slot: "runs",
   },
 ]);
 
@@ -89,327 +90,395 @@ const runColumns = computed(() => [
   { id: "actions", key: "actions", label: t("common.actions") },
 ]);
 
-// Placeholder functions
-const exportLatestVersion = () => {
-  // Implement export logic for the latest version
-  console.log("Exporting latest version...");
+// Actions
+const exportLatest = () => {
+  if (!latestVersion.value) return;
+  const blob = new Blob([JSON.stringify(latestVersion.value, null, 2)], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `workflow-${workflow.value?.name ?? "export"}-v${
+    latestVersion.value.version
+  }.json`;
+  a.click();
+  URL.revokeObjectURL(url);
 };
 
-const publishVersion = (id: string) => {
-  // Implement publish logic for a specific version
-  console.log(`Publishing version ${id}...`);
-};
+const { runWorkflow } = useWorkflowRunner();
+const runConsole = useRunConsole();
 
-const unpublishVersion = (id: string) => {
-  // Implement unpublish logic for a specific version
-  console.log(`Unpublishing version ${id}...`);
-};
+const runManualOpenDrawer = async () => {
+  if (!workflow.value) return;
 
-const exportVersion = (id: string) => {
-  // Implement export logic for a specific version
-  console.log(`Exporting version ${id}...`);
-};
-
-const stopRun = (id: string) => {
-  // Implement stop run logic
-  console.log(`Stopping run ${id}...`);
-};
-
-const runManualWorkflow = async () => {
-  if (!workflow.value) {
-    return;
-  }
-
-  consoleClear();
-
+  runConsole.toggle(true);
   try {
-    const result = await runWorkflowComposable(workflow.value.id, {
-      getNodes: () => currentNodes.value,
-      setNodes: (nodes) => {
-        currentNodes.value = nodes;
-      },
-      onEvent: (event, type) => {
-        const payload = JSON.parse(event.data);
-        switch (type) {
-          case "started":
-            consolePush({
-              id: uuid(),
-              type: "started",
-              message: "Run started",
-              payload,
-              ts: new Date().toISOString(),
-            });
-            break;
-          case "ping":
-            consolePush({
-              id: uuid(),
-              type: "ping",
-              message: "ping",
-              payload,
-              ts: new Date().toISOString(),
-            });
-            break;
-          case "node":
-            consolePush({
-              id: uuid(),
-              type: "node",
-              nodeId: payload.id,
-              nodeType: payload.node_type,
-              status: payload.status,
-              output: payload.output,
-              message:
-                payload.status === "start"
-                  ? "Node started"
-                  : payload.status === "success"
-                  ? "Node success"
-                  : payload.status === "fail"
-                  ? "Node failed"
-                  : "Node event",
-              payload,
-              ts: new Date().toISOString(),
-            });
-            break;
-          case "finished":
-            consolePush({
-              id: uuid(),
-              type: "finished",
-              message: `Run finished: ${payload.status}`,
-              payload,
-              ts: new Date().toISOString(),
-            });
-            break;
-          case "error":
-            consolePush({
-              id: uuid(),
-              type: "error",
-              message: payload?.message || "Run error",
-              payload,
-              ts: new Date().toISOString(),
-            });
-            break;
-        }
-      },
+    await runWorkflow(workflow.value.id, {
+      getNodes: () => [],
+      setNodes: () => {},
     });
-    // This consolePush will be handled by the onEvent callback now
-    // consolePush({
-    //   id: uuid(),
-    //   type: "finished",
-    //   message: `Run finished: ${result.status}`,
-    //   payload: result,
-    //   ts: new Date().toISOString(),
-    // });
-  } catch (error: any) {
-    // This consolePush will be handled by the onEvent callback now
-    // consolePush({
-    //   id: uuid(),
-    //   type: "error",
-    //   message: error?.message || "Run error",
-    //   payload: error,
-    //   ts: new Date().toISOString(),
-    // });
+  } catch (e) {
+    console.error("Run failed", e);
   }
 };
 
-const confirmDeleteWorkflow = () => {
-  // Implement delete workflow logic
-  console.log("Confirming workflow deletion...");
-};
-
-const statusColor = (status: string) => {
-  switch (status) {
-    case "running":
-      return "info";
-    case "completed":
-      return "success";
-    case "failed":
-      return "error";
-    default:
-      return "neutral";
+const confirmDelete = async () => {
+  if (confirm(t("common.delete") + "?")) {
+    await $fetch(`/api/workflows/${route.params.id}`, {
+      method: "DELETE",
+    });
+    navigateTo("/app/workflows");
   }
 };
 
-const workflowVersions = computed(() => {
-  if (latestVersion.value) {
-    return [latestVersion.value];
-  }
-  return [];
-});
+const formatDate = (dateStr: string | null) => {
+  if (!dateStr) return "-";
+  return new Date(dateStr).toLocaleString();
+};
 
-const workflowRuns = computed(() => runs.value || []);
+const isMobileDrawerOpen = ref(false);
 </script>
 
 <template>
-  <template v-if="!pending && !workflow">
-    <div class="flex min-h-[60vh] items-center justify-center px-4">
-      <div class="max-w-lg text-center">
-        <h1 class="text-2xl font-bold">{{ t("workflows.detail.empty.title") }}</h1>
-        <p class="mt-2 text-gray-500 dark:text-gray-400">
-          {{ t("workflows.detail.empty.subtitle") }}
-        </p>
-        <NuxtLink
-          to="/app/workflows"
-          class="mt-6 inline-flex items-center justify-center rounded-lg bg-primary-500 px-4 py-2 text-white hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-500"
+  <div v-if="workflow" class="p-4 md:p-6 lg:p-8 space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+          {{ workflow.name }}
+        </h1>
+        <UBadge color="neutral" variant="subtle">{{
+          workflow.trigger_type
+        }}</UBadge>
+        <UBadge
+          :color="workflow.is_active ? 'success' : 'error'"
+          variant="subtle"
         >
-          {{ t("common.back") }}
-        </NuxtLink>
+          {{ workflow.is_active ? t("common.active") : t("common.inactive") }}
+        </UBadge>
+      </div>
+      <div class="flex items-center gap-2">
+        <UButton
+          :to="`/app/workflows/${workflow.id}/edit`"
+          color="primary"
+          variant="solid"
+          :label="t('common.edit')"
+        />
+        <UButton
+          color="neutral"
+          variant="soft"
+          :label="t('common.export_json')"
+          @click="exportLatest"
+        />
       </div>
     </div>
-  </template>
-  <UMain v-else class="relative">
-    <div class="relative flex-1 flex flex-col w-full">
-      <!-- Header -->
-      <div class="flex items-center justify-between pb-8">
-   
-        <div class="flex items-center gap-4">
-          <h1 v-if="workflow" class="text-3xl font-bold">{{ workflow.name }}</h1>
-          <UChip v-if="workflow" :text="workflow.trigger_type" variant="subtle" />
-          <UChip
-            v-if="workflow"
-            :text="workflow.is_active ? t('common.active') : t('common.inactive')"
-            :color="workflow.is_active ? 'success' : 'error'"
-            variant="subtle"
-          />
-        </div>
-        <div class="flex items-center gap-2">
-          <UButton
-            :to="`/app/workflows/${route.params.id}/edit`"
-            :label="t('common.edit')"
-            variant="solid"
-            color="primary"
-          />
-          <UButton :label="t('common.export_json')" variant="soft" @click="exportLatestVersion" />
-        </div>
+
+    <!-- Layout -->
+    <div class="lg:grid lg:grid-cols-[1fr_360px] gap-6">
+      <!-- Left Column -->
+      <div class="space-y-6 min-w-0">
+        <!-- Overview Card -->
+        <UCard>
+          <template #header>
+            <h3 class="text-lg font-semibold">
+              {{ t("workflows.tabs.overview") }}
+            </h3>
+          </template>
+
+          <div class="space-y-6">
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="flex items-center gap-3">
+                <UIcon
+                  name="i-lucide-git-branch"
+                  class="w-5 h-5 text-gray-500"
+                />
+                <div>
+                  <div class="text-sm text-gray-500">
+                    {{ t("workflows.stats.latest_version") }}
+                  </div>
+                  <div class="font-semibold">
+                    {{ latestVersion?.version ?? "-" }}
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <UIcon
+                  name="i-lucide-badge-check"
+                  class="w-5 h-5 text-gray-500"
+                />
+                <div>
+                  <div class="text-sm text-gray-500">
+                    {{ t("workflows.stats.published") }}
+                  </div>
+                  <div class="font-semibold">
+                    {{ latestVersion?.published ? "Yes" : "No" }}
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <UIcon name="i-lucide-activity" class="w-5 h-5 text-gray-500" />
+                <div>
+                  <div class="text-sm text-gray-500">
+                    {{ t("workflows.stats.total_runs") }}
+                  </div>
+                  <div class="font-semibold">{{ runs.length }}</div>
+                </div>
+              </div>
+            </div>
+
+            <UDivider />
+
+            <!-- Description -->
+            <div>
+              <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ t("common.description") }}
+              </div>
+              <div class="mt-1 text-gray-600 dark:text-gray-400">
+                {{ workflow.description || "-" }}
+              </div>
+            </div>
+
+            <!-- Trust Note -->
+            <div
+              class="flex gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-sm text-gray-600 dark:text-gray-400"
+            >
+              <UIcon
+                name="i-lucide-shield-check"
+                class="w-5 h-5 flex-shrink-0"
+              />
+              <span>{{ t("workflows.trust_note") }}</span>
+            </div>
+          </div>
+        </UCard>
+
+        <!-- Tabs -->
+        <UTabs :items="items" class="w-full">
+          <template #versions="{ item }">
+            <UCard :ui="{ body: { padding: '!p-0' } }">
+              <UTable :rows="versions" :columns="versionColumns">
+                <template #published-data="{ row }">
+                  <UIcon
+                    v-if="row.published"
+                    name="i-heroicons-check-circle-20-solid"
+                    class="w-5 h-5 text-green-500"
+                  />
+                  <span v-else class="text-gray-400">-</span>
+                </template>
+                <template #created_at-data="{ row }">
+                  {{ formatDate(row.created_at) }}
+                </template>
+                <template #actions-data="{ row }">
+                  <UButton
+                    variant="ghost"
+                    color="neutral"
+                    icon="i-heroicons-ellipsis-horizontal-20-solid"
+                  />
+                </template>
+              </UTable>
+            </UCard>
+          </template>
+
+          <template #runs="{ item }">
+            <UCard :ui="{ body: { padding: '!p-0' } }">
+              <UTable :rows="runs" :columns="runColumns">
+                <template #lead_id-data="{ row }">
+                  {{ row.lead_id || "-" }}
+                </template>
+                <template #started_at-data="{ row }">
+                  {{ formatDate(row.started_at) }}
+                </template>
+                <template #finished_at-data="{ row }">
+                  {{ formatDate(row.finished_at) }}
+                </template>
+                <template #actions-data="{ row }">
+                  <UButton
+                    variant="ghost"
+                    color="neutral"
+                    icon="i-heroicons-ellipsis-horizontal-20-solid"
+                  />
+                </template>
+              </UTable>
+            </UCard>
+          </template>
+        </UTabs>
       </div>
 
-      <div class="lg:grid lg:grid-cols-[1fr_360px] gap-4 lg:gap-6 flex-1">
-        <!-- Left Column: Overview and Tabs -->
-        <div class="flex flex-col gap-4 lg:gap-6">
+      <!-- Right Column (Desktop Sticky) -->
+      <div class="hidden lg:flex flex-col gap-6 sticky top-6 h-fit">
+        <ClientOnly>
+          <!-- Status Card -->
           <UCard>
             <template #header>
-              <h2 class="text-xl font-bold">{{ t('workflows.tabs.overview') }}</h2>
+              <h3 class="text-lg font-semibold">
+                {{ t("workflows.status.title") }}
+              </h3>
             </template>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <UCard>
-                <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('workflows.stats.latest_version') }}</p>
-                <p class="text-lg font-semibold">{{ latestVersion?.version || "N/A" }}</p>
-              </UCard>
-              <UCard>
-                <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('workflows.stats.published') }}</p>
-                <p class="text-lg font-semibold">{{ latestVersion?.published ? t('common.yes') : t('common.no') }}</p>
-              </UCard>
-              <UCard>
-                <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('workflows.stats.total_runs') }}</p>
-                <p class="text-lg font-semibold">{{ runs?.length || 0 }}</p>
-              </UCard>
-            </div>
-            <USeparator class="my-4" />
-            <div>
-              <p class="text-sm font-semibold">{{ t('common.description') }}</p>
-              <p v-if="workflow?.description">{{ workflow.description }}</p>
-              <p v-else class="text-gray-500 dark:text-gray-400 italic">{{ t('workflows.overview.no_description') }}</p>
-            </div>
-            <USeparator class="my-4" />
-            <div class="text-sm text-gray-500 dark:text-gray-400 italic">
-              {{ t('workflows.trust_note') }}
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium">{{ t("common.active") }}</span>
+                <UToggle v-model="workflowIsActive" />
+              </div>
+              <UDivider />
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium">{{
+                  t("workflows.trigger_type")
+                }}</span>
+                <span class="text-sm text-gray-500">{{
+                  workflow.trigger_type
+                }}</span>
+              </div>
+              <UDivider />
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium">{{
+                  t("common.last_updated")
+                }}</span>
+                <span class="text-sm text-gray-500">{{
+                  formatDate(workflow.updated_at)
+                }}</span>
+              </div>
             </div>
           </UCard>
 
-          <UTabs :items="tabs" class="w-full">
-            <template #item="{ item: { key } }">
-              <div v-if="key === 'overview'" class="py-3">
-                <!-- Overview content is already rendered above -->
-              </div>
-              <div v-else-if="key === 'versions'" class="py-3">
-                <UTable :items="workflowVersions" :columns="versionColumns">
-                  <template #published-data="{ row: versionRow }">
-                    <UChip
-                      :text="versionRow.published ? t('common.yes') : t('common.no')"
-                      :color="versionRow.published ? 'success' : 'error'"
-                      variant="subtle"
-                    />
-                  </template>
-                  <template #actions-data="{ row: versionRow }">
-                    <UButton v-if="!versionRow.published" :label="t('workflows.versions.publish')" variant="soft" @click="publishVersion(versionRow.id)" />
-                    <UButton v-else :label="t('workflows.versions.unpublish')" variant="soft" @click="unpublishVersion(versionRow.id)" />
-                    <UButton :label="t('common.export_json')" variant="soft" @click="exportVersion(versionRow.id)" />
-                  </template>
-                </UTable>
-              </div>
-              <div v-else-if="key === 'runs'" class="py-3">
-                <UTable :items="workflowRuns" :columns="runColumns">
-                  <template #status-data="{ row: runRow }">
-                    <UChip :text="runRow.status" :color="statusColor(runRow.status)" variant="subtle" />
-                  </template>
-                  <template #lead_id-data="{ row: runRow }">
-                    <span v-if="runRow.lead_id">{{ runRow.lead_id }}</span>
-                    <span v-else class="text-gray-500 dark:text-gray-400">—</span>
-                  </template>
-                  <template #actions-data="{ row: runRow }">
-                    <UButton :to="`/app/workflows/runs/${runRow.id}`" :label="t('common.open')" variant="soft" />
-                    <UButton v-if="runRow.status === 'running'" :label="t('workflows.runs.stop')" variant="soft" color="error" @click="stopRun(runRow.id)" />
-                  </template>
-                </UTable>
-              </div>
+          <!-- Quick Actions -->
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-semibold">
+                {{ t("common.quick_actions") }}
+              </h3>
             </template>
-          </UTabs>
-        </div>
+            <div class="space-y-2">
+              <UButton
+                v-if="workflow.trigger_type === 'manual'"
+                block
+                color="primary"
+                variant="soft"
+                :label="t('workflows.actions.run_manual')"
+                @click="runManualOpenDrawer"
+              />
+              <UButton
+                block
+                color="neutral"
+                variant="outline"
+                :label="t('workflows.actions.open_editor')"
+                :to="`/app/workflows/${workflow.id}/edit`"
+              />
+            </div>
+          </UCard>
 
-        <!-- Right Column: Sticky Actions + Status (Mobile: Drawer) -->
-        <div class="relative hidden lg:block">
-          <div class="sticky top-0 space-y-4">
-            <UCard >
-              <template #header>
-                <h2 class="text-xl font-bold">{{ t('workflows.status.title') }}</h2>
-              </template>
-              <div class="space-y-2" v-if="workflow">
-                <div class="flex justify-between items-center">
-                  <span class="text-sm font-semibold">{{ t('common.active') }}</span>
-                  <USwitch v-model="workflow.is_active" />
-                </div>
-                <USeparator />
-                <div class="flex justify-between items-center">
-                  <span class="text-sm font-semibold">{{ t('workflows.trigger_type') }}</span>
-                  <span>{{ workflow.trigger_type }}</span>
-                </div>
-                <USeparator />
-                <div class="flex justify-between items-center">
-                  <span class="text-sm font-semibold">{{ t('common.last_updated') }}</span>
-                  <span>{{ new Date(workflow.updated_at).toLocaleDateString() }}</span>
-                </div>
-              </div>
-            </UCard>
-
-            <UCard>
-              <template #header>
-                <h2 class="text-xl font-bold">{{ t('common.quick_actions') }}</h2>
-              </template>
-              <div class="flex flex-col gap-2">
-                <UButton
-                  v-if="workflow?.trigger_type === 'manual'"
-                  :label="t('workflows.actions.run_manual')"
-                  variant="soft"
-                  @click="runManualWorkflow"
-                />
-                <UButton :to="`/app/workflows/${route.params.id}/edit`" :label="t('workflows.actions.open_editor')" variant="soft" />
-              </div>
-            </UCard>
-
-            <UCard>
-              <template #header>
-                <h2 class="text-xl font-bold">{{ t('common.danger_zone') }}</h2>
-              </template>
-              <div class="flex flex-col gap-2">
-                <UButton :label="t('common.delete')" variant="soft" color="error" @click="confirmDeleteWorkflow" />
-              </div>
-            </UCard>
-          </div>
-        </div>
+          <!-- Danger Zone -->
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-semibold text-red-500">
+                {{ t("common.danger_zone") }}
+              </h3>
+            </template>
+            <UButton
+              block
+              color="error"
+              variant="soft"
+              :label="t('common.delete')"
+              @click="confirmDelete"
+            />
+          </UCard>
+        </ClientOnly>
       </div>
     </div>
-  </UMain>
-</template>
 
-<style scoped>
-/* Add any specific styles here */
-</style>
- 
+    <!-- Mobile Drawer Trigger -->
+    <div class="fixed bottom-6 right-6 lg:hidden">
+      <UButton
+        icon="i-lucide-sliders-horizontal"
+        color="primary"
+        variant="solid"
+        size="xl"
+        :ui="{ rounded: 'rounded-full', padding: { xl: 'p-4' } }"
+        @click="isMobileDrawerOpen = true"
+      />
+    </div>
+
+    <!-- Run Details Drawer -->
+    <WorkflowRunDrawer />
+
+    <!-- Mobile Drawer -->
+    <UDrawer v-model="isMobileDrawerOpen">
+      <div class="p-4 space-y-6 h-full overflow-y-auto">
+        <!-- Status Card -->
+        <UCard>
+          <template #header>
+            <h3 class="text-lg font-semibold">
+              {{ t("workflows.status.title") }}
+            </h3>
+          </template>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium">{{ t("common.active") }}</span>
+              <UToggle v-model="workflowIsActive" />
+            </div>
+            <UDivider />
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium">{{
+                t("workflows.trigger_type")
+              }}</span>
+              <span class="text-sm text-gray-500">{{
+                workflow.trigger_type
+              }}</span>
+            </div>
+            <UDivider />
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium">{{
+                t("common.last_updated")
+              }}</span>
+              <span class="text-sm text-gray-500">{{
+                formatDate(workflow.updated_at)
+              }}</span>
+            </div>
+          </div>
+        </UCard>
+
+        <!-- Quick Actions -->
+        <UCard>
+          <template #header>
+            <h3 class="text-lg font-semibold">
+              {{ t("common.quick_actions") }}
+            </h3>
+          </template>
+          <div class="space-y-2">
+            <UButton
+              v-if="workflow.trigger_type === 'manual'"
+              block
+              color="primary"
+              variant="soft"
+              :label="t('workflows.actions.run_manual')"
+              @click="runManualOpenDrawer"
+            />
+            <UButton
+              block
+              color="neutral"
+              variant="outline"
+              :label="t('workflows.actions.open_editor')"
+              :to="`/app/workflows/${workflow.id}/edit`"
+            />
+          </div>
+        </UCard>
+
+        <!-- Danger Zone -->
+        <UCard>
+          <template #header>
+            <h3 class="text-lg font-semibold text-red-500">
+              {{ t("common.danger_zone") }}
+            </h3>
+          </template>
+          <UButton
+            block
+            color="error"
+            variant="soft"
+            :label="t('common.delete')"
+            @click="confirmDelete"
+          />
+        </UCard>
+      </div>
+    </UDrawer>
+  </div>
+</template>

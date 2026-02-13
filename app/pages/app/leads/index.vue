@@ -1,865 +1,320 @@
-<template>
-  <UContainer>
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center gap-2">
-        <div>
-          <h1 class="text-2xl font-semibold">Leads</h1>
-          <p class="text-[--text-muted]">Manage your leads</p>
-        </div>
-        <div class="flex gap-1" :class="[isRtl ? 'mr-4' : 'ml-4']">
-          <UBadge
-            variant="subtle"
-            color="neutral"
-            :label="`${aggregatedCounts.total} Total`"
-          />
-          <UBadge
-            variant="subtle"
-            color="neutral"
-            :label="`${aggregatedCounts.new} New`"
-          />
-          <UBadge
-            variant="subtle"
-            color="neutral"
-            :label="`${aggregatedCounts.pending_approval} Pending Approval`"
-          />
-          <UBadge
-            variant="subtle"
-            color="neutral"
-            :label="`${aggregatedCounts.replied_today} Replied Today`"
-          />
-        </div>
-      </div>
-      <div class="flex gap-2">
-        <UButton
-          label="Scrape"
-          :leading-icon="isRtl ? null : 'i-heroicons-globe-alt'"
-          :trailing-icon="isRtl ? 'i-heroicons-globe-alt' : null"
-          to="/app/leads/scrape"
-        />
-        <UButton
-          label="Import"
-          :leading-icon="isRtl ? null : 'i-heroicons-document-arrow-up'"
-          :trailing-icon="isRtl ? 'i-heroicons-document-arrow-up' : null"
-          to="/app/leads/import"
-        />
-        <UButton
-          label="New lead"
-          :leading-icon="isRtl ? null : 'i-heroicons-plus'"
-          :trailing-icon="isRtl ? 'i-heroicons-plus' : null"
-          to="/app/leads/new"
-        />
-      </div>
-    </div>
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-      <div class="lg:col-span-1">
-        <!-- Filter Bar / Drawer for mobile -->
-        <div class="sticky top-0">
-          <UCard
-            class="bg-[--bg-card] border border-muted rounded-xl"
-          >
-            <template #header>
-              <div class="flex items-center justify-between">
-                <h2 class="text-lg font-semibold">Filters</h2>
-                <UButton
-                  icon="i-heroicons-funnel"
-                  variant="ghost"
-                  class="lg:hidden"
-                  @click="openFilterDrawer = true"
-                />
-              </div>
-            </template>
-            <!-- Filter content will go here -->
-            <div class="hidden lg:block">
-              <UFormField label="Search">
-                <UInput
-                  v-model="filters.q"
-                  :leading-icon="isRtl ? null : 'i-heroicons-magnifying-glass'"
-                  :trailing-icon="isRtl ? 'i-heroicons-magnifying-glass' : null"
-                  :placeholder="t('leads.search')"
-                  color="neutral"
-                />
-              </UFormField>
-
-              <USeparator class="my-4" />
-
-              <UFormField label="Status">
-                <div class="flex w-full gap-1">
-                  <UButton
-                    v-for="option in statusOptions"
-                    :key="option.value"
-                    :label="option.label"
-                    :color="filters.status === option.value ? 'primary' : 'neutral'"
-                    variant="outline"
-                    class="flex-1"
-                    @click="filters.status = option.value"
-                  />
-                </div>
-              </UFormField>
-
-              <USeparator class="my-4" />
-
-              <UFormField label="Source">
-                <USelect
-                  v-model="filters.source"
-                  :items="sourceOptions"
-                  option-attribute="label"
-                  value-attribute="value"
-                  color="neutral"
-                />
-              </UFormField>
-
-              <USeparator class="my-4" />
-
-              <UFormField label="Language">
-                <USelect
-                  v-model="filters.language"
-                  :items="languageOptions"
-                  option-attribute="label"
-                  value-attribute="value"
-                  color="neutral"
-                />
-              </UFormField>
-
-              <USeparator class="my-4" />
-
-              <UFormField label="City">
-                <UInput v-model="filters.city" placeholder="New York" color="neutral" />
-              </UFormField>
-
-              <USeparator class="my-4" />
-
-              <UFormField label="Has Website">
-                <USwitch v-model="filters.has_website" />
-              </UFormField>
-
-              <USeparator class="my-4" />
-
-              <UFormField label="Has Phone">
-                <USwitch v-model="filters.has_phone" />
-              </UFormField>
-
-              <USeparator class="my-4" />
-
-              <UFormField label="Date Range" description="Not implemented yet">
-                <UInput disabled placeholder="Coming Soon" color="neutral" />
-              </UFormField>
-
-              <UFormField label="Min Rating" description="Not implemented yet">
-                <UInput disabled placeholder="Coming Soon" color="neutral" />
-              </UFormField>
-
-              <UFormField
-                label="Has WhatsApp Capable"
-                description="Not implemented yet"
-              >
-                <UInput disabled placeholder="Coming Soon" color="neutral" />
-              </UFormField>
-            </div>
-            <UDrawer
-              v-model:open="openFilterDrawer"
-              :direction="isRtl ? 'left' : 'right'"
-              class="lg:hidden"
-            >
-              <template #header>
-                <div
-                  class="w-full flex-none flex items-center justify-between gap-1 p-4 bg-muted/20 border-b border-zinc-200 dark:border-zinc-800"
-                >
-                  <UButton
-                    class="aspect-square w-8"
-                    :icon="isRtl ? 'i-heroicons-arrow-right' : 'i-heroicons-arrow-left'"
-                    color="neutral"
-                    variant="ghost"
-                    @click="openFilterDrawer = false"
-                  />
-                  <span class="flex-1 font-semibold text-center">Filters</span>
-                  <UButton
-                    class="aspect-square w-8"
-                    icon="i-heroicons-x-mark"
-                    color="neutral"
-                    variant="ghost"
-                    @click="openFilterDrawer = false"
-                  />
-                </div>
-              </template>
-              <template #body>
-                <div class="flex-1 overflow-y-auto p-4">
-                  <UFormField label="Search">
-                    <UInput
-                      v-model="filters.q"
-                      icon="i-heroicons-magnifying-glass"
-                      :placeholder="t('leads.search')"
-                      color="neutral"
-                    />
-                  </UFormField>
-
-                  <USeparator class="my-4" />
-
-                  <UFormField label="Status">
-                    <div class="flex w-full gap-1">
-                      <UButton
-                        v-for="option in statusOptions"
-                        :key="option.value"
-                        :label="option.label"
-                        :color="filters.status === option.value ? 'primary' : 'neutral'"
-                        variant="outline"
-                        class="flex-1"
-                        @click="filters.status = option.value"
-                      />
-                    </div>
-                  </UFormField>
-
-                  <USeparator class="my-4" />
-
-                  <UFormField label="Source">
-                    <USelect
-                      v-model="filters.source"
-                      :items="sourceOptions"
-                      option-attribute="label"
-                      value-attribute="value"
-                      color="neutral"
-                    />
-                  </UFormField>
-
-                  <USeparator class="my-4" />
-
-                  <UFormField label="Language">
-                    <USelect
-                      v-model="filters.language"
-                      :items="languageOptions"
-                      option-attribute="label"
-                      value-attribute="value"
-                      color="neutral"
-                    />
-                  </UFormField>
-
-                  <USeparator class="my-4" />
-
-                  <UFormField label="City">
-                    <UInput v-model="filters.city" placeholder="New York" color="neutral" />
-                  </UFormField>
-
-                  <USeparator class="my-4" />
-
-                  <UFormField label="Has Website">
-                    <USwitch v-model="filters.has_website" />
-                  </UFormField>
-
-                  <USeparator class="my-4" />
-
-                  <UFormField label="Has Phone">
-                    <USwitch v-model="filters.has_phone" />
-                  </UFormField>
-
-                  <USeparator class="my-4" />
-
-                  <UFormField label="Date Range" description="Not implemented yet">
-                    <UInput disabled placeholder="Coming Soon" color="neutral" />
-                  </UFormField>
-
-                  <UFormField label="Min Rating" description="Not implemented yet">
-                    <UInput disabled placeholder="Coming Soon" color="neutral" />
-                  </UFormField>
-
-                  <UFormField
-                    label="Has WhatsApp Capable"
-                    description="Not implemented yet"
-                  >
-                    <UInput disabled placeholder="Coming Soon" color="neutral" />
-                  </UFormField>
-                </div>
-              </template>
-            </UDrawer>
-          </UCard>
-        </div>
-      </div>
-      <div class="lg:col-span-3">
-        <UCard
-          class="bg-[--bg-card] border border-muted rounded-xl"
-        >
-          <template #header>
-            <h2 class="text-lg font-semibold">Leads Table</h2>
-          </template>
-          <!-- Lead table will go here -->
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-              <UDropdownMenu
-                v-if="selectedLeads.length > 0"
-                :items="bulkActions"
-                popper
-                :ui="{ width: 'w-48' }"
-              >
-                <UButton
-                  icon="i-heroicons-chevron-down"
-                  trailing-icon="i-heroicons-chevron-down"
-                  color="neutral"
-                  variant="outline"
-                  class="min-w-[12ch]"
-                >
-                  <span class="hidden sm:block">
-                    {{ selectedLeads.length }} {{ t('leads.selected') }}
-                  </span>
-                  <span class="block sm:hidden">{{ selectedLeads.length }}</span>
-                </UButton>
-              </UDropdownMenu>
-              <UInput
-                v-model="filters.q"
-                :leading-icon="isRtl ? null : 'i-heroicons-magnifying-glass'"
-                :trailing-icon="isRtl ? 'i-heroicons-magnifying-glass' : null"
-                :placeholder="t('leads.search')"
-                color="neutral"
-                class="w-full sm:w-48"
-              />
-            </div>
-            <div class="flex gap-2">
-              <UButton
-                label="Scrape"
-                icon="i-heroicons-globe-alt"
-                to="/app/leads/scrape"
-              />
-              <UButton
-                label="Import"
-                icon="i-heroicons-document-arrow-up"
-                to="/app/leads/import"
-              />
-              <UButton
-                label="New lead"
-                icon="i-heroicons-plus"
-                to="/app/leads/new"
-              />
-            </div>
-          </div>
-
-          <div v-if="pending">
-            <div v-for="i in 10" :key="i" class="flex items-center gap-4 px-4 py-3">
-              <USkeleton class="h-8 w-8" :ui="{ rounded: 'rounded-full' }" />
-              <div class="flex-1 space-y-2">
-                <USkeleton class="h-4 w-3/4" />
-                <USkeleton class="h-4 w-1/2" />
-              </div>
-              <USkeleton class="h-4 w-20" />
-              <USkeleton class="h-4 w-20" />
-            </div>
-          </div>
-
-          <div
-            v-else-if="!pending && leads.length === 0 && !hasActiveFilters && !error"
-            class="py-10"
-          >
-            <UCard class="flex flex-col items-center justify-center p-8 text-center">
-              <UIcon
-                name="i-heroicons-inbox-arrow-down"
-                class="w-20 h-20 text-neutral-400 mb-4"
-              />
-              <p class="text-2xl font-semibold mb-2">
-                {{ t('leads.empty.first.title') }}
-              </p>
-              <p class="text-neutral-500 mb-6">
-                {{ t('leads.empty.first.subtitle') }}
-              </p>
-              <div class="flex gap-4">
-                <UButton
-                  :label="t('leads.empty.first.scrape')"
-                  icon="i-heroicons-globe-alt"
-                  to="/app/leads/scrape"
-                />
-                <UButton
-                  :label="t('leads.empty.first.import')"
-                  icon="i-heroicons-document-arrow-up"
-                  to="/app/leads/import"
-                />
-                <UButton
-                  :label="t('leads.empty.first.new_lead')"
-                  icon="i-heroicons-plus"
-                  to="/app/leads/new"
-                />
-              </div>
-            </UCard>
-          </div>
-
-          <div
-            v-else-if="!pending && leads.length === 0 && hasActiveFilters && !error"
-            class="py-10"
-          >
-            <UCard class="flex flex-col items-center justify-center p-8 text-center">
-              <UIcon
-                name="i-heroicons-magnifying-glass"
-                class="w-20 h-20 text-neutral-400 mb-4"
-              />
-              <p class="text-2xl font-semibold mb-2">
-                {{ t('leads.empty.filtered.title') }}
-              </p>
-              <p class="text-neutral-500 mb-6">
-                {{ t('leads.empty.filtered.subtitle') }}
-              </p>
-              <UButton
-                :label="t('leads.empty.filtered.clear_filters')"
-                icon="i-heroicons-x-mark"
-                color="primary"
-                @click="clearFilters"
-              />
-            </UCard>
-          </div>
-
-          <div v-else-if="error" class="py-10">
-            <UCard class="flex flex-col items-center justify-center p-8 text-center">
-              <UIcon
-                name="i-heroicons-exclamation-triangle"
-                class="w-20 h-20 text-red-500 mb-4"
-              />
-              <p class="text-2xl font-semibold mb-2">
-                {{ t('leads.error.component_title') }}
-              </p>
-              <p class="text-neutral-500 mb-6">
-                {{ error.message || t('leads.error.component_description') }}
-              </p>
-              <UButton
-                :label="t('leads.error.retry')"
-                icon="i-heroicons-arrow-path"
-                color="primary"
-                @click="refresh"
-              />
-            </UCard>
-          </div>
-
-          <UTable
-            v-else
-            v-model:row-selection="selectedLeads"
-            :columns="columns"
-            :rows="leads"
-            density="compact"
-            sticky-header
-            class="w-full"
-            @select="toggleRowSelection"
-          >
-            <template #lead-cell="{ row }">
-              <div class="flex items-center gap-2">
-                <div class="cursor-pointer" @click.stop="viewLeadDetails(row)">
-                  <p class="font-semibold">{{ row.name }}</p>
-                  <p class="text-neutral-500 dark:text-neutral-400">{{ row.company }}</p>
-                  <div v-if="row.tags && row.tags.length" class="flex gap-1 mt-1">
-                    <UBadge
-                      v-for="tag in row.tags"
-                      :key="tag"
-                      :label="tag"
-                      variant="subtle"
-                      color="neutral"
-                      size="xs"
-                    />
-                  </div>
-                </div>
-              </div>
-            </template>
-
-            <template #status-cell="{ row }">
-              <UBadge
-                :label="row.status"
-                :color="
-                  {
-                    new: 'info',
-                    contacted: 'primary',
-                    qualified: 'success',
-                    proposal: 'warning',
-                    won: 'emerald',
-                    lost: 'rose',
-                  }[row.status] || 'neutral'
-                "
-                variant="subtle"
-                class="capitalize"
-              />
-            </template>
-
-            <template #source-cell="{ row }">
-              <UBadge
-                :label="row.source"
-                variant="subtle"
-                color="neutral"
-                class="capitalize"
-              />
-            </template>
-
-            <template #phone-cell="{ row }">
-              <div class="flex items-center gap-2">
-                <span>{{ row.phone }}</span>
-                <UButton
-                  v-if="row.whatsapp_capable"
-                  :trailing-icon="'i-heroicons-chat-bubble-bottom-center-text'"
-                  variant="ghost"
-                  color="neutral"
-                  size="sm"
-                  @click.stop="
-                    window.open(
-                      `https://wa.me/${row.phone.replace(/[^0-9]/g, '')}`,
-                      '_blank'
-                    )
-                  "
-                />
-                <UButton
-                  :trailing-icon="'i-heroicons-clipboard'"
-                  variant="ghost"
-                  color="neutral"
-                  size="sm"
-                  @click.stop="copy(row.phone)"
-                />
-              </div>
-            </template>
-
-            <template #last_activity-cell="{ row }">
-              <span>{{ useTimeAgo(new Date(row.last_activity)).value }}</span>
-            </template>
-
-            <template #actions-cell="{ row }">
-              <UDropdownMenu
-                :items="getRowActions(row)"
-                popper
-                :ui="{ width: 'w-48' }"
-              >
-                <UButton
-                  icon="i-heroicons-ellipsis-vertical"
-                  variant="ghost"
-                  color="neutral"
-                  size="sm"
-                  @click.stop
-                />
-              </UDropdownMenu>
-            </template>
-          </UTable>
-
-          <div
-            v-if="!pending && leads.length > 0"
-            class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700"
-          >
-            <UPagination
-              v-model:page="page"
-              :page-count="pageCount"
-              :total="total"
-            />
-          </div>
-        </UCard>
-      </div>
-    </div>
-  </UContainer>
-</template>
-
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import type { TableColumn } from "@nuxt/ui";
-import { useTimeAgo, useClipboard, useDebounceFn } from "@vueuse/core";
-import { useLeads } from "~/composables/useLeads";
-import type { Lead, AggregatedCounts } from "~/types/leads";
-
+import { h, resolveComponent } from 'vue'
+import type { ColumnDef } from '@tanstack/table-core'
+import type { Lead } from '~/types/leads'
 
 definePageMeta({
-  layout: "app",
-});
+  layout: 'app'
+})
 
+const { t, locale } = useI18n()
+const { leads, pending, error, refresh, total, filters, sort, page, pageCount, aggregatedCounts } = useLeads()
 
+ 
+// Layout & UI State
+const isRtl = computed(() => locale.value === 'he' || locale.value === 'ar')
+const ui = reactive({
+  density: 'compact' as 'compact' | 'comfortable',
+  filterDrawerOpen: false
+})
 
+// Selection
+const selectedIds = ref<Record<string, boolean>>({})
+const selectedLeads = computed(() => {
+  if (!leads.value) return []
+  return leads.value.filter(lead => lead.id && selectedIds.value[lead.id])
+})
 
-
-const route = useRoute();
-const router = useRouter();
-const appConfig = useAppConfig();
-const { locale, t } = useI18n();
-const isRtl = computed(() => ['ar', 'he'].includes(locale.value));
-const toast = useToast();
-
-const openFilterDrawer = ref(false);
-
+// Options
 const statusOptions = [
-  { label: "All", value: "all" },
-  { label: "New", value: "new" },
-  { label: "Contacted", value: "contacted" },
-  { label: "Qualified", value: "qualified" },
-  { label: "Proposal", value: "proposal" },
-  { label: "Won", value: "won" },
-  { label: "Lost", value: "lost" },
-];
+  { label: t('leads.status.new'), value: 'new' },
+  { label: t('leads.status.contacted'), value: 'contacted' },
+  { label: t('leads.status.qualified'), value: 'qualified' },
+  { label: t('leads.status.proposal'), value: 'proposal' },
+  { label: t('leads.status.won'), value: 'won' },
+  { label: t('leads.status.lost'), value: 'lost' }
+]
 
 const sourceOptions = [
-  { label: "Any", value: "any" },
-  { label: "Manual", value: "manual" },
-  { label: "Imported", value: "imported" },
-  { label: "Scraped", value: "scraped" },
-];
+  { label: t('leads.sources.manual'), value: 'manual' },
+  { label: t('leads.sources.import'), value: 'import' },
+  { label: t('leads.sources.google_maps'), value: 'google_maps' },
+  { label: t('leads.sources.whatsapp_inbound'), value: 'whatsapp_inbound' }
+]
 
 const languageOptions = [
-  { label: "Any", value: "any" },
-  { label: "English", value: "en" },
-  { label: "Hebrew", value: "he" },
-  { label: "Arabic", value: "ar" },
-  { label: "Spanish", value: "es" },
-  { label: "French", value: "fr" },
-];
+  { label: 'English', value: 'en' },
+  { label: 'Hebrew', value: 'he' },
+  { label: 'Arabic', value: 'ar' },
+  { label: 'Auto', value: 'auto' }
+]
 
-const filters = ref<Record<string, string | boolean | string[]>>({
-  q: (route.query.q as string) || "",
-  status: (route.query.status as string) || "all",
-  source: (route.query.source as string) || "any",
-  language: (route.query.language as string) || "any",
-  city: (route.query.city as string) || "",
-  has_website: route.query.has_website === "true",
-  has_phone: route.query.has_phone !== "false",
-});
+const sortOptions = [
+  { label: t('leads.sort.newest'), value: 'created_at desc' },
+  { label: t('leads.sort.oldest'), value: 'created_at asc' },
+  { label: t('leads.sort.last_activity'), value: 'last_activity desc' }
+]
 
-const page = ref(Number(route.query.page || 1));
-const pageCount = ref(10); // Default page size
-const sort = ref((route.query.sort as string) || "created_at desc");
+const densityOptions = [
+  { label: t('common.compact'), value: 'compact' },
+  { label: t('common.comfortable'), value: 'comfortable' }
+]
 
-const queryParams = computed(() => ({
-  q: filters.value.q as string,
-  status: filters.value.status as string,
-  source: filters.value.source as string,
-  language: filters.value.language as string,
-  city: filters.value.city as string,
-  has_website: filters.value.has_website as boolean,
-  has_phone: filters.value.has_phone as boolean,
-  page: page.value,
-  pageSize: pageCount.value,
-  sort: sort.value,
-}));
+const bulkActions = [[
+  { label: t('leads.actions.export_selected'), icon: 'i-heroicons-arrow-down-tray', onSelect: () => console.log('Export', selectedLeads.value) },
+  { label: t('leads.actions.delete_selected'), icon: 'i-heroicons-trash', onSelect: () => console.log('Delete', selectedLeads.value) }
+]]
 
-// Helper to hash objects for useAsyncData key
-function hash(obj: object) {
-  return btoa(JSON.stringify(obj));
+// Computed Props
+const hasActiveFilters = computed(() => {
+  return !!(filters.q || filters.status || filters.source || filters.language || filters.city || filters.has_website || filters.has_phone)
+})
+const totalPages = computed(() => Math.ceil(total.value / pageCount.value))
+
+// Actions
+function clearFilters() {
+  filters.q = ''
+  filters.status = undefined
+  filters.source = undefined
+  filters.language = undefined
+  filters.city = ''
+  filters.has_website = false
+  filters.has_phone = false
 }
 
-const lastError = ref<Error | null>(null);
-
-const { data, pending, error, refresh } = await useAsyncData(
-  `leads:list:${hash(queryParams.value)}`,
-  async () => {
-    try {
-      const result = await useLeads(queryParams.value);
-      lastError.value = null; // Clear previous errors on successful fetch
-      return result;
-    } catch (e) {
-      lastError.value = e as Error;
-      throw e;
-    }
-  },
-  { watch: [queryParams] }
-);
-
-const leads = computed<Lead[]>(() => data.value?.leads || []);
-const total = computed<number>(() => data.value?.total || 0);
-const aggregatedCounts = computed<AggregatedCounts>(
-  () => data.value?.aggregatedCounts || { total: 0, new: 0, pending_approval: 0, replied_today: 0 }
-);
-
-const defaultFilters = {
-  q: "",
-  status: "all",
-  source: "any",
-  language: "any",
-  city: "",
-  has_website: false,
-  has_phone: false,
-};
-
-const hasActiveFilters = computed(() => {
-  return Object.keys(filters.value).some((key) => {
-    // Cast to string to ensure strict comparison with empty string
-    if (key === 'q' || key === 'city') return filters.value[key] !== '';
-    // Cast to string to ensure strict comparison with 'all' or 'any'
-    if (key === 'status' || key === 'source' || key === 'language') return filters.value[key] !== 'all' && filters.value[key] !== 'any';
-    // Check boolean filters
-    if (key === 'has_website' || key === 'has_phone') return filters.value[key] === true;
-    return false;
-  });
-});
-
-const clearFilters = () => {
-  Object.assign(filters.value, defaultFilters);
-  page.value = 1;
-  router.push({ query: {} });
-};
-
-watch(error, (newError) => {
-  if (newError) {
-    toast.add({
-      title: t('leads.error.title'),
-      description: newError.message || t('leads.error.description'),
-      icon: 'i-heroicons-exclamation-triangle',
-      color: 'red',
-      action: {
-        label: t('leads.error.retry'),
-        click: () => {
-          refresh();
-        },
-      },
-    });
+function onRowClick(row: Lead) {
+  if (row.id) {
+    navigateTo(`/app/leads/${row.id}`)
   }
-});
+}
 
+// Columns
+const LeadIdentityCellComp = resolveComponent('LeadIdentityCell')
+const StatusBadgeCellComp = resolveComponent('StatusBadgeCell')
+const PhoneActionsCellComp = resolveComponent('PhoneActionsCell')
+const BadgeCellComp = resolveComponent('BadgeCell')
+const LanguageCellComp = resolveComponent('LanguageCell')
+const TimeAgoCellComp = resolveComponent('TimeAgoCell')
+const UDropdownComp = resolveComponent('UDropdownMenu')
+const UButtonComp = resolveComponent('UButton')
 
-const selectedLeads = ref<Lead[]>([]);
-const { copy } = useClipboard();
-
-const columns = computed<TableColumn[]>(() => [
+const columns = computed<ColumnDef<Lead>[]>(() => [
   {
-    key: "select",
-    id: "select",
-    label: "",
-    class: "w-12",
+    id: 'lead',
+    accessorKey: 'full_name',
+    header: t('leads.columns.lead'),
+    cell: ({ row }) => h(LeadIdentityCellComp, { row: row.original })
   },
   {
-    key: "lead", // Changed id to key
-    id: "lead",
-    label: "Lead",
-    sortable: true,
+    id: 'status',
+    accessorKey: 'status',
+    header: t('leads.columns.status'),
+    cell: ({ row }) => h(StatusBadgeCellComp, { row: row.original })
   },
   {
-    key: "status",
-    id: "status",
-    label: "Status",
-    sortable: true,
+    id: 'phone',
+    accessorKey: 'phone',
+    header: t('leads.columns.phone'),
+    cell: ({ row }) => h(PhoneActionsCellComp, { row: row.original })
   },
   {
-    key: "source",
-    id: "source",
-    label: "Source",
-    sortable: true,
+    id: 'source',
+    accessorKey: 'source',
+    header: t('leads.columns.source'),
+    cell: ({ row }) => h(BadgeCellComp, { value: row.original.source })
   },
   {
-    key: "email",
-    id: "email",
-    label: "Email",
-    sortable: true,
+    id: 'language',
+    accessorKey: 'language',
+    header: t('leads.columns.language'),
+    cell: ({ row }) => h(LanguageCellComp, { value: row.original.language })
   },
   {
-    key: "phone",
-    id: "phone",
-    label: "Phone",
-    sortable: true,
+    id: 'last_activity',
+    accessorKey: 'last_activity',
+    header: t('leads.columns.last_activity'),
+    cell: ({ row }) => h(TimeAgoCellComp, { value: row.original.last_activity })
   },
   {
-    key: "language",
-    id: "language",
-    label: "Language",
-    sortable: true,
-  },
-  {
-    key: "country",
-    id: "country",
-    label: "Country",
-    sortable: true,
-  },
-  {
-    key: "last_activity",
-    id: "last_activity",
-    label: "Last Activity",
-    sortable: true,
-  },
-  {
-    key: "actions",
-    id: "actions",
-    label: "",
-    class: "w-12",
-  },
-]);
-
-const bulkActions = computed(() => [
-  [
-    {
-      label: "Assign to workflow",
-      icon: "i-heroicons-paper-airplane",
-      click: () => {
-        console.log("Assign to workflow", selectedLeads.value);
-      },
-    },
-  ],
-  [
-    {
-      label: "Delete",
-      icon: "i-heroicons-trash",
-      click: () => {
-        console.log("Delete selected leads", selectedLeads.value);
-      },
-    },
-  ],
-]);
-
-const viewLeadDetails = (row: Lead) => {
-  router.push(`/app/leads/${row.id}`);
-};
-
-const toggleRowSelection = (row: Lead) => {
-  const index = selectedLeads.value.findIndex((item) => item.id === row.id);
-  if (index === -1) {
-    selectedLeads.value.push(row);
-  } else {
-    selectedLeads.value.splice(index, 1);
+    id: 'actions',
+    header: '',
+    cell: ({ row }) =>
+      h(
+        UDropdownComp,
+        { items: rowActions(row.original) },
+        {
+          default: () =>
+            h(UButtonComp, {
+              icon: 'i-heroicons-ellipsis-vertical',
+              color: 'neutral',
+              variant: 'ghost',
+              'data-stop-row': ''
+            })
+        }
+      )
   }
-};
+])
 
-const getRowActions = (row: Lead) => {
-  return [
-    [
-      {
-        label: "Open",
-        icon: "i-heroicons-eye",
-        click: () => viewLeadDetails(row),
-      },
-      {
-        label: "Inbox",
-        icon: "i-heroicons-inbox",
-        click: () => router.push(`/app/inbox?lead=${row.id}`),
-      },
-      {
-        label: "Qualify",
-        icon: "i-heroicons-check-badge",
-        click: () => router.push(`/app/lead-qualification?lead=${row.id}`),
-      },
-      {
-        label: "Book",
-        icon: "i-heroicons-calendar",
-        click: () =>
-          router.push(`/app/meetings/new?lead=${row.id}&type=proposal`),
-      },
-    ],
-    [
-      {
-        label: "Edit",
-        icon: "i-heroicons-pencil-square",
-        click: () => {
-          console.log("Edit lead", row.id);
-        },
-      },
-      {
-        label: "Delete",
-        icon: "i-heroicons-trash",
-        click: () => {
-          console.log("Delete lead", row.id);
-        },
-      },
-    ],
-  ];
-};
+const rowActions = (row: Lead) => [[
+  { label: t('common.view'), icon: 'i-heroicons-eye', onSelect: () => onRowClick(row) },
+  { label: t('common.edit'), icon: 'i-heroicons-pencil-square', onSelect: () => navigateTo(`/app/leads/${row.id}/edit`) }
+]]
 
-watch(
-  filters,
-  useDebounceFn(
-    () => {
-      router.push({
-        query: { ...queryParams.value, page: 1 },
-      });
-      refresh();
-    },
-    500,
-    { maxWait: 1000 }
-  ),
-  { deep: true }
-);
+const statsChips = computed(() => [
+  { key: 'total', label: `${aggregatedCounts.value.total ?? 0} ${t('leads.stats.total')}`, color: 'neutral' },
+  { key: 'new', label: `${aggregatedCounts.value.new ?? 0} ${t('leads.stats.new')}`, color: 'blue' },
+  { key: 'pending', label: `${aggregatedCounts.value.pending_approval ?? 0} ${t('leads.stats.pending_approval')}`, color: 'yellow' },
+  { key: 'replied_today', label: `${aggregatedCounts.value.replied_today ?? 0} ${t('leads.stats.replied_today')}`, color: 'green' }
+])
 
-watch(
-  page,
-  () => {
-    router.push({
-      query: queryParams.value,
-    });
-    refresh();
-  },
-  { deep: true }
-);
+onBeforeMount(async () => {
+  await refresh()
+})
 </script>
+
+<template>
+  <UContainer>
+    <!-- 1. Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div class="flex flex-col gap-1">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+          {{ t('leads.title') }}
+        </h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          {{ t('leads.subtitle') }}
+        </p>
+        <div class="flex flex-wrap items-center gap-2 mt-2">
+          <UBadge v-for="chip in statsChips" :key="chip.key" :color="chip.color" variant="subtle" :label="chip.label" />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <UButton :label="t('leads.actions.new')" icon="i-heroicons-plus" to="/app/leads/new" color="primary" />
+        <UButton :label="t('leads.actions.scrape')" icon="i-heroicons-globe-alt" to="/app/leads/scrape" color="neutral" variant="outline" class="hidden sm:inline-flex" />
+        <UButton :label="t('leads.actions.import')" icon="i-heroicons-document-arrow-up" to="/app/leads/import" color="neutral" variant="outline" class="hidden sm:inline-flex" />
+        <UButton icon="i-heroicons-funnel" color="neutral" variant="ghost" class="lg:hidden" @click="ui.filterDrawerOpen = true" />
+      </div>
+    </div>
+
+    <!-- 2. Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-4">
+      <!-- 2a. Filter Sidebar (Desktop) -->
+      <aside class="hidden lg:block sticky top-4 h-fit">
+        <UCard>
+          <template #header>
+            <h3 class="font-semibold">{{ t('leads.filters.title') }}</h3>
+          </template>
+          <div class="space-y-4">
+            <UFormField :label="t('leads.filters.search')">
+              <UInput v-model="filters.q" icon="i-heroicons-magnifying-glass" :debounce="500" class="w-full" />
+            </UFormField>
+            <UFormField :label="t('leads.filters.status')">
+              <USelectMenu v-model="filters.status" :items="statusOptions" option-attribute="label" value-attribute="value" clearable class="w-full" />
+            </UFormField>
+            <UFormField :label="t('leads.filters.source')">
+              <USelectMenu v-model="filters.source" :items="sourceOptions" option-attribute="label" value-attribute="value" clearable class="w-full" />
+            </UFormField>
+            <UFormField :label="t('leads.filters.language')">
+              <USelectMenu v-model="filters.language" :items="languageOptions" option-attribute="label" value-attribute="value" clearable class="w-full" />
+            </UFormField>
+            <UFormField :label="t('leads.filters.city')">
+              <UInput v-model="filters.city" icon="i-heroicons-map-pin" class="w-full" />
+            </UFormField>
+            <UFormField>
+              <UCheckbox v-model="filters.has_website" :label="t('leads.filters.has_website')" />
+              <UCheckbox v-model="filters.has_phone" :label="t('leads.filters.has_phone')" />
+            </UFormField>
+            <div v-if="hasActiveFilters" class="pt-2">
+              <UButton :label="t('common.clear_filters')" color="neutral" variant="soft" block @click="clearFilters" />
+            </div>
+          </div>
+        </UCard>
+      </aside>
+
+      <!-- 2b. Main Content -->
+      <main>
+        <UCard>
+          <!-- Table Toolbar -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-2 h-8">
+               <UDropdownMenu v-if="selectedLeads.length > 0" :items="bulkActions">
+                  <UButton color="neutral" variant="soft" trailing-icon="i-heroicons-chevron-down">
+                    {{ selectedLeads.length }} {{ t('leads.selected') }}
+                  </UButton>
+                </UDropdownMenu>
+            </div>
+            <div class="flex items-center gap-2">
+              <USelectMenu v-model="sort" :items="sortOptions" option-attribute="label" value-attribute="value" size="sm" class="w-full sm:w-[220px]" />
+              <USelectMenu v-model="ui.density" :items="densityOptions" option-attribute="label" value-attribute="value" size="sm" class="w-full sm:w-44" />
+            </div>
+          </div>
+
+          <!-- Table -->
+          <UTable
+            v-model:row-selection="selectedIds"
+            :columns="columns"
+            :data="leads"
+            :loading="pending"
+            :ui="{ td: { padding: ui.density === 'compact' ? 'py-2' : 'py-4' } }"
+            sticky-header
+            row-key="id"
+            @row-click="onRowClick"
+            :row-click-stoppable-selectors="['button', 'a', '[data-stop-row]']"
+          >
+          </UTable>
+
+          <!-- Table Footer -->
+          <template #footer>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <span class="text-sm text-gray-500">
+                {{ t('common.showing') }} {{ leads?.length ?? 0 }} / {{ total }}
+              </span>
+              <UPagination v-if="totalPages > 1" v-model="page" :page-count="totalPages" :total="total" />
+            </div>
+          </template>
+        </UCard>
+      </main>
+    </div>
+
+    <!-- 3. Mobile Filter Drawer -->
+    <UDrawer v-model:open="ui.filterDrawerOpen" :dir="isRtl ? 'left' : 'right'">
+      <template #content>
+        <UCard class="flex flex-col h-full">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">{{ t('leads.filters.title') }}</h3>
+              <UButton icon="i-heroicons-x-mark" color="neutral" variant="ghost" @click="ui.filterDrawerOpen = false" />
+            </div>
+          </template>
+          <div class="flex-1 overflow-y-auto p-4 space-y-4">
+            <UFormField :label="t('leads.filters.search')">
+              <UInput v-model="filters.q" icon="i-heroicons-magnifying-glass" class="w-full" />
+            </UFormField>
+            <UFormField :label="t('leads.filters.status')">
+              <USelectMenu v-model="filters.status" :items="statusOptions" option-attribute="label" value-attribute="value" clearable class="w-full" />
+            </UFormField>
+            <UFormField :label="t('leads.filters.source')">
+              <USelectMenu v-model="filters.source" :items="sourceOptions" option-attribute="label" value-attribute="value" clearable class="w-full" />
+            </UFormField>
+            <UFormField :label="t('leads.filters.language')">
+              <USelectMenu v-model="filters.language" :items="languageOptions" option-attribute="label" value-attribute="value" clearable class="w-full" />
+            </UFormField>
+            <UFormField :label="t('leads.filters.city')">
+              <UInput v-model="filters.city" icon="i-heroicons-map-pin" class="w-full" />
+            </UFormField>
+            <UFormField>
+              <UCheckbox v-model="filters.has_website" :label="t('leads.filters.has_website')" />
+              <UCheckbox v-model="filters.has_phone" :label="t('leads.filters.has_phone')" />
+            </UFormField>
+          </div>
+          <template #footer>
+            <div class="flex gap-2 p-4">
+              <UButton v-if="hasActiveFilters" :label="t('common.clear_filters')" color="neutral" variant="soft" class="flex-1" @click="clearFilters" />
+              <UButton :label="t('common.apply')" color="primary" class="flex-1" @click="ui.filterDrawerOpen = false" />
+            </div>
+          </template>
+        </UCard>
+      </template>
+    </UDrawer>
+  </UContainer>
+</template>

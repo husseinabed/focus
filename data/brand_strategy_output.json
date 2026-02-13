@@ -1,0 +1,344 @@
+{
+  "schema_version": "1.0.0",
+  "confidence": "high",
+  "positioning": "Focus AI is the AI-powered digital growth system designed specifically for Israeli SMBs and service businesses, delivering high-converting, multilingual websites optimized for local lead generation and direct client engagement via WhatsApp.",
+  "value_proposition": "For Israeli SMBs and service professionals, Focus AI provides a fast, integrated solution to launch a professionally designed, multilingual website that attracts local customers and converts visitors into direct WhatsApp leads, simplifying your digital growth.",
+  "audience_segments": [
+    {
+      "segment": "Local SMB Owners",
+      "pains": [
+        "Struggling to get online or update an outdated website",
+        "Difficulty attracting new local customers online",
+        "Lack of time and technical skills to manage digital marketing",
+        "High costs associated with website development and agencies",
+        "Ineffective lead generation channels for local business"
+      ],
+      "desired_outcomes": [
+        "A professional, modern website quickly and affordably",
+        "Increased visibility and inquiries from local customers",
+        "Easy-to-manage online presence without technical hassle",
+        "Reliable system for generating direct leads",
+        "Effective communication channel with potential clients"
+      ],
+      "decision_criteria": [
+        "Ease of use and fast setup",
+        "Cost-effectiveness and clear pricing",
+        "Ability to generate tangible business leads (e.g., WhatsApp inquiries)",
+        "Relevance to the Israeli market and language support (EN/HE/AR)",
+        "Reliable support and minimal maintenance"
+      ],
+      "top_objections": [
+        "AI websites are generic and won't stand out",
+        "I don't have the technical skills to manage a website",
+        "It's too expensive compared to DIY options",
+        "Will it actually bring me customers?",
+        "I'm not sure about relying on AI for my business image"
+      ]
+    },
+    {
+      "segment": "Service Businesses (Lawyers, Dentists, Clinics, Real Estate)",
+      "pains": [
+        "Need to establish trust and credibility online",
+        "Difficulty converting website visitors into appointments/consultations",
+        "Managing multiple languages for a diverse client base",
+        "Inefficient ways to capture serious client inquiries",
+        "Standing out in a competitive local market"
+      ],
+      "desired_outcomes": [
+        "A professional, trustworthy online presence that converts",
+        "Streamlined process for client inquiry and appointment booking",
+        "Website that communicates effectively in all relevant languages",
+        "Consistent flow of qualified leads",
+        "Strong local SEO visibility"
+      ],
+      "decision_criteria": [
+        "Professional design and brand representation",
+        "Effective lead capture (especially WhatsApp integration)",
+        "Multilingual capabilities (EN/HE/AR)",
+        "Security and reliability for client data",
+        "Testimonials and proof of results for similar businesses"
+      ],
+      "top_objections": [
+        "My business is unique, an AI builder might not fit my specific needs",
+        "How will I handle client inquiries through WhatsApp effectively?",
+        "Is it secure for sensitive client information?",
+        "Can it integrate with my existing booking/CRM systems?",
+        "Will it reflect the professionalism required for my industry?"
+      ]
+    },
+    {
+      "segment": "Small Agencies Serving Local Clients",
+      "pains": [
+        "Time-consuming website development for clients",
+        "Limited resources for multilingual site builds",
+        "Difficulty offering integrated lead generation solutions to clients",
+        "Need to deliver fast, cost-effective solutions to compete",
+        "Managing client communication across multiple platforms"
+      ],
+      "desired_outcomes": [
+        "Efficient and fast website delivery for clients",
+        "Ability to offer comprehensive multilingual website solutions",
+        "Integrated lead generation features (like WhatsApp) for clients",
+        "Scalable solution for managing multiple client websites",
+        "Tools for client collaboration and reporting"
+      ],
+      "decision_criteria": [
+        "Speed and efficiency of website creation",
+        "Robust multilingual functionality",
+        "Lead generation and CRO capabilities for clients",
+        "Scalability and agency-friendly features",
+        "Cost-efficiency for client projects"
+      ],
+      "top_objections": [
+        "Will this tool give me enough control for client-specific designs?",
+        "Can I manage multiple client accounts easily?",
+        "Is the white-labeling or partnership program suitable?",
+        "How does it compare to other agency-focused platforms?",
+        "Will my clients perceive it as a 'cheap' solution?"
+      ]
+    }
+  ],
+  "differentiators": [
+    {
+      "statement": "Hyper-local focus for the Israeli market",
+      "proof_types": ["local_presence", "case_study"],
+      "notes": "Specific examples of Israeli businesses achieving success, mention of local team."
+    },
+    {
+      "statement": "Integrated high-converting multilingual websites (EN/HE/AR)",
+      "proof_types": ["demo", "process_transparency"],
+      "notes": "Show the ease of managing content across languages and conversion features."
+    },
+    {
+      "statement": "Unique WhatsApp-first lead capture for direct client engagement",
+      "proof_types": ["demo", "case_study"],
+      "notes": "Highlight how the system funnels leads directly to WhatsApp, a preferred local channel."
+    },
+    {
+      "statement": "A complete 'digital growth system' tailored for SMBs, not just a website builder",
+      "proof_types": ["process_transparency", "demo"],
+      "notes": "Explain integrated features beyond site building, e.g., local SEO tools, analytics for growth."
+    },
+    {
+      "statement": "Fast launch with AI-assisted setup without technical jargon",
+      "proof_types": ["speed", "demo"],
+      "notes": "Emphasize speed and simplicity of setup, showing the AI's role in a few clear steps."
+    }
+  ],
+  "tone": {
+    "attributes": [
+      "Confident",
+      "Supportive",
+      "Professional",
+      "Outcome-focused",
+      "Direct"
+    ],
+    "do": "Use clear, benefit-led language. Address SMB challenges directly. Sound knowledgeable and empowering.",
+    "avoid": "Overly technical jargon, marketing hype, casual language, sounding generic or global."
+  },
+  "voice_rules": [
+    {
+      "rule": "Prioritize direct benefits and outcomes for local SMBs.",
+      "example_do": {
+        "en": "Attract more local clients and grow your business with a website built for conversions.",
+        "he": "משוך יותר לקוחות מקומיים והגדל את העסק שלך עם אתר שנבנה להמרות.",
+        "ar": "اجذب المزيد من العملاء المحليين ونمي عملك من خلال موقع ويب مصمم للتحويلات."
+      },
+      "example_dont": {
+        "en": "Our AI-powered platform leverages cutting-edge algorithms for optimized digital footprint.",
+        "he": "הפלטפורמה המונעת ב-AI שלנו ממנפת אלגוריתמים מתקדמים לטביעת רגל דיגיטלית אופטימלית.",
+        "ar": "تستخدم منصتنا المدعومة بالذكاء الاصطناعي خوارزميات متطورة لبصمة رقمية محسنة."
+      }
+    },
+    {
+      "rule": "Emphasize simplicity and speed for non-technical users.",
+      "example_do": {
+        "en": "Launch your professional website in days, not months, with AI-guided setup.",
+        "he": "הפעל את האתר המקצועי שלך תוך ימים, לא חודשים, עם הגדרה מודרכת AI.",
+        "ar": "أطلق موقعك الاحترافي في أيام، وليس أشهر، بإعداد موجه بالذكاء الاصطناعي."
+      },
+      "example_dont": {
+        "en": "Leverage our robust CMS and intuitive drag-and-drop interface for seamless content management.",
+        "he": "השתמש במערכת ניהול התוכן החזקה ובממשק הגרירה והשחרור האינטואיטיבי שלנו לניהול תוכן חלק.",
+        "ar": "استفد من نظام إدارة المحتوى القوي وواجهة السحب والإفلات البديهية لإدارة محتوى سلسة."
+      }
+    },
+    {
+      "rule": "Highlight the 'WhatsApp-first' and multilingual advantages as core features.",
+      "example_do": {
+        "en": "Connect directly with customers via WhatsApp from your multilingual website.",
+        "he": "התחבר ישירות ללקוחות בוואטסאפ דרך האתר הרב-לשוני שלך.",
+        "ar": "تواصل مباشرة مع العملاء عبر الواتساب من موقعك الإلكتروني متعدد اللغات."
+      },
+      "example_dont": {
+        "en": "We offer integrated messaging solutions and localization options.",
+        "he": "אנו מציעים פתרונות מסרים משולבים ואפשרויות לוקליזציה.",
+        "ar": "نحن نقدم حلول مراسلة متكاملة وخيارات توطين."
+      }
+    }
+  ],
+  "messaging_pillars": [
+    {
+      "pillar": "Local Growth & Leads",
+      "key_points": [
+        "Specifically designed to help Israeli SMBs attract and convert local customers.",
+        "Generate direct, qualified leads through WhatsApp, a preferred local communication channel.",
+        "Enhance your local online presence and visibility for greater impact."
+      ],
+      "best_proof": ["case_study", "demo", "review"]
+    },
+    {
+      "pillar": "Effortless Multilingual Presence",
+      "key_points": [
+        "Build a high-converting website seamlessly in English, Hebrew, and Arabic.",
+        "Reach a broader audience and serve diverse client needs across Israel.",
+        "Manage all language versions easily without complex manual translation."
+      ],
+      "best_proof": ["demo", "process_transparency"]
+    },
+    {
+      "pillar": "AI-Powered Simplicity & Speed",
+      "key_points": [
+        "Launch a professional, modern website rapidly with intuitive AI guidance.",
+        "No technical skills required; Focus AI handles the complexities.",
+        "Free up your time to focus on your business, not website management."
+      ],
+      "best_proof": ["demo", "speed"]
+    },
+    {
+      "pillar": "Trust-First Conversions",
+      "key_points": [
+        "Websites built with conversion rate optimization (CRO) best practices.",
+        "Integrate clear trust signals to build credibility with your audience.",
+        "Designed to turn visitors into valuable inquiries and clients."
+      ],
+      "best_proof": ["case_study", "process_transparency"]
+    }
+  ],
+  "trust_strategy": [
+    {
+      "type": "local_presence",
+      "what_to_show": [
+        "Testimonials from local Israeli businesses with names, photos, and specific results.",
+        "Examples of websites built for Israeli businesses (e.g., in Tel Aviv, Jerusalem, Haifa)."
+      ],
+      "where_to_show": ["hero", "above_fold", "mid_page", "near_cta"]
+    },
+    {
+      "type": "social_proof",
+      "what_to_show": [
+        "Case studies detailing specific growth/lead generation results for SMBs.",
+        "Quantifiable metrics (e.g., 'X% increase in WhatsApp inquiries', 'Y new leads per month')."
+      ],
+      "where_to_show": ["mid_page", "near_cta"]
+    },
+    {
+      "type": "process_transparency",
+      "what_to_show": [
+        "Clear steps of the AI-assisted setup process.",
+        "Description of how the WhatsApp integration works end-to-end.",
+        "Explaining the multilingual content management workflow."
+      ],
+      "where_to_show": ["above_fold", "mid_page"]
+    },
+    {
+      "type": "authority",
+      "what_to_show": [
+        "Logos of well-known Israeli SMBs or service professionals using the platform (if applicable and permission granted)."
+      ],
+      "where_to_show": ["above_fold", "footer"]
+    }
+  ],
+  "objections_and_responses": [
+    {
+      "objection": "AI websites are generic and won't stand out or reflect my unique business.",
+      "response_angle": "Focus AI is tailored for the Israeli market and offers customization, not generic templates.",
+      "proof_required": ["demo", "case_study"]
+    },
+    {
+      "objection": "I don't have the technical skills or time to build and manage a website.",
+      "response_angle": "Our AI-guided system is designed for non-technical users, ensuring fast and easy setup and management.",
+      "proof_required": ["demo", "speed"]
+    },
+    {
+      "objection": "Will this actually bring me customers and leads?",
+      "response_angle": "Focus AI is a digital growth system built for conversions, with WhatsApp-first lead capture to drive direct client engagement.",
+      "proof_required": ["case_study", "demo"]
+    },
+    {
+      "objection": "It's too expensive, or I can get a cheaper website elsewhere.",
+      "response_angle": "Focus AI offers a comprehensive, high-converting digital growth system specific to your market, providing greater value and ROI than basic builders.",
+      "proof_required": ["pricing_transparency", "case_study"]
+    },
+    {
+      "objection": "How reliable and secure is the platform?",
+      "response_angle": "We provide a robust, secure, and reliable platform, ensuring your business's online presence is always professional and protected.",
+      "proof_required": ["process_transparency"]
+    }
+  ],
+  "cta_strategy": {
+    "primary": {
+      "label": {
+        "en": "Start WhatsApp Chat",
+        "he": "התחל צ'אט בוואטסאפ",
+        "ar": "ابدأ محادثة واتساب"
+      },
+      "action": "Initiate a direct WhatsApp conversation with sales/support.",
+      "channel": "whatsapp",
+      "friction_level": "low"
+    },
+    "secondary": {
+      "label": {
+        "en": "See How It Works",
+        "he": "ראה איך זה עובד",
+        "ar": "شاهد كيف يعمل"
+      },
+      "action": "View a demo or process overview of the platform.",
+      "channel": "booking",
+      "friction_level": "medium"
+    }
+  },
+  "claims_policy": {
+    "allowed": [
+      "AI-powered website building for local businesses",
+      "Multilingual support for EN/HE/AR",
+      "WhatsApp-first lead capture",
+      "Fast website launch",
+      "Optimized for conversions",
+      "Designed for non-technical users",
+      "Digital growth system for SMBs"
+    ],
+    "restricted": [
+      "Guaranteed specific number of leads/sales",
+      "Being the 'best' or 'number one' AI builder globally without specific proof",
+      "Claims of 'free' without clear limitations",
+      "Unsubstantiated claims about market dominance"
+    ],
+    "requires_proof": [
+      "High-converting (requires case studies/metrics)",
+      "Fast launch (requires speed metrics/demo)",
+      "Easy to use (requires demo/testimonials)",
+      "Secure/Reliable (requires process transparency)",
+      "Generating leads/growth (requires case studies/metrics)"
+    ]
+  },
+  "localization_notes": {
+    "en": [
+      "Focus on clear, benefit-led language that highlights efficiency and lead generation.",
+      "Use 'WhatsApp' as it's universally understood.",
+      "Emphasize the 'digital growth system' aspect to convey comprehensive value."
+    ],
+    "he": [
+      "Maintain a professional and concise tone, avoiding exaggeration.",
+      "Highlight the relevance of WhatsApp as a primary business communication tool in Israel.",
+      "Emphasize ease of use and local market understanding.",
+      "Ensure RTL (Right-To-Left) support is visibly part of the offering."
+    ],
+    "ar": [
+      "Adopt a respectful, confident, and outcome-focused tone.",
+      "Stress the practical outcomes for business owners, like increased leads and efficiency.",
+      "Clearly communicate the benefit of integrated Arabic language support for reaching a wider customer base.",
+      "Ensure RTL (Right-To-Left) support is visibly part of the offering."
+    ]
+  }
+}

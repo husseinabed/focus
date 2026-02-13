@@ -1,5 +1,6 @@
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server';
 import { createError } from 'h3';
+import { resolveWorkspaceId } from '~~/server/utils/workspace';
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
@@ -12,13 +13,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const workspaceId = user.app_metadata?.workspace_id;
-  if (!workspaceId) {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Forbidden: Missing workspace ID or workspace_id in app_metadata',
-    });
-  }
+  const workspaceId = user.app_metadata?.workspace_id || await resolveWorkspaceId(client, user);
 
   const templatesToImport = await readBody(event);
 
@@ -34,37 +29,29 @@ export default defineEventHandler(async (event) => {
 
   for (const template of templatesToImport) {
     try {
-      if (!template.name || !template.category || !template.language || !template.body) {
-        throw new Error('Missing required fields (name, category, language, body) for a template.');
+      if (!template.title || !template.category || !template.channel || !template.status || !template.locales) {
+        throw new Error('Missing required fields (title, category, channel, status, locales) for a template.');
       }
 
-      // Validate variables exist in body (simple check for now)
-      const bodyVariables = (template.body.match(/{{([a-zA-Z0-9_.]+)}}/g) || []).map((v: string) => v.replace(/{{|}}/g, ''));
-      const declaredVariables = Object.keys(template.variables || {});
-
-      for (const varName of declaredVariables) {
-        if (!bodyVariables.includes(varName) && !template.reserved_variables?.includes(varName)) { // Assuming reserved_variables are globally known or passed in
-          // For now, we will allow custom variables to be declared without being in the body
-          // This might be a more strict validation for the frontend or a later stage.
-          // throw new Error(`Declared variable '${varName}' not found in template body.`);
-        }
-      }
-      
-      // Basic check for reserved variables that are not custom
-      // This might need more sophisticated handling later to distinguish between user-defined custom vars and system-defined reserved vars
+      const key = template.key || `${template.title}`.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
       const templateToInsert = {
         workspace_id: workspaceId,
-        created_by: user.id,
-        name: template.name,
+        key,
+        title: template.title,
         category: template.category,
-        language: template.language,
-        body: template.body,
-        variables: template.variables || {},
-        is_active: template.is_active !== undefined ? template.is_active : true,
+        channel: template.channel,
+        status: template.status,
+        locales: template.locales,
+        variants: template.variants || {},
+        variables_schema: template.variables_schema || {},
+        defaults: template.defaults || {},
+        rules: template.rules || {},
+        compliance: template.compliance || {},
+        tags: template.tags || [],
       };
 
       const { data, error } = await client
-        .from('templates')
+        .from('content_templates')
         .insert(templateToInsert)
         .select();
 

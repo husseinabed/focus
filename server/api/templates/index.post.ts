@@ -1,5 +1,6 @@
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server';
 import { createError } from 'h3';
+import { resolveWorkspaceId } from '~~/server/utils/workspace';
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
@@ -12,35 +13,37 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const workspaceId = user.app_metadata?.workspace_id;
-  if (!workspaceId) {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Forbidden: Missing workspace ID or workspace_id in app_metadata',
-    });
-  }
+  const workspaceId = user.app_metadata?.workspace_id || await resolveWorkspaceId(client, user);
 
   const body = await readBody(event);
 
   // Basic validation
-  if (!body.name || !body.category || !body.language || !body.body) {
+  if (!body.title || !body.category || !body.channel || !body.status || !body.locales) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Bad Request: Missing required template fields (name, category, language, body)',
+      statusMessage:
+        'Bad Request: Missing required template fields (title, category, channel, status, locales)',
     });
   }
 
+  const key = body.key || `${body.title}`.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
+
   const { data, error } = await client
-    .from('templates')
+    .from('content_templates')
     .insert({
       workspace_id: workspaceId,
-      created_by: user.id,
-      name: body.name,
+      key,
+      title: body.title,
       category: body.category,
-      language: body.language,
-      body: body.body,
-      variables: body.variables || {},
-      is_active: body.is_active !== undefined ? body.is_active : true,
+      channel: body.channel,
+      status: body.status,
+      locales: body.locales,
+      variants: body.variants || {},
+      variables_schema: body.variables_schema || {},
+      defaults: body.defaults || {},
+      rules: body.rules || {},
+      compliance: body.compliance || {},
+      tags: body.tags || [],
     })
     .select();
 

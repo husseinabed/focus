@@ -1,155 +1,246 @@
-import { ref, computed } from "vue";
-import type { Lead } from "~/types/leads";
+import { computed, reactive, ref, watch } from "vue";
+import { useSupabaseClient } from "#imports";
+import { useWorkspaceStore } from "~/stores/workspace";
+import type { AggregatedCounts, Lead } from "~/types/leads";
 
 interface UseLeadsOptions {
-  q?: string;
-  status?: string;
-  source?: string;
-  language?: string;
-  city?: string;
-  has_website?: boolean;
-  has_phone?: boolean;
-  page?: number;
-  pageSize?: number;
-  sort?: string;
+  // Reserved for future options.
 }
 
-export function useLeads(options: UseLeadsOptions) {
-  const { q, status, source, language, city, has_website, has_phone, page, pageSize, sort } = options;
+const EMPTY_COUNTS: AggregatedCounts = {
+  total: 0,
+  new: 0,
+  pending_approval: 0,
+  replied_today: 0,
+};
 
-  // Dummy data for now
-  const allLeads: Lead[] = [
-    {
-      id: "1",
-      full_name: "John Doe",
-      company_name: "Acme Corp",
-      tags: ["tech"],
-      status: "new",
-      source: "google_maps",
-      phone: "123-456-7890",
-      city: "New York",
-      updated_at: new Date().toISOString(),
-      priority: "high",
-      language: "en",
-    },
-    {
-      id: "2",
-      full_name: "Jane Smith",
-      company_name: "Globex Inc",
-      tags: ["marketing"],
-      status: "contacted",
-      source: "manual",
-      phone: "098-765-4321",
-      city: "London",
-      updated_at: new Date().toISOString(),
-      priority: "medium",
-      language: "en",
-    },
-    {
-      id: "3",
-      full_name: "Peter Jones",
-      company_name: "Stark Industries",
-      tags: ["development"],
-      status: "qualified",
-      source: "import",
-      phone: "111-222-3333",
-      city: "New York",
-      updated_at: new Date().toISOString(),
-      priority: "low",
-      language: "en",
-    },
-    {
-      id: "4",
-      full_name: "Alice Brown",
-      company_name: "Wayne Enterprises",
-      tags: ["sales"],
-      status: "proposal",
-      source: "google_maps",
-      phone: "444-555-6666",
-      city: "London",
-      updated_at: new Date().toISOString(),
-      priority: "high",
-      language: "en",
-    },
-    {
-      id: "5",
-      full_name: "Robert White",
-      company_name: "Cyberdyne Systems",
-      tags: ["tech"],
-      status: "won",
-      source: "manual",
-      phone: "777-888-9999",
-      city: "Paris",
-      updated_at: new Date().toISOString(),
-      priority: "medium",
-      language: "en",
-    },
-  ];
+export function useLeads(options: UseLeadsOptions = {}) {
+  const supabase = useSupabaseClient();
+  const workspaceStore = useWorkspaceStore();
+  const workspaceId = computed(() => workspaceStore.activeWorkspaceId);
 
-  const filteredLeads = computed(() => {
-    let tempLeads = allLeads;
-
-    if (q) {
-      tempLeads = tempLeads.filter(
-        (lead) =>
-          (lead.full_name && lead.full_name.toLowerCase().includes(q.toLowerCase())) ||
-          lead.company_name.toLowerCase().includes(q.toLowerCase()) ||
-          (lead.city && lead.city.toLowerCase().includes(q.toLowerCase()))
-      );
-    }
-    if (status && status !== "all") {
-      tempLeads = tempLeads.filter((lead) => lead.status === status);
-    }
-    if (source && source !== "any") {
-      tempLeads = tempLeads.filter((lead) => lead.source === source);
-    }
-    if (language && language !== "any") {
-      tempLeads = tempLeads.filter((lead) => lead.language === language);
-    }
-    if (city) {
-      tempLeads = tempLeads.filter(
-        (lead) => lead.city && lead.city.toLowerCase().includes(city.toLowerCase())
-      );
-    }
-    // has_website and has_phone logic omitted as fields are optional/missing in dummy data used here simply
-
-    // Sorting
-    if (sort) {
-      tempLeads = [...tempLeads].sort((a, b) => {
-        if (sort === "created_at desc") {
-            // using updated_at as proxy
-          return new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime(); 
-        } else if (sort === "updated_at desc") {
-          return new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime();
-        } else if (sort === "priority desc") {
-            const priorityOrder = { high: 3, medium: 2, low: 1 };
-            return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
-        }
-        return 0;
-      });
-    }
-
-    return tempLeads;
+  const filters = reactive({
+    q: "",
+    status: undefined as string | undefined,
+    source: undefined as string | undefined,
+    language: undefined as string | undefined,
+    city: "",
+    has_website: false,
+    has_phone: false,
   });
 
-  const totalLeads = computed(() => filteredLeads.value.length);
+  const sort = ref("created_at desc");
+  const page = ref(1);
+  const pageCount = ref(10);
+  const pending = ref(false);
+  const error = ref<string | null>(null);
+  const leads = ref<Lead[]>([]);
+  const total = ref(0);
+  const aggregatedCounts = ref<AggregatedCounts>({ ...EMPTY_COUNTS });
 
-  const paginatedLeads = computed(() => {
-    const start = ((page || 1) - 1) * (pageSize || 10);
-    const end = start + (pageSize || 10);
-    return filteredLeads.value.slice(start, end);
+  const resolveSort = (value: unknown) => {
+    if (typeof value === "string" && value.trim()) {
+      return value.trim();
+    }
+    if (
+      value &&
+      typeof value === "object" &&
+      typeof (value as { value?: string }).value === "string"
+    ) {
+      return (value as { value: string }).value;
+    }
+    return "created_at desc";
+  };
+
+  const applyFilters = (query: any) => {
+    if (!workspaceId.value) {
+      return query;
+    }
+
+    let filtered = query.eq("workspace_id", workspaceId.value);
+
+    if (filters.q) {
+      const searchTerm = filters.q.trim();
+      if (searchTerm) {
+        filtered = filtered.or(
+          `full_name.ilike.%${searchTerm}%,company_name.ilike.%${searchTerm}%,city.ilike.%${searchTerm}%`
+        );
+      }
+    }
+    if (filters.status) {
+      filtered = filtered.eq("status", filters.status);
+    }
+    if (filters.source) {
+      filtered = filtered.eq("source", filters.source);
+    }
+    if (filters.language) {
+      filtered = filtered.eq("language", filters.language);
+    }
+    if (filters.city) {
+      filtered = filtered.ilike("city", `%${filters.city}%`);
+    }
+    if (filters.has_website) {
+      filtered = filtered.not("website", "is", null).neq("website", "");
+    }
+    if (filters.has_phone) {
+      filtered = filtered.not("phone", "is", null).neq("phone", "");
+    }
+
+    return filtered;
+  };
+
+  const applySort = (query: any) => {
+    const sortString = resolveSort(sort.value);
+    const [sortKey, sortDir] = sortString.split(" ");
+    const ascending = sortDir === "asc";
+    const column =
+      sortKey === "name" ? "full_name" : sortKey === "last_activity" ? "updated_at" : sortKey;
+
+    return query.order(column, { ascending, nullsFirst: false });
+  };
+
+  const fetchLeads = async () => {
+     
+    if (!workspaceId.value) {
+      leads.value = [];
+      total.value = 0;
+      return;
+    }
+
+    pending.value = true;
+    error.value = null;
+  console.log(error.value);
+    try {
+      const from = (page.value - 1) * pageCount.value;
+      const to = from + pageCount.value - 1;
+
+      let query = supabase
+        .from("leads")
+        .select(
+          "id, full_name, company_name, tags, status, source, phone, city, updated_at, priority, language, created_at, website",
+          { count: "exact" }
+        );
+
+      query = applyFilters(query);
+      query = applySort(query);
+
+      const { data, error: queryError, count } = await query.range(from, to);
+     
+        
+      if (queryError) {
+        throw queryError;
+      }
+
+      leads.value =
+        (data as Lead[] | null)?.map((lead) => ({
+          ...lead,
+          last_activity: lead.last_activity || lead.updated_at,
+          whatsapp_capable:
+            typeof lead.whatsapp_capable === "boolean"
+              ? lead.whatsapp_capable
+              : !!lead.phone,
+        })) || [];
+      total.value = count ?? 0;
+    } catch (err: any) {
+      error.value = err?.message || "Failed to load leads.";
+    } finally {
+      pending.value = false;
+    }
+  };
+
+  const fetchAggregates = async () => {
+    if (!workspaceId.value) {
+      aggregatedCounts.value = { ...EMPTY_COUNTS };
+      return;
+    }
+
+    try {
+      const [totalResult, newResult] = await Promise.all([
+        supabase
+          .from("leads")
+          .select("id", { count: "exact", head: true })
+          .eq("workspace_id", workspaceId.value),
+        supabase
+          .from("leads")
+          .select("id", { count: "exact", head: true })
+          .eq("workspace_id", workspaceId.value)
+          .eq("status", "new"),
+      ]);
+
+      if (totalResult.error) {
+        throw totalResult.error;
+      }
+      if (newResult.error) {
+        throw newResult.error;
+      }
+
+      aggregatedCounts.value = {
+        total: totalResult.count ?? 0,
+        new: newResult.count ?? 0,
+        pending_approval: 0,
+        replied_today: 0,
+      };
+    } catch (err: any) {
+      error.value = err?.message || "Failed to load lead counts.";
+    }
+  };
+
+  const refresh = async () => {
+    await Promise.all([fetchLeads(), fetchAggregates()]);
+  };
+
+  watch(
+    () => [
+      workspaceId.value,
+      filters.q,
+      filters.status,
+      filters.source,
+      filters.language,
+      filters.city,
+      filters.has_website,
+      filters.has_phone,
+    ],
+    () => {
+      if (page.value !== 1) {
+        page.value = 1;
+        return;
+      }
+      refresh();
+    },
+    { immediate: true }
+  );
+
+  watch([page, pageCount, sort], () => {
+    refresh();
   });
 
-  const aggregatedCounts = computed(() => ({
-    total: allLeads.length,
-    new: allLeads.filter((lead) => lead.status === "new").length,
-    pending_approval: 0, // Placeholder
-    replied_today: 0, // Placeholder
-  }));
+  if (typeof window !== "undefined") {
+    (window as any).leadsComposableState = {
+      filters,
+      sort,
+      page,
+      pageCount,
+      pending,
+      error,
+      leads,
+      total,
+      aggregatedCounts,
+    };
+    console.log(
+      "useLeads state exposed for debugging. 'leadsComposableState' object available in console."
+    );
+  }
 
   return {
-    leads: paginatedLeads,
-    total: totalLeads,
+    leads,
+    total,
     aggregatedCounts,
+    pending,
+    error,
+    refresh,
+    filters,
+    sort,
+    page,
+    pageCount,
   };
 }

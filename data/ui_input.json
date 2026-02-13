@@ -1,0 +1,1318 @@
+{
+  "brand_strategy": {
+    "schema_version": "1.0.0",
+    "confidence": "high",
+    "positioning": "Focus AI is the AI-powered digital growth system designed specifically for Israeli SMBs and service businesses, delivering high-converting, multilingual websites optimized for local lead generation and direct client engagement via WhatsApp.",
+    "value_proposition": "For Israeli SMBs and service professionals, Focus AI provides a fast, integrated solution to launch a professionally designed, multilingual website that attracts local customers and converts visitors into direct WhatsApp leads, simplifying your digital growth.",
+    "audience_segments": [
+      {
+        "segment": "Local SMB Owners",
+        "pains": [
+          "Struggling to get online or update an outdated website",
+          "Difficulty attracting new local customers online",
+          "Lack of time and technical skills to manage digital marketing",
+          "High costs associated with website development and agencies",
+          "Ineffective lead generation channels for local business"
+        ],
+        "desired_outcomes": [
+          "A professional, modern website quickly and affordably",
+          "Increased visibility and inquiries from local customers",
+          "Easy-to-manage online presence without technical hassle",
+          "Reliable system for generating direct leads",
+          "Effective communication channel with potential clients"
+        ],
+        "decision_criteria": [
+          "Ease of use and fast setup",
+          "Cost-effectiveness and clear pricing",
+          "Ability to generate tangible business leads (e.g., WhatsApp inquiries)",
+          "Relevance to the Israeli market and language support (EN/HE/AR)",
+          "Reliable support and minimal maintenance"
+        ],
+        "top_objections": [
+          "AI websites are generic and won't stand out",
+          "I don't have the technical skills to manage a website",
+          "It's too expensive compared to DIY options",
+          "Will it actually bring me customers?",
+          "I'm not sure about relying on AI for my business image"
+        ]
+      },
+      {
+        "segment": "Service Businesses (Lawyers, Dentists, Clinics, Real Estate)",
+        "pains": [
+          "Need to establish trust and credibility online",
+          "Difficulty converting website visitors into appointments/consultations",
+          "Managing multiple languages for a diverse client base",
+          "Inefficient ways to capture serious client inquiries",
+          "Standing out in a competitive local market"
+        ],
+        "desired_outcomes": [
+          "A professional, trustworthy online presence that converts",
+          "Streamlined process for client inquiry and appointment booking",
+          "Website that communicates effectively in all relevant languages",
+          "Consistent flow of qualified leads",
+          "Strong local SEO visibility"
+        ],
+        "decision_criteria": [
+          "Professional design and brand representation",
+          "Effective lead capture (especially WhatsApp integration)",
+          "Multilingual capabilities (EN/HE/AR)",
+          "Security and reliability for client data",
+          "Testimonials and proof of results for similar businesses"
+        ],
+        "top_objections": [
+          "My business is unique, an AI builder might not fit my specific needs",
+          "How will I handle client inquiries through WhatsApp effectively?",
+          "Is it secure for sensitive client information?",
+          "Can it integrate with my existing booking/CRM systems?",
+          "Will it reflect the professionalism required for my industry?"
+        ]
+      },
+      {
+        "segment": "Small Agencies Serving Local Clients",
+        "pains": [
+          "Time-consuming website development for clients",
+          "Limited resources for multilingual site builds",
+          "Difficulty offering integrated lead generation solutions to clients",
+          "Need to deliver fast, cost-effective solutions to compete",
+          "Managing client communication across multiple platforms"
+        ],
+        "desired_outcomes": [
+          "Efficient and fast website delivery for clients",
+          "Ability to offer comprehensive multilingual website solutions",
+          "Integrated lead generation features (like WhatsApp) for clients",
+          "Scalable solution for managing multiple client websites",
+          "Tools for client collaboration and reporting"
+        ],
+        "decision_criteria": [
+          "Speed and efficiency of website creation",
+          "Robust multilingual functionality",
+          "Lead generation and CRO capabilities for clients",
+          "Scalability and agency-friendly features",
+          "Cost-efficiency for client projects"
+        ],
+        "top_objections": [
+          "Will this tool give me enough control for client-specific designs?",
+          "Can I manage multiple client accounts easily?",
+          "Is the white-labeling or partnership program suitable?",
+          "How does it compare to other agency-focused platforms?",
+          "Will my clients perceive it as a 'cheap' solution?"
+        ]
+      }
+    ],
+    "differentiators": [
+      {
+        "statement": "Hyper-local focus for the Israeli market",
+        "proof_types": ["local_presence", "case_study"],
+        "notes": "Specific examples of Israeli businesses achieving success, mention of local team."
+      },
+      {
+        "statement": "Integrated high-converting multilingual websites (EN/HE/AR)",
+        "proof_types": ["demo", "process_transparency"],
+        "notes": "Show the ease of managing content across languages and conversion features."
+      },
+      {
+        "statement": "Unique WhatsApp-first lead capture for direct client engagement",
+        "proof_types": ["demo", "case_study"],
+        "notes": "Highlight how the system funnels leads directly to WhatsApp, a preferred local channel."
+      },
+      {
+        "statement": "A complete 'digital growth system' tailored for SMBs, not just a website builder",
+        "proof_types": ["process_transparency", "demo"],
+        "notes": "Explain integrated features beyond site building, e.g., local SEO tools, analytics for growth."
+      },
+      {
+        "statement": "Fast launch with AI-assisted setup without technical jargon",
+        "proof_types": ["speed", "demo"],
+        "notes": "Emphasize speed and simplicity of setup, showing the AI's role in a few clear steps."
+      }
+    ],
+    "tone": {
+      "attributes": [
+        "Confident",
+        "Supportive",
+        "Professional",
+        "Outcome-focused",
+        "Direct"
+      ],
+      "do": "Use clear, benefit-led language. Address SMB challenges directly. Sound knowledgeable and empowering.",
+      "avoid": "Overly technical jargon, marketing hype, casual language, sounding generic or global."
+    },
+    "voice_rules": [
+      {
+        "rule": "Prioritize direct benefits and outcomes for local SMBs.",
+        "example_do": {
+          "en": "Attract more local clients and grow your business with a website built for conversions.",
+          "he": "משוך יותר לקוחות מקומיים והגדל את העסק שלך עם אתר שנבנה להמרות.",
+          "ar": "اجذب المزيد من العملاء المحليين ونمي عملك من خلال موقع ويب مصمم للتحويلات."
+        },
+        "example_dont": {
+          "en": "Our AI-powered platform leverages cutting-edge algorithms for optimized digital footprint.",
+          "he": "הפלטפורמה המונעת ב-AI שלנו ממנפת אלגוריתמים מתקדמים לטביעת רגל דיגיטלית אופטימלית.",
+          "ar": "تستخدم منصتنا المدعومة بالذكاء الاصطناعي خوارزميات متطورة لبصمة رقمية محسنة."
+        }
+      },
+      {
+        "rule": "Emphasize simplicity and speed for non-technical users.",
+        "example_do": {
+          "en": "Launch your professional website in days, not months, with AI-guided setup.",
+          "he": "הפעל את האתר המקצועי שלך תוך ימים, לא חודשים, עם הגדרה מודרכת AI.",
+          "ar": "أطلق موقعك الاحترافي في أيام، وليس أشهر، بإعداد موجه بالذكاء الاصطناعي."
+        },
+        "example_dont": {
+          "en": "Leverage our robust CMS and intuitive drag-and-drop interface for seamless content management.",
+          "he": "השתמש במערכת ניהול התוכן החזקה ובממשק הגרירה והשחרור האינטואיטיבי שלנו לניהול תוכן חלק.",
+          "ar": "استفد من نظام إدارة المحتوى القوي وواجهة السحب والإفلات البديهية لإدارة محتوى سلسة."
+        }
+      },
+      {
+        "rule": "Highlight the 'WhatsApp-first' and multilingual advantages as core features.",
+        "example_do": {
+          "en": "Connect directly with customers via WhatsApp from your multilingual website.",
+          "he": "התחבר ישירות ללקוחות בוואטסאפ דרך האתר הרב-לשוני שלך.",
+          "ar": "تواصل مباشرة مع العملاء عبر الواتساب من موقعك الإلكتروني متعدد اللغات."
+        },
+        "example_dont": {
+          "en": "We offer integrated messaging solutions and localization options.",
+          "he": "אנו מציעים פתרונות מסרים משולבים ואפשרויות לוקליזציה.",
+          "ar": "نحن نقدم حلول مراسلة متكاملة وخيارات توطين."
+        }
+      }
+    ],
+    "messaging_pillars": [
+      {
+        "pillar": "Local Growth & Leads",
+        "key_points": [
+          "Specifically designed to help Israeli SMBs attract and convert local customers.",
+          "Generate direct, qualified leads through WhatsApp, a preferred local communication channel.",
+          "Enhance your local online presence and visibility for greater impact."
+        ],
+        "best_proof": ["case_study", "demo", "review"]
+      },
+      {
+        "pillar": "Effortless Multilingual Presence",
+        "key_points": [
+          "Build a high-converting website seamlessly in English, Hebrew, and Arabic.",
+          "Reach a broader audience and serve diverse client needs across Israel.",
+          "Manage all language versions easily without complex manual translation."
+        ],
+        "best_proof": ["demo", "process_transparency"]
+      },
+      {
+        "pillar": "AI-Powered Simplicity & Speed",
+        "key_points": [
+          "Launch a professional, modern website rapidly with intuitive AI guidance.",
+          "No technical skills required; Focus AI handles the complexities.",
+          "Free up your time to focus on your business, not website management."
+        ],
+        "best_proof": ["demo", "speed"]
+      },
+      {
+        "pillar": "Trust-First Conversions",
+        "key_points": [
+          "Websites built with conversion rate optimization (CRO) best practices.",
+          "Integrate clear trust signals to build credibility with your audience.",
+          "Designed to turn visitors into valuable inquiries and clients."
+        ],
+        "best_proof": ["case_study", "process_transparency"]
+      }
+    ],
+    "trust_strategy": [
+      {
+        "type": "local_presence",
+        "what_to_show": [
+          "Testimonials from local Israeli businesses with names, photos, and specific results.",
+          "Examples of websites built for Israeli businesses (e.g., in Tel Aviv, Jerusalem, Haifa)."
+        ],
+        "where_to_show": ["hero", "above_fold", "mid_page", "near_cta"]
+      },
+      {
+        "type": "social_proof",
+        "what_to_show": [
+          "Case studies detailing specific growth/lead generation results for SMBs.",
+          "Quantifiable metrics (e.g., 'X% increase in WhatsApp inquiries', 'Y new leads per month')."
+        ],
+        "where_to_show": ["mid_page", "near_cta"]
+      },
+      {
+        "type": "process_transparency",
+        "what_to_show": [
+          "Clear steps of the AI-assisted setup process.",
+          "Description of how the WhatsApp integration works end-to-end.",
+          "Explaining the multilingual content management workflow."
+        ],
+        "where_to_show": ["above_fold", "mid_page"]
+      },
+      {
+        "type": "authority",
+        "what_to_show": [
+          "Logos of well-known Israeli SMBs or service professionals using the platform (if applicable and permission granted)."
+        ],
+        "where_to_show": ["above_fold", "footer"]
+      }
+    ],
+    "objections_and_responses": [
+      {
+        "objection": "AI websites are generic and won't stand out or reflect my unique business.",
+        "response_angle": "Focus AI is tailored for the Israeli market and offers customization, not generic templates.",
+        "proof_required": ["demo", "case_study"]
+      },
+      {
+        "objection": "I don't have the technical skills or time to build and manage a website.",
+        "response_angle": "Our AI-guided system is designed for non-technical users, ensuring fast and easy setup and management.",
+        "proof_required": ["demo", "speed"]
+      },
+      {
+        "objection": "Will this actually bring me customers and leads?",
+        "response_angle": "Focus AI is a digital growth system built for conversions, with WhatsApp-first lead capture to drive direct client engagement.",
+        "proof_required": ["case_study", "demo"]
+      },
+      {
+        "objection": "It's too expensive, or I can get a cheaper website elsewhere.",
+        "response_angle": "Focus AI offers a comprehensive, high-converting digital growth system specific to your market, providing greater value and ROI than basic builders.",
+        "proof_required": ["pricing_transparency", "case_study"]
+      },
+      {
+        "objection": "How reliable and secure is the platform?",
+        "response_angle": "We provide a robust, secure, and reliable platform, ensuring your business's online presence is always professional and protected.",
+        "proof_required": ["process_transparency"]
+      }
+    ],
+    "cta_strategy": {
+      "primary": {
+        "label": {
+          "en": "Start WhatsApp Chat",
+          "he": "התחל צ'אט בוואטסאפ",
+          "ar": "ابدأ محادثة واتساب"
+        },
+        "action": "Initiate a direct WhatsApp conversation with sales/support.",
+        "channel": "whatsapp",
+        "friction_level": "low"
+      },
+      "secondary": {
+        "label": {
+          "en": "See How It Works",
+          "he": "ראה איך זה עובד",
+          "ar": "شاهد كيف يعمل"
+        },
+        "action": "View a demo or process overview of the platform.",
+        "channel": "booking",
+        "friction_level": "medium"
+      }
+    },
+    "claims_policy": {
+      "allowed": [
+        "AI-powered website building for local businesses",
+        "Multilingual support for EN/HE/AR",
+        "WhatsApp-first lead capture",
+        "Fast website launch",
+        "Optimized for conversions",
+        "Designed for non-technical users",
+        "Digital growth system for SMBs"
+      ],
+      "restricted": [
+        "Guaranteed specific number of leads/sales",
+        "Being the 'best' or 'number one' AI builder globally without specific proof",
+        "Claims of 'free' without clear limitations",
+        "Unsubstantiated claims about market dominance"
+      ],
+      "requires_proof": [
+        "High-converting (requires case studies/metrics)",
+        "Fast launch (requires speed metrics/demo)",
+        "Easy to use (requires demo/testimonials)",
+        "Secure/Reliable (requires process transparency)",
+        "Generating leads/growth (requires case studies/metrics)"
+      ]
+    },
+    "localization_notes": {
+      "en": [
+        "Focus on clear, benefit-led language that highlights efficiency and lead generation.",
+        "Use 'WhatsApp' as it's universally understood.",
+        "Emphasize the 'digital growth system' aspect to convey comprehensive value."
+      ],
+      "he": [
+        "Maintain a professional and concise tone, avoiding exaggeration.",
+        "Highlight the relevance of WhatsApp as a primary business communication tool in Israel.",
+        "Emphasize ease of use and local market understanding.",
+        "Ensure RTL (Right-To-Left) support is visibly part of the offering."
+      ],
+      "ar": [
+        "Adopt a respectful, confident, and outcome-focused tone.",
+        "Stress the practical outcomes for business owners, like increased leads and efficiency.",
+        "Clearly communicate the benefit of integrated Arabic language support for reaching a wider customer base.",
+        "Ensure RTL (Right-To-Left) support is visibly part of the offering."
+      ]
+    }
+  },
+  "ux_sitemap": {
+    "schema_version": "1.0.0",
+    "confidence": "high",
+    "sitemap": [
+      {
+        "slug": "/",
+        "title_key": "Home",
+        "purpose": "Introduce Focus AI, articulate core value proposition, capture immediate interest, and drive visitors to initiate a WhatsApp chat or explore the 'How it Works' section.",
+        "priority": "p0",
+        "audience": ["Local SMB Owners", "Service Businesses", "Small Agencies"]
+      },
+      {
+        "slug": "/how-it-works",
+        "title_key": "How It Works",
+        "purpose": "Educate visitors on Focus AI's process, features, and benefits, building trust through transparency and clarity. Reinforce ease of use, speed, and unique multilingual/WhatsApp capabilities.",
+        "priority": "p1",
+        "audience": ["Local SMB Owners", "Service Businesses", "Small Agencies"]
+      },
+      {
+        "slug": "/success-stories",
+        "title_key": "Success Stories",
+        "purpose": "Provide compelling evidence of Focus AI's effectiveness, building strong trust through social proof and tangible results from local Israeli businesses.",
+        "priority": "p1",
+        "audience": ["Local SMB Owners", "Service Businesses", "Small Agencies"]
+      },
+      {
+        "slug": "/pricing",
+        "title_key": "Pricing",
+        "purpose": "Clearly present pricing options, demonstrate value relative to cost, and address affordability concerns, leading to an informed WhatsApp inquiry.",
+        "priority": "p1",
+        "audience": ["Local SMB Owners", "Service Businesses", "Small Agencies"]
+      },
+      {
+        "slug": "/contact",
+        "title_key": "Contact Us",
+        "purpose": "Provide clear and multiple channels for users to get in touch with Focus AI, reinforcing availability, support, and local presence.",
+        "priority": "p2",
+        "audience": ["Local SMB Owners", "Service Businesses", "Small Agencies"]
+      }
+    ],
+    "user_flows": [
+      {
+        "flow_id": "whatsapp_lead_conversion",
+        "name": "First-time Visitor to WhatsApp Lead",
+        "primary_entry_points": ["/"],
+        "steps": [
+          {
+            "step": "Visit Home Page",
+            "user_intent": "Understand Focus AI's core offering and relevance to their business needs.",
+            "page_or_section_ref": "Home / Hero",
+            "trust_needed": [
+              "Initial credibility",
+              "Local relevance",
+              "Clear value proposition"
+            ],
+            "cta": null
+          },
+          {
+            "step": "Engage with Problem/Solution/Differentiators",
+            "user_intent": "Identify with their business challenges and see Focus AI as a viable solution.",
+            "page_or_section_ref": "Home / Problem, Solution, Key Differentiators",
+            "trust_needed": ["Empathy", "Solution credibility"],
+            "cta": null
+          },
+          {
+            "step": "Review Quick How It Works / Social Proof",
+            "user_intent": "Build confidence in the process and see evidence of real-world success.",
+            "page_or_section_ref": "Home / How It Works (Brief Steps), Social Proof",
+            "trust_needed": ["Process transparency", "Social proof"],
+            "cta": "Micro-CTA: Read success stories"
+          },
+          {
+            "step": "Initiate WhatsApp Chat",
+            "user_intent": "Get personalized information, discuss specific business needs, or clarify questions.",
+            "page_or_section_ref": "Home / Footer CTA",
+            "trust_needed": ["Sufficient confidence to engage directly"],
+            "cta": "Primary CTA: Start WhatsApp Chat"
+          }
+        ],
+        "success_event": "WhatsApp chat initiated"
+      },
+      {
+        "flow_id": "detailed_inquiry_to_lead",
+        "name": "Detailed Inquiry & Objection Handling to WhatsApp Lead",
+        "primary_entry_points": ["/"],
+        "steps": [
+          {
+            "step": "Visit Home Page",
+            "user_intent": "Gain a basic understanding of Focus AI.",
+            "page_or_section_ref": "Home / Hero",
+            "trust_needed": ["Initial credibility"],
+            "cta": null
+          },
+          {
+            "step": "Explore 'How It Works' Page",
+            "user_intent": "Understand the AI-assisted setup, multilingual capabilities, and WhatsApp integration in detail.",
+            "page_or_section_ref": "Home / Secondary CTA (See How It Works) -> How It Works Page",
+            "trust_needed": [
+              "Process transparency",
+              "Ease of use",
+              "Feature clarity"
+            ],
+            "cta": "Micro-CTA: See full process"
+          },
+          {
+            "step": "Review 'Success Stories' Page",
+            "user_intent": "Seek concrete evidence of ROI and success for businesses similar to theirs.",
+            "page_or_section_ref": "How It Works / Secondary CTA (See Success Stories) -> Success Stories Page",
+            "trust_needed": ["Quantifiable social proof", "Local presence"],
+            "cta": null
+          },
+          {
+            "step": "Review 'Pricing' Page",
+            "user_intent": "Evaluate the cost-effectiveness and value proposition of Focus AI's plans.",
+            "page_or_section_ref": "Success Stories / Navbar -> Pricing Page",
+            "trust_needed": ["Pricing transparency", "Value for money"],
+            "cta": "Micro-CTA: Start WhatsApp Chat (within pricing plans)"
+          },
+          {
+            "step": "Initiate WhatsApp Chat",
+            "user_intent": "Discuss specific needs, clarify plan details, or request a custom solution after gathering sufficient information.",
+            "page_or_section_ref": "Any page / Primary CTA",
+            "trust_needed": ["High confidence in value and solution"],
+            "cta": "Primary CTA: Start WhatsApp Chat"
+          }
+        ],
+        "success_event": "WhatsApp chat initiated"
+      }
+    ],
+    "page_outlines": [
+      {
+        "slug": "/",
+        "page_goal": "Capture immediate interest, articulate core value proposition, and drive visitors to initiate a WhatsApp chat or explore the 'How it Works' section.",
+        "primary_cta": {
+          "label": {
+            "en": "Start WhatsApp Chat",
+            "he": "התחל צ'אט בוואטסאפ",
+            "ar": "ابدأ محادثة واتساب"
+          },
+          "channel": "whatsapp",
+          "friction_level": "low"
+        },
+        "secondary_cta": {
+          "label": {
+            "en": "See How It Works",
+            "he": "ראה איך זה עובד",
+            "ar": "شاهد كيف يعمل"
+          },
+          "channel": "booking",
+          "friction_level": "medium"
+        },
+        "sections": [
+          {
+            "id": "hero_main",
+            "type": "hero",
+            "intent": "Immediately hook attention, state the core value proposition, and provide primary conversion paths.",
+            "content_requirements": [
+              "Benefit-led headline (e.g., 'Grow Your Israeli Business with AI-Powered Websites')",
+              "Sub-headline emphasizing AI, speed, multilingual (EN/HE/AR), and WhatsApp leads.",
+              "Compelling visual (e.g., local business thriving, AI interface snippet).",
+              "Primary and Secondary Call-to-Actions."
+            ],
+            "trust_elements": [
+              "Local relevance",
+              "Immediate value proposition"
+            ],
+            "cta": {
+              "kind": "primary",
+              "placement": "in_section"
+            }
+          },
+          {
+            "id": "problem_statement",
+            "type": "problem",
+            "intent": "Empathize with the target audience by clearly outlining their common challenges.",
+            "content_requirements": [
+              "3-4 common pain points for Israeli SMBs/service businesses (e.g., 'Struggling to get online?', 'Difficulty attracting local customers?', 'Website too expensive/complex?')."
+            ],
+            "trust_elements": [
+              "Empathy",
+              "Understanding of local market needs"
+            ],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "solution_overview",
+            "type": "solution",
+            "intent": "Briefly introduce Focus AI as the integrated, AI-powered solution to the identified problems.",
+            "content_requirements": [
+              "Short paragraph on how Focus AI solves these challenges (AI-powered, multilingual, WhatsApp leads, simplicity).",
+              "A compelling visual that hints at the platform or results."
+            ],
+            "trust_elements": ["Credibility of solution"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "value_pillars",
+            "type": "benefits",
+            "intent": "Highlight Focus AI's key differentiators and core value propositions.",
+            "content_requirements": [
+              "3-4 distinct value pillars/differentiators (e.g., 'Hyper-local focus for Israel', 'Integrated multilingual websites', 'WhatsApp-first leads', 'Complete digital growth system').",
+              "Brief explanation for each, linking back to benefits."
+            ],
+            "trust_elements": [
+              "Unique value proposition",
+              "Clear competitive advantage"
+            ],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "how_it_works_brief",
+            "type": "process",
+            "intent": "Demystify the AI-assisted setup process, showcasing its ease and speed in a few simple steps.",
+            "content_requirements": [
+              "3-step overview of the Focus AI setup (e.g., '1. Tell AI Your Business', '2. Launch Your Site', '3. Get WhatsApp Leads').",
+              "Simple icons or visuals for each step."
+            ],
+            "trust_elements": ["Process transparency", "Ease of use"],
+            "cta": {
+              "kind": "micro",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "social_proof_home",
+            "type": "proof",
+            "intent": "Build initial trust through concise testimonials from local Israeli businesses.",
+            "content_requirements": [
+              "2-3 impactful testimonials from local Israeli SMB owners with names and photos (if available).",
+              "Optional: Logos of businesses (if permission granted)."
+            ],
+            "trust_elements": [
+              "Social proof",
+              "Local presence",
+              "Authority (via logos)"
+            ],
+            "cta": {
+              "kind": "micro",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "faq_home",
+            "type": "faq",
+            "intent": "Proactively address common questions and objections to build confidence.",
+            "content_requirements": [
+              "3-4 top FAQs relevant to first-time visitors (e.g., 'Is AI generic?', 'Do I need technical skills?', 'Will it bring me customers?').",
+              "Concise, confident answers."
+            ],
+            "trust_elements": ["Transparency", "Authority"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "footer_cta_home",
+            "type": "footer_cta",
+            "intent": "Provide a final, prominent call to action before the page concludes.",
+            "content_requirements": [
+              "Reiterate the primary benefit statement.",
+              "Primary Call-to-Action button."
+            ],
+            "trust_elements": ["Reinforcement of value"],
+            "cta": {
+              "kind": "primary",
+              "placement": "end_of_section"
+            }
+          }
+        ],
+        "notes": [
+          "Ensure visuals and language consistently reflect the Israeli market and multilingual capabilities.",
+          "RTL compatibility should be tested for all textual and directional elements."
+        ]
+      },
+      {
+        "slug": "/how-it-works",
+        "page_goal": "Educate visitors on Focus AI's process, features, and benefits, building trust through transparency and clarity. Reinforce ease of use, speed, and unique multilingual/WhatsApp capabilities.",
+        "primary_cta": {
+          "label": {
+            "en": "Start WhatsApp Chat",
+            "he": "התחל צ'אט בוואטסאפ",
+            "ar": "ابدأ محادثة واتساب"
+          },
+          "channel": "whatsapp",
+          "friction_level": "low"
+        },
+        "secondary_cta": {
+          "label": {
+            "en": "See Success Stories",
+            "he": "ראה סיפורי הצלחה",
+            "ar": "شاهد قصص النجاح"
+          },
+          "channel": "booking",
+          "friction_level": "medium"
+        },
+        "sections": [
+          {
+            "id": "hero_how_it_works",
+            "type": "hero",
+            "intent": "Introduce the purpose of the page and set expectations for understanding Focus AI's functionality.",
+            "content_requirements": [
+              "Headline: 'How Focus AI Works: Your Path to Digital Growth'.",
+              "Sub-headline: Emphasizing AI-powered, multilingual, and WhatsApp-first leads.",
+              "A compelling visual illustrating the process or an easy-to-use interface.",
+              "Primary and Secondary Call-to-Actions."
+            ],
+            "trust_elements": ["Clarity", "Professionalism"],
+            "cta": {
+              "kind": "primary",
+              "placement": "in_section"
+            }
+          },
+          {
+            "id": "process_steps",
+            "type": "process",
+            "intent": "Provide a detailed, step-by-step guide to the AI-assisted setup and ongoing management of a Focus AI website.",
+            "content_requirements": [
+              "4-5 clear steps of the Focus AI process (e.g., '1. AI Business Briefing', '2. Smart Content & Design Generation', '3. Multilingual Setup & RTL Check', '4. WhatsApp Lead Integration', '5. Launch & Grow').",
+              "For each step: brief description, key benefits, and a relevant visual (e.g., screenshot or icon)."
+            ],
+            "trust_elements": ["Process transparency", "Ease of use", "Speed"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "key_features_detail",
+            "type": "features",
+            "intent": "Elaborate on Focus AI's core differentiating features, highlighting their practical benefits.",
+            "content_requirements": [
+              "**Multilingual Magic (EN/HE/AR)**: Explain seamless content management, RTL support, and reaching diverse audiences.",
+              "**WhatsApp-First Lead Capture**: Detail efficient lead funneling, customization, and direct client engagement.",
+              "**Conversion Rate Optimization (CRO)**: Explain built-in best practices for converting visitors.",
+              "**AI Content & Design Assistance**: How AI simplifies content creation and visual aesthetics.",
+              "**Local SEO Tools**: Mention features to enhance local online visibility."
+            ],
+            "trust_elements": ["Authority", "Demonstrated capability"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "benefits_summary_how_it_works",
+            "type": "benefits",
+            "intent": "Reiterate the cumulative advantages derived from Focus AI's features and process.",
+            "content_requirements": [
+              "Bullet points summarizing key benefits like 'Save time & effort', 'Attract more local clients', 'Manage easily without technical skills', 'Grow your business efficiently'."
+            ],
+            "trust_elements": ["Reinforcement of value proposition"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "social_proof_mini",
+            "type": "proof",
+            "intent": "Incorporate short, relevant testimonials specific to the ease of use or speed of setup.",
+            "content_requirements": [
+              "1-2 concise quotes from users praising the simplicity or speed of the Focus AI platform."
+            ],
+            "trust_elements": ["Social proof"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "faq_process_specific",
+            "type": "faq",
+            "intent": "Address common questions related to the setup process, technical aspects, or ongoing management.",
+            "content_requirements": [
+              "2-3 FAQs specific to 'how it works' (e.g., 'Do I need hosting?', 'How long does it take?', 'What if I need changes?')."
+            ],
+            "trust_elements": ["Transparency", "Authority"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "footer_cta_how_it_works",
+            "type": "footer_cta",
+            "intent": "Provide a final, clear call to action after the visitor has understood the process.",
+            "content_requirements": [
+              "Reiterate primary benefit statement.",
+              "Primary Call-to-Action button."
+            ],
+            "trust_elements": ["Reinforcement of value"],
+            "cta": {
+              "kind": "primary",
+              "placement": "end_of_section"
+            }
+          }
+        ],
+        "notes": [
+          "Ensure all process steps are illustrated visually and conceptually consistent across languages and RTL."
+        ]
+      },
+      {
+        "slug": "/success-stories",
+        "page_goal": "Provide compelling evidence of Focus AI's effectiveness, building strong trust through social proof and tangible results from local Israeli businesses.",
+        "primary_cta": {
+          "label": {
+            "en": "Start WhatsApp Chat",
+            "he": "התחל צ'אט בוואטסאפ",
+            "ar": "ابدأ محادثة واتساب"
+          },
+          "channel": "whatsapp",
+          "friction_level": "low"
+        },
+        "secondary_cta": {
+          "label": {
+            "en": "See How It Works",
+            "he": "ראה איך זה עובד",
+            "ar": "شاهد كيف يعمل"
+          },
+          "channel": "booking",
+          "friction_level": "medium"
+        },
+        "sections": [
+          {
+            "id": "hero_success_stories",
+            "type": "hero",
+            "intent": "Set the stage for showcasing inspiring success stories and the positive impact of Focus AI.",
+            "content_requirements": [
+              "Headline: 'Real Success Stories from Israeli SMBs'.",
+              "Sub-headline: 'See how Focus AI helps local businesses attract customers and grow'.",
+              "Visual: Diverse images of thriving local businesses.",
+              "Primary and Secondary Call-to-Actions."
+            ],
+            "trust_elements": ["Credibility", "Aspiration", "Local relevance"],
+            "cta": {
+              "kind": "primary",
+              "placement": "in_section"
+            }
+          },
+          {
+            "id": "introduction_value_proof",
+            "type": "about",
+            "intent": "Briefly explain the significance of these stories and what they collectively demonstrate about Focus AI's value.",
+            "content_requirements": [
+              "Short paragraph emphasizing Focus AI's commitment to delivering tangible results for local growth and lead generation."
+            ],
+            "trust_elements": ["Direct alignment with audience needs"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "featured_case_studies",
+            "type": "case_studies",
+            "intent": "Provide in-depth examples of how Focus AI has driven success for specific businesses, focusing on quantifiable results.",
+            "content_requirements": [
+              "2-3 detailed case studies. For each:",
+              "- Business Name & Industry (local Israeli business)",
+              "- The Challenge they faced (before Focus AI)",
+              "- How Focus AI provided the Solution (mentioning specific features like multilingual, WhatsApp integration, AI-assist)",
+              "- Quantifiable Results (e.g., 'X% increase in WhatsApp inquiries', 'Y new clients per month', 'Z time saved')",
+              "- A compelling quote from the business owner (with photo, if possible).",
+              "- Optional: Link to their Focus AI-built website (with permission)."
+            ],
+            "trust_elements": [
+              "Social proof",
+              "Quantifiable results",
+              "Local presence"
+            ],
+            "cta": {
+              "kind": "micro",
+              "placement": "in_section"
+            }
+          },
+          {
+            "id": "testimonial_gallery",
+            "type": "proof",
+            "intent": "Offer a broader range of shorter testimonials or endorsements to reinforce credibility.",
+            "content_requirements": [
+              "A grid of 4-6 concise text testimonials or embedded video testimonials (if available)."
+            ],
+            "trust_elements": ["Social proof", "Diverse examples"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "why_trust_summary",
+            "type": "benefits",
+            "intent": "Consolidate the key trust elements demonstrated by the success stories, reinforcing Focus AI's reliability and effectiveness.",
+            "content_requirements": [
+              "Bullet points summarizing what these stories collectively prove (e.g., 'Effective lead generation', 'Easy to use for non-technical users', 'Significant local impact', 'Seamless multilingual presence')."
+            ],
+            "trust_elements": ["Reinforcement of authority and reliability"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "footer_cta_success_stories",
+            "type": "footer_cta",
+            "intent": "Provide a final call to action, encouraging visitors to experience similar success.",
+            "content_requirements": [
+              "Reiterate the primary benefit statement.",
+              "Primary Call-to-Action button."
+            ],
+            "trust_elements": ["Final reinforcement of value"],
+            "cta": {
+              "kind": "primary",
+              "placement": "end_of_section"
+            }
+          }
+        ],
+        "notes": [
+          "Ensure all success stories are genuinely local Israeli businesses, and that specific results are backed by data (even if summarized for display).",
+          "Consider using a 'quote of the day' rotator if many testimonials exist."
+        ]
+      },
+      {
+        "slug": "/pricing",
+        "page_goal": "Clearly present pricing options, demonstrate value, and address affordability concerns, leading to a WhatsApp inquiry for clarification or commitment.",
+        "primary_cta": {
+          "label": {
+            "en": "Start WhatsApp Chat",
+            "he": "התחל צ'אט בוואטסאפ",
+            "ar": "ابدأ محادثة واتساب"
+          },
+          "channel": "whatsapp",
+          "friction_level": "low"
+        },
+        "secondary_cta": {
+          "label": {
+            "en": "See How It Works",
+            "he": "ראה איך זה עובד",
+            "ar": "شاهد كيف يعمل"
+          },
+          "channel": "booking",
+          "friction_level": "medium"
+        },
+        "sections": [
+          {
+            "id": "hero_pricing",
+            "type": "hero",
+            "intent": "Introduce the pricing page with a focus on transparency and value for the target audience.",
+            "content_requirements": [
+              "Headline: 'Simple & Transparent Pricing for Your Digital Growth'.",
+              "Sub-headline: 'Plans designed for Israeli SMBs and service businesses to get more leads'.",
+              "Primary and Secondary Call-to-Actions."
+            ],
+            "trust_elements": [
+              "Transparency",
+              "Value alignment with target audience"
+            ],
+            "cta": {
+              "kind": "primary",
+              "placement": "in_section"
+            }
+          },
+          {
+            "id": "pricing_plans_display",
+            "type": "pricing",
+            "intent": "Clearly display the different pricing tiers, their costs, and key features to facilitate decision-making.",
+            "content_requirements": [
+              "2-3 distinct pricing tiers (e.g., 'Basic', 'Growth', 'Pro').",
+              "For each plan: clear name, price (monthly/annually), list of included key features (e.g., # of pages, multilingual support, WhatsApp integration, AI assistance level, support tier).",
+              "Highlight the ideal target audience for each plan (e.g., 'Perfect for solo professionals', 'Best for growing agencies').",
+              "Primary CTA button within each plan card linking to WhatsApp Chat."
+            ],
+            "trust_elements": ["Transparency", "Value for money", "Clarity"],
+            "cta": {
+              "kind": "primary",
+              "placement": "in_section"
+            }
+          },
+          {
+            "id": "value_comparison_included",
+            "type": "comparison",
+            "intent": "Justify the cost by outlining the comprehensive value and what's included across all plans or specific to tiers.",
+            "content_requirements": [
+              "A table or detailed list comparing features across plans, or highlighting universal inclusions (e.g., 'All plans include: Multilingual EN/HE/AR, WhatsApp lead capture, CRO tools').",
+              "Text explaining the ROI: 'More than just a website, it's a lead generation and growth system'."
+            ],
+            "trust_elements": [
+              "Value proposition reinforcement",
+              "Transparency"
+            ],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "faq_pricing_specific",
+            "type": "faq",
+            "intent": "Address common questions related to payments, contracts, upgrades, and custom solutions to reduce friction.",
+            "content_requirements": [
+              "3-4 FAQs specific to pricing (e.g., 'Do you offer custom plans?', 'What about hidden fees?', 'Can I upgrade/downgrade?', 'Cancellation policy').",
+              "Concise, reassuring answers."
+            ],
+            "trust_elements": ["Transparency", "Authority"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "footer_cta_pricing",
+            "type": "footer_cta",
+            "intent": "Provide a final call to action, especially for those with specific requirements or needing further clarification.",
+            "content_requirements": [
+              "Reiterate the primary benefit statement.",
+              "Primary Call-to-Action button."
+            ],
+            "trust_elements": ["Final reinforcement of value"],
+            "cta": {
+              "kind": "primary",
+              "placement": "end_of_section"
+            }
+          }
+        ],
+        "notes": [
+          "Clearly state currency (ILS) and payment terms (e.g., monthly/annually).",
+          "Pricing page is crucial for conversion; ensure clarity over complexity."
+        ]
+      },
+      {
+        "slug": "/contact",
+        "page_goal": "Provide clear and multiple channels for users to get in touch with Focus AI, reinforcing availability, support, and local presence.",
+        "primary_cta": {
+          "label": {
+            "en": "Start WhatsApp Chat",
+            "he": "התחל צ'אט בוואטסאפ",
+            "ar": "ابدأ محادثة واتساب"
+          },
+          "channel": "whatsapp",
+          "friction_level": "low"
+        },
+        "secondary_cta": {
+          "label": {
+            "en": "Submit Inquiry Form",
+            "he": "שלח טופס פנייה",
+            "ar": "أرسل نموذج استفسار"
+          },
+          "channel": "form",
+          "friction_level": "medium"
+        },
+        "sections": [
+          {
+            "id": "hero_contact",
+            "type": "hero",
+            "intent": "Clearly state the page's purpose and invite visitors to connect.",
+            "content_requirements": [
+              "Headline: 'Get In Touch with Focus AI'.",
+              "Sub-headline: 'We're here to help you grow your business and answer your questions'.",
+              "Visual: Friendly, approachable support image or local Israeli landmark.",
+              "Primary and Secondary Call-to-Actions."
+            ],
+            "trust_elements": [
+              "Accessibility",
+              "Support orientation",
+              "Local presence"
+            ],
+            "cta": {
+              "kind": "primary",
+              "placement": "in_section"
+            }
+          },
+          {
+            "id": "primary_contact_channels",
+            "type": "contact",
+            "intent": "Present the most direct and preferred ways for users to communicate with Focus AI.",
+            "content_requirements": [
+              "**WhatsApp**: Emphasize as the fastest method, include icon and click-to-chat link.",
+              "**Phone**: Local Israeli phone number, specify business hours (if applicable).",
+              "**Email**: General inquiry email address."
+            ],
+            "trust_elements": [
+              "Transparency",
+              "Ease of access",
+              "Responsiveness"
+            ],
+            "cta": {
+              "kind": "micro",
+              "placement": "in_section"
+            }
+          },
+          {
+            "id": "contact_form",
+            "type": "contact",
+            "intent": "Provide an alternative channel for detailed inquiries or non-urgent messages.",
+            "content_requirements": [
+              "Contact form fields: Name, Email, Phone (optional), Subject, Message.",
+              "Clear 'Submit' button.",
+              "Brief privacy statement regarding data usage."
+            ],
+            "trust_elements": [
+              "Professionalism",
+              "Alternative communication channel"
+            ],
+            "cta": {
+              "kind": "secondary",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "office_location",
+            "type": "about",
+            "intent": "Reinforce local presence and physical credibility (if a physical office exists).",
+            "content_requirements": [
+              "Company address (in Israel).",
+              "Embedded map (e.g., Google Maps).",
+              "Optional: Brief directions or nearby landmarks."
+            ],
+            "trust_elements": ["Local presence", "Credibility"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "faq_general_support",
+            "type": "faq",
+            "intent": "Proactively answer common support or sales questions to reduce direct contact volume for simple queries.",
+            "content_requirements": [
+              "3-4 general FAQs (e.g., 'What are your business hours?', 'Do you offer demos?', 'What languages does your support team speak?')."
+            ],
+            "trust_elements": ["Transparency", "Proactive support"],
+            "cta": {
+              "kind": "none",
+              "placement": "end_of_section"
+            }
+          },
+          {
+            "id": "footer_cta_contact",
+            "type": "footer_cta",
+            "intent": "Provide a final encouragement to connect through the preferred channel.",
+            "content_requirements": [
+              "Reiterate the primary benefit statement.",
+              "Primary Call-to-Action button."
+            ],
+            "trust_elements": ["Final reinforcement of value"],
+            "cta": {
+              "kind": "primary",
+              "placement": "end_of_section"
+            }
+          }
+        ],
+        "notes": [
+          "Ensure all contact information is accurate and actively monitored.",
+          "Emphasize WhatsApp as the primary communication method consistent with brand strategy."
+        ]
+      }
+    ],
+    "trust_placement_map": [
+      {
+        "trust_item": "Local Presence (Testimonials, Local Examples)",
+        "preferred_placements": ["hero", "above_fold", "mid_page", "near_cta"],
+        "rationale": "Crucial for Israeli SMBs to immediately see relevance and success in their specific market, building an instant connection and trust."
+      },
+      {
+        "trust_item": "Quantifiable Social Proof (Case Studies, Metrics)",
+        "preferred_placements": ["mid_page", "near_cta"],
+        "rationale": "Addresses the core objection 'Will it actually bring me customers?' by providing concrete, evidence-based results and mitigating skepticism about AI's effectiveness."
+      },
+      {
+        "trust_item": "Process Transparency (AI Setup, Multilingual, WhatsApp Integration)",
+        "preferred_placements": ["above_fold", "mid_page"],
+        "rationale": "Demystifies the 'AI' aspect, showcases the platform's ease of use for non-technical users, and highlights core differentiators. This builds confidence and reduces fear of complexity."
+      },
+      {
+        "trust_item": "Authority (Recognized Local Business Logos)",
+        "preferred_placements": ["above_fold", "footer"],
+        "rationale": "Provides a quick visual cue of credibility and endorsement by other trusted businesses, even if implied, leveraging established reputation."
+      }
+    ],
+    "localization_notes": {
+      "en": [
+        "Ensure clear, benefit-led language highlighting efficiency and lead generation for the English-speaking audience.",
+        "Use 'WhatsApp' as it's universally understood.",
+        "Emphasize the 'digital growth system' aspect to convey comprehensive value beyond just a website builder."
+      ],
+      "he": [
+        "Maintain a professional and concise tone, avoiding exaggeration.",
+        "Highlight the relevance of WhatsApp as a primary business communication tool in Israel.",
+        "Emphasize ease of use and local market understanding.",
+        "Ensure RTL (Right-To-Left) support is visibly part of the offering and reflected in content structure where appropriate (e.g., number lists, bullet points should be direction-agnostic)."
+      ],
+      "ar": [
+        "Adopt a respectful, confident, and outcome-focused tone.",
+        "Stress the practical outcomes for business owners, like increased leads and efficiency.",
+        "Clearly communicate the benefit of integrated Arabic language support for reaching a wider customer base.",
+        "Ensure RTL (Right-To-Left) support is visibly part of the offering and reflected in content structure."
+      ]
+    },
+    "open_questions": [
+      "Are there existing logos of well-known Israeli SMBs that Focus AI has worked with, and for which permission to display can be obtained?",
+      "What are the exact pricing tiers, features included in each, and pricing models (e.g., monthly/annually) to be displayed on the /pricing page?",
+      "Is there a dedicated demo environment or video that the 'See How It Works' secondary CTA will link to, or will it be a detailed feature overview page?"
+    ],
+    "assumptions": [
+      "Focus AI has access to actual case studies and quantifiable testimonials from satisfied Israeli SMB clients that can be featured.",
+      "The AI-assisted setup process is genuinely intuitive and can be simplified into 3-5 clear, jargon-free steps for non-technical users.",
+      "The WhatsApp integration is robust, provides a seamless lead capture experience, and aligns with local business communication norms.",
+      "There is an internal process or system for managing leads generated via WhatsApp effectively.",
+      "The 'booking' channel for the secondary CTA ('See How It Works') implies a guided demo or a dedicated page where the process is explained visually and interactively."
+    ],
+    "risks": [
+      {
+        "id": "risk_no_local_proof",
+        "risk": "Lack of compelling and quantifiable local Israeli case studies or testimonials.",
+        "likelihood": "medium",
+        "impact": "high",
+        "mitigation": "Prioritize active collection of strong, quantifiable local case studies. If unavailable, use hypothetical examples with clear disclaimers or rely more heavily on process transparency and demos until real proof is acquired. Leverage micro-testimonials."
+      },
+      {
+        "id": "risk_complexity_misalignment",
+        "risk": "The actual AI setup process is more complex than the simplified '3-step' narrative, leading to user frustration.",
+        "likelihood": "medium",
+        "impact": "high",
+        "mitigation": "Ensure the actual AI onboarding experience aligns perfectly with the 'simple' narrative. Provide clear, concise in-app guidance, tooltip explanations, and readily available, excellent customer support to bridge any complexity gaps."
+      },
+      {
+        "id": "risk_overreliance_whatsapp",
+        "risk": "Over-reliance on WhatsApp as the sole or primary lead channel, potentially alienating users who prefer alternative communication methods (e.g., traditional forms, phone calls).",
+        "likelihood": "low",
+        "impact": "medium",
+        "mitigation": "While 'WhatsApp-first' is strategic, ensure accessible secondary contact options (e.g., contact forms, phone numbers) are clearly available, especially on the /contact page and as secondary CTAs where appropriate."
+      }
+    ]
+  },
+  "brand_identity": {
+    "schema_version": "1.0.0",
+    "identity_summary": "A professional, trustworthy, and modern visual identity system for Focus AI, emphasizing clarity, accessibility, and seamless multilingual support (EN/HE/AR). The system uses a confident blue primary color, a vibrant WhatsApp-green accent, and clean typography to convey expertise and direct engagement, tailored for Israeli SMBs seeking digital growth.",
+    "color_system": {
+      "primary": {
+        "base": "#0E47A1",
+        "contrast_text": "#FFFFFF",
+        "usage": [
+          "Primary calls to action",
+          "Key brand elements",
+          "Headers on dark backgrounds"
+        ]
+      },
+      "secondary": {
+        "base": "#4A6E8A",
+        "contrast_text": "#FFFFFF",
+        "usage": [
+          "Secondary buttons",
+          "Subtle background elements",
+          "Supportive iconography"
+        ]
+      },
+      "accent": {
+        "base": "#25D366",
+        "contrast_text": "#000000",
+        "usage": [
+          "WhatsApp CTAs",
+          "Highlighting conversion points",
+          "Interactive elements requiring attention"
+        ]
+      },
+      "neutral": {
+        "background": "#F8F9FA",
+        "surface": "#FFFFFF",
+        "border": "#E0E0E0",
+        "text_primary": "#1A202C",
+        "text_secondary": "#4A5568"
+      },
+      "status": {
+        "success": "#28A745",
+        "warning": "#FFC107",
+        "error": "#DC3545"
+      }
+    },
+    "typography": {
+      "font_families": {
+        "latin": "Rubik",
+        "hebrew": "Rubik",
+        "arabic": "Noto Sans Arabic",
+        "fallback": "sans-serif"
+      },
+      "scale": {
+        "h1": "48px",
+        "h2": "36px",
+        "h3": "24px",
+        "body": "18px",
+        "small": "14px"
+      },
+      "weights": {
+        "regular": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "line_height": {
+        "headings": 1.2,
+        "body": 1.6
+      }
+    },
+    "spacing": {
+      "xs": 4,
+      "sm": 8,
+      "md": 16,
+      "lg": 24,
+      "xl": 32
+    },
+    "radius": {
+      "sm": 4,
+      "md": 8,
+      "lg": 12
+    },
+    "shadow": {
+      "sm": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+    },
+    "usage_rules": [
+      {
+        "rule": "All primary calls to action, especially the 'Start WhatsApp Chat' button, must exclusively use the 'accent' color for maximum visibility and alignment with the WhatsApp-first strategy.",
+        "rationale": "Directly supports the primary CTA strategy and emphasizes the core differentiator."
+      },
+      {
+        "rule": "Primary and secondary colors should be used for branding, core UI elements, and key informational blocks, maintaining a professional and trustworthy appearance.",
+        "rationale": "Aligns with the 'Confident, Professional' tone and 'Trust-first' strategy."
+      },
+      {
+        "rule": "Neutral colors (background, surface, text_primary, text_secondary) must be used liberally to ensure high readability, especially for body text across all supported languages (EN/HE/AR).",
+        "rationale": "Ensures 'Accessibility First' and 'RTL Required' principles for a diverse audience."
+      },
+      {
+        "rule": "Typography scale and weights should be applied consistently for hierarchical clarity, with 'Rubik' for Latin and Hebrew, and 'Noto Sans Arabic' for Arabic text, to ensure optimal readability and visual harmony in multilingual contexts.",
+        "rationale": "Crucial for 'RTL Required' and 'Accessibility First' across EN/HE/AR, maintaining a modern and professional aesthetic."
+      },
+      {
+        "rule": "Spacing tokens should be used consistently to create clear visual separation and readability, adaptable to both Left-to-Right (LTR) and Right-to-Left (RTL) layouts.",
+        "rationale": "Supports 'RTL Required' by providing a consistent grid and adaptable spacing system."
+      },
+      {
+        "rule": "Shadows should be used subtly on interactive elements, cards, and trust signals (e.g., testimonials) to provide a sense of depth, professionalism, and hierarchy without appearing heavy or distracting.",
+        "rationale": "Reinforces 'Trust-first' strategy and 'Simplicity Bias' by subtly elevating key content."
+      }
+    ],
+    "localization_notes": {
+      "en": [
+        "Emphasize clarity and directness in language. Ensure all visual elements support the 'digital growth system' messaging.",
+        "Use the primary blue for a confident and reliable feel, and the accent green for conversion focus."
+      ],
+      "he": [
+        "Ensure full Right-to-Left (RTL) compatibility for all text, iconography, and layout adjustments.",
+        "The chosen typography (Rubik) supports Hebrew characters well, ensuring native readability and professionalism.",
+        "Highlight WhatsApp integration visually, as it is a preferred communication channel in Israel."
+      ],
+      "ar": [
+        "Ensure full Right-to-Left (RTL) compatibility for all text, iconography, and layout adjustments.",
+        "The chosen typography (Noto Sans Arabic) ensures accurate and aesthetically pleasing rendering of Arabic script.",
+        "Visually convey the simplicity and efficiency of the AI-powered builder, crucial for local SMBs."
+      ]
+    }
+  }
+}

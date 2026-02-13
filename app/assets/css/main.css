@@ -2,6 +2,10 @@
 @import "@nuxt/ui";
 @import "./tokens.css";
 
+@theme {
+  --font-sans: 'Heebo', 'Rubik', ui-sans-serif, system-ui, sans-serif;
+}
+
 .node-running {
   outline: 2px solid currentColor;
 }

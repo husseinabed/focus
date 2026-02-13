@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0.0",
+  "identity_summary": "A professional, trustworthy, and modern visual identity system for Focus AI, emphasizing clarity, accessibility, and seamless multilingual support (EN/HE/AR). The system uses a confident blue primary color, a vibrant WhatsApp-green accent, and clean typography to convey expertise and direct engagement, tailored for Israeli SMBs seeking digital growth.",
+  "color_system": {
+    "primary": {
+      "base": "#0E47A1",
+      "contrast_text": "#FFFFFF",
+      "usage": [
+        "Primary calls to action",
+        "Key brand elements",
+        "Headers on dark backgrounds"
+      ]
+    },
+    "secondary": {
+      "base": "#4A6E8A",
+      "contrast_text": "#FFFFFF",
+      "usage": [
+        "Secondary buttons",
+        "Subtle background elements",
+        "Supportive iconography"
+      ]
+    },
+    "accent": {
+      "base": "#25D366",
+      "contrast_text": "#000000",
+      "usage": [
+        "WhatsApp CTAs",
+        "Highlighting conversion points",
+        "Interactive elements requiring attention"
+      ]
+    },
+    "neutral": {
+      "background": "#F8F9FA",
+      "surface": "#FFFFFF",
+      "border": "#E0E0E0",
+      "text_primary": "#1A202C",
+      "text_secondary": "#4A5568"
+    },
+    "status": {
+      "success": "#28A745",
+      "warning": "#FFC107",
+      "error": "#DC3545"
+    }
+  },
+  "typography": {
+    "font_families": {
+      "latin": "Rubik",
+      "hebrew": "Rubik",
+      "arabic": "Noto Sans Arabic",
+      "fallback": "sans-serif"
+    },
+    "scale": {
+      "h1": "48px",
+      "h2": "36px",
+      "h3": "24px",
+      "body": "18px",
+      "small": "14px"
+    },
+    "weights": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "line_height": {
+      "headings": 1.2,
+      "body": 1.6
+    }
+  },
+  "spacing": {
+    "xs": 4,
+    "sm": 8,
+    "md": 16,
+    "lg": 24,
+    "xl": 32
+  },
+  "radius": {
+    "sm": 4,
+    "md": 8,
+    "lg": 12
+  },
+  "shadow": {
+    "sm": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+  },
+  "usage_rules": [
+    {
+      "rule": "All primary calls to action, especially the 'Start WhatsApp Chat' button, must exclusively use the 'accent' color for maximum visibility and alignment with the WhatsApp-first strategy.",
+      "rationale": "Directly supports the primary CTA strategy and emphasizes the core differentiator."
+    },
+    {
+      "rule": "Primary and secondary colors should be used for branding, core UI elements, and key informational blocks, maintaining a professional and trustworthy appearance.",
+      "rationale": "Aligns with the 'Confident, Professional' tone and 'Trust-first' strategy."
+    },
+    {
+      "rule": "Neutral colors (background, surface, text_primary, text_secondary) must be used liberally to ensure high readability, especially for body text across all supported languages (EN/HE/AR).",
+      "rationale": "Ensures 'Accessibility First' and 'RTL Required' principles for a diverse audience."
+    },
+    {
+      "rule": "Typography scale and weights should be applied consistently for hierarchical clarity, with 'Rubik' for Latin and Hebrew, and 'Noto Sans Arabic' for Arabic text, to ensure optimal readability and visual harmony in multilingual contexts.",
+      "rationale": "Crucial for 'RTL Required' and 'Accessibility First' across EN/HE/AR, maintaining a modern and professional aesthetic."
+    },
+    {
+      "rule": "Spacing tokens should be used consistently to create clear visual separation and readability, adaptable to both Left-to-Right (LTR) and Right-to-Left (RTL) layouts.",
+      "rationale": "Supports 'RTL Required' by providing a consistent grid and adaptable spacing system."
+    },
+    {
+      "rule": "Shadows should be used subtly on interactive elements, cards, and trust signals (e.g., testimonials) to provide a sense of depth, professionalism, and hierarchy without appearing heavy or distracting.",
+      "rationale": "Reinforces 'Trust-first' strategy and 'Simplicity Bias' by subtly elevating key content."
+    }
+  ],
+  "localization_notes": {
+    "en": [
+      "Emphasize clarity and directness in language. Ensure all visual elements support the 'digital growth system' messaging.",
+      "Use the primary blue for a confident and reliable feel, and the accent green for conversion focus."
+    ],
+    "he": [
+      "Ensure full Right-to-Left (RTL) compatibility for all text, iconography, and layout adjustments.",
+      "The chosen typography (Rubik) supports Hebrew characters well, ensuring native readability and professionalism.",
+      "Highlight WhatsApp integration visually, as it is a preferred communication channel in Israel."
+    ],
+    "ar": [
+      "Ensure full Right-to-Left (RTL) compatibility for all text, iconography, and layout adjustments.",
+      "The chosen typography (Noto Sans Arabic) ensures accurate and aesthetically pleasing rendering of Arabic script.",
+      "Visually convey the simplicity and efficiency of the AI-powered builder, crucial for local SMBs."
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server';
 import { createError } from 'h3';
+import { resolveWorkspaceId } from '~~/server/utils/workspace';
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
@@ -12,13 +13,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const workspaceId = user.app_metadata?.workspace_id;
-  if (!workspaceId) {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Forbidden: Missing workspace ID or workspace_id in app_metadata',
-    });
-  }
+  const workspaceId = user.app_metadata?.workspace_id || await resolveWorkspaceId(client, user);
 
   const templateId = event.context.params?.id;
   if (!templateId) {
@@ -29,8 +24,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const { data, error } = await client
-    .from('templates')
-    .select('name, category, language, body, variables, is_active')
+    .from('content_templates')
+    .select('*')
     .eq('id', templateId)
     .eq('workspace_id', workspaceId)
     .single();

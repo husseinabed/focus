@@ -28,6 +28,10 @@ const nav = [
     label: "nav.dashboard",
   },
   { to: "/app/leads", key: "leads", icon: "i-heroicons-user-group", label: "nav.leads" },
+  { to: "/app/projects", key: "projects", icon: "i-heroicons-folder", label: "nav.projects" },
+  {
+    to: "/app/inbox",
+    key: "leads", icon: "i-heroicons-user-group", label: "nav.leads" },
   {
     to: "/app/inbox",
     key: "inbox",

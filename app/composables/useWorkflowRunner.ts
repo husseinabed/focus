@@ -1,10 +1,13 @@
 export type RunEvent = {
+  id: string;
+  type: 'node';
   nodeId: string;
   nodeType: string;
   status: 'start' | 'success' | 'fail';
+  input?: any;
   output?: any;
-  error?: string;
-  timestamp: string;
+  error?: any;
+  ts: string;
 };
 
 export type RunResult = {
@@ -13,6 +16,9 @@ export type RunResult = {
   context: Record<string, any>;
   stoppedAtNodeId?: string;
 };
+
+// Explicit import to satisfy TS if auto-import types aren't generated yet
+import { useRunConsole } from './useRunConsole';
 
 type WorkflowRunnerOptions = {
   getNodes: () => any[];
@@ -67,7 +73,7 @@ export const useWorkflowRunner = () => {
     workflowId: string,
     { getNodes, setNodes, input, onEvent }: WorkflowRunnerOptions
   ) => {
-
+    const runConsole = useRunConsole();
 
     return new Promise<RunResult>((resolve, reject) => {
       if (typeof EventSource === 'undefined') {
@@ -84,6 +90,8 @@ export const useWorkflowRunner = () => {
       // Note: query string input can exceed URL limits; consider a POST+runId flow later.
       const url = query ? `/api/workflows/${workflowId}/run?${query}` : `/api/workflows/${workflowId}/run`;
       setNodes(getNodes().map(resetNodeRuntime))
+      runConsole.clear();
+      runConsole.setStatus('running');
 
       const source = new EventSource(url);
       let settled = false;
@@ -100,10 +108,9 @@ export const useWorkflowRunner = () => {
       };
 
       source.addEventListener('node', (event) => {
-
-
         onEvent?.(event as MessageEvent, 'node');
         const runEvent = JSON.parse((event as MessageEvent).data) as RunEvent;
+        runConsole.push(runEvent);
 
         const nodes = getNodes();
         const updated = nodes.map((node) =>
@@ -126,11 +133,13 @@ export const useWorkflowRunner = () => {
       source.addEventListener('finished', (event) => {
         onEvent?.(event as MessageEvent, 'finished');
         const result = JSON.parse((event as MessageEvent).data) as RunResult;
+        runConsole.setStatus(result.status);
         finalize(() => resolve(result));
       });
 
       source.addEventListener('error', (event) => {
         onEvent?.(event as MessageEvent, 'error');
+        runConsole.setStatus('fail');
         if ('data' in event && (event as MessageEvent).data) {
           const raw = (event as MessageEvent).data
           try {

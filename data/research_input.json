@@ -1,0 +1,33 @@
+{
+  "business_context": {
+    "brand_name": "Focus AI",
+    "industry": "AI-powered website builder + digital growth system for SMBs (websites, CRO, multilingual, lead capture)",
+    "city": "Israel (multi-city)",
+    "target_audience": [
+      "local SMB owners",
+      "service businesses (lawyers, dentists, clinics, real estate, contractors)",
+      "small agencies needing fast client sites"
+    ],
+    "primary_offer": "Launch high-converting multilingual (EN/HE/AR) websites fast, optimized for trust + WhatsApp-first lead capture",
+    "primary_goal": "leads",
+    "languages": ["en", "he", "ar"]
+  },
+  "research_scope": {
+    "intent": "competitive_positioning",
+    "depth": "standard",
+    "focus": ["positioning", "cta", "trust", "language"]
+  },
+  "seed_urls": [
+    "https://www.webflow.com",
+    "https://www.framer.com",
+    "https://www.wix.com",
+    "https://www.squarespace.com",
+    "https://www.lovable.dev",
+    "https://www.bolt.new"
+  ],
+  "constraints": {
+    "max_visits": 6,
+    "max_chars_per_visit": 12000,
+    "time_budget_ms": 180000
+  }
+}

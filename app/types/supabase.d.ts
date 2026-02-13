@@ -11,6 +11,59 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+            projects: {
+        Row: {
+          id: string;
+          workspace_id: string;
+
+          name: string;
+          slug: string;
+          description: string | null;
+
+          status: "draft" | "active" | "archived";
+
+          repo: string | null;            // github: owner/name
+          vercel_id: string | null;       // vercel project id
+          last_preview_url: string | null;
+
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+
+          name: string;
+          slug: string;
+          description?: string | null;
+
+          status?: "draft" | "active" | "archived";
+
+          repo?: string | null;
+          vercel_id?: string | null;
+          last_preview_url?: string | null;
+
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+
+          name?: string;
+          slug?: string;
+          description?: string | null;
+
+          status?: "draft" | "active" | "archived";
+
+          repo?: string | null;
+          vercel_id?: string | null;
+          last_preview_url?: string | null;
+
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       user_profiles: {
         Row: {
           user_id: string;
@@ -38,6 +91,157 @@ export interface Database {
           updated_at?: string;
           phone?: string | null;
           default_language?: string | null;
+        };
+      };
+      leads: {
+        Row: {
+          id: string;
+          company_name: string;
+          full_name: string | null;
+          phone: string;
+          phone_e164: string | null;
+          language: "auto" | "he" | "ar" | "en";
+          city: string | null;
+          source: "manual" | "import" | "google_maps" | "whatsapp_inbound" | "website" | "referral";
+          status: "new" | "contacted" | "qualified" | "proposal" | "won" | "lost";
+          priority: "low" | "medium" | "high";
+          website: string | null;
+          email: string | null;
+          notes: string | null;
+          tags: string[] | null;
+          custom_fields: Json | null;
+          created_at: string;
+          updated_at: string;
+          last_activity: string | null;
+          whatsapp_capable: boolean | null;
+          dnc_status: boolean;
+          dnc_reason: string | null;
+        };
+        Insert: {
+          id?: string;
+          company_name: string;
+          full_name?: string | null;
+          phone: string;
+          phone_e164?: string | null;
+          language?: "auto" | "he" | "ar" | "en";
+          city?: string | null;
+          source?: "manual" | "import" | "google_maps" | "whatsapp_inbound" | "website" | "referral";
+          status?: "new" | "contacted" | "qualified" | "proposal" | "won" | "lost";
+          priority?: "low" | "medium" | "high";
+          website?: string | null;
+          email?: string | null;
+          notes?: string | null;
+          tags?: string[] | null;
+          custom_fields?: Json | null;
+          created_at?: string;
+          updated_at?: string;
+          last_activity?: string | null;
+          whatsapp_capable?: boolean | null;
+          dnc_status?: boolean;
+          dnc_reason?: string | null;
+        };
+        Update: {
+          id?: string;
+          company_name?: string;
+          full_name?: string | null;
+          phone?: string;
+          phone_e164?: string | null;
+          language?: "auto" | "he" | "ar" | "en";
+          city?: string | null;
+          source?: "manual" | "import" | "google_maps" | "whatsapp_inbound" | "website" | "referral";
+          status?: "new" | "contacted" | "qualified" | "proposal" | "won" | "lost";
+          priority?: "low" | "medium" | "high";
+          website?: string | null;
+          email?: string | null;
+          notes?: string | null;
+          tags?: string[] | null;
+          custom_fields?: Json | null;
+          created_at?: string;
+          updated_at?: string;
+          last_activity?: string | null;
+          whatsapp_capable?: boolean | null;
+          dnc_status?: boolean;
+          dnc_reason?: string | null;
+        };
+      };
+      conversations: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          channel: "whatsapp" | "email" | "sms";
+          lead_id: string | null;
+          status: "open" | "waiting" | "snoozed" | "closed" | "needs_approval" | "replied";
+          priority: "low" | "medium" | "high";
+          unread_count: number;
+          last_message_at: string;
+          last_message_preview: string;
+          assigned_to: string | null;
+          tags: string[] | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          channel: "whatsapp" | "email" | "sms";
+          lead_id?: string | null;
+          status?: "open" | "waiting" | "snoozed" | "closed" | "needs_approval" | "replied";
+          priority?: "low" | "medium" | "high";
+          unread_count?: number;
+          last_message_at?: string;
+          last_message_preview?: string;
+          assigned_to?: string | null;
+          tags?: string[] | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          channel?: "whatsapp" | "email" | "sms";
+          lead_id?: string | null;
+          status?: "open" | "waiting" | "snoozed" | "closed" | "needs_approval" | "replied";
+          priority?: "low" | "medium" | "high";
+          unread_count?: number;
+          last_message_at?: string;
+          last_message_preview?: string;
+          assigned_to?: string | null;
+          tags?: string[] | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+
+      messages: {
+        Row: {
+          id: string;
+          conversation_id: string;
+          sender_type: "lead" | "agent";
+          content: string;
+          created_at: string;
+          status: "sent" | "delivered" | "read" | "failed" | "pending" | "scheduled" | "needs_approval";
+          lead_id: string | null;
+          agent_id: string | null;
+        };
+        Insert: {
+          id?: string;
+          conversation_id: string;
+          sender_type: "lead" | "agent";
+          content: string;
+          created_at?: string;
+          status?: "sent" | "delivered" | "read" | "failed" | "pending" | "scheduled" | "needs_approval";
+          lead_id?: string | null;
+          agent_id?: string | null;
+        };
+        Update: {
+          id?: string;
+          conversation_id?: string;
+          sender_type?: "lead" | "agent";
+          content?: string;
+          created_at?: string;
+          status?: "sent" | "delivered" | "read" | "failed" | "pending" | "scheduled" | "needs_approval";
+          lead_id?: string | null;
+          agent_id?: string | null;
         };
       };
       workspaces: {

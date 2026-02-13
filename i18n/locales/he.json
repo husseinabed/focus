@@ -1,299 +1,229 @@
 {
-  "common": {
-    "save": "שמירה",
-    "validate": "אימות",
-    "run": "הרצה",
-    "clear": "נקה",
-    "cancel": "ביטול",
-    "import": "ייבוא",
-    "json": "JSON",
-    "export_json": "ייצוא JSON",
-    "import_json": "ייבוא JSON",
-    "select_workspace": "בחר סביבת עבודה",
-    "back": "חזור",
-    "active": "פעיל",
-    "edit": "עריכה",
-    "description": "תיאור",
-    "no": "לא",
-    "last_updated": "עודכן לאחרונה",
-    "quick_actions": "פעולות מהירות",
-    "danger_zone": "אזור סכנה",
-    "delete": "מחק"
-  },
-  "auth": {
-    "signOut": "התנתקות"
-  },
-  "nav": {
-    "dashboard": "דשבורד",
-    "leads": "לידים",
-    "inbox": "תיבת הודעות",
-    "approvals": "אישורים",
-    "workflows": "תהליכי עבודה",
-    "templates": "תבניות",
-    "meetings": "פגישות",
-    "settings": "הגדרות"
-  },
-  "settings": {
-    "nav": {
-      "profile": "פרופיל",
-      "workspace": "סביבת עבודה",
-      "integrations": "אינטגרציות",
-      "billing": "חיוב"
-    }
-  },
-  "workflow": {
-    "nodes": {
-      "trigger": {
-        "manual": {
-          "title": "טריגר ידני",
-          "hint": "הפעל את תהליך העבודה באופן ידני."
-        },
-        "lead_added": {
-          "title": "טריגר ליד נוסף",
-          "hint": "מופעל כאשר ליד חדש מתווסף לסביבת העבודה, עם אפשרות סינון לפי מקור או עדיפות.",
-          "source": "מקור ליד",
-          "source.all": "כל המקורות",
-          "source.manual": "הזנה ידנית",
-          "source.scrape": "נאסף",
-          "source.import": "יבוא",
-          "min_priority": "עדיפות מינימלית"
-        },
-        "inbound_reply": {
-          "title": "טריגר תגובה נכנסת",
-          "hint": "מופעלת כאשר מתקבלת תגובה נכנסת, עם אפשרות סינון לפי תיבת דואר נכנס או מילות מפתח.",
-          "inbox_id": "מזהה תיבת דואר נכנס",
-          "keywords": "מילות מפתח (מופרדות בפסיקים)"
-        },
-        "scheduled": {
-          "title": "טריגר מתוזמן",
-          "hint": "מופעל בזמן ספציפי או בלוח זמנים קבוע.",
-          "cron_expression": "ביטוי Cron"
-        }
-      },
-      "utility": {
-        "logging": {
-          "hint": "רשום הודעות ליומן לצורכי ניפוי באגים ומעקב."
-        }
+  "projects": {
+    "form": {
+      "labels": {
+        "business_name": "שם העסק",
+        "industry": "תעשייה",
+        "location": "מיקום / שוק",
+        "main_service": "שירות / מוצר עיקרי",
+        "target_audience": "קהל יעד",
+        "audience_details": "פרטי קהל",
+        "primary_goal": "מטרה ראשית",
+        "secondary_goals": "מטרות משניות",
+        "languages_needed": "שפות נדרשות",
+        "default_language": "שפת ברירת מחדל",
+        "rtl_support": "תמיכה ב-RTL (מימין לשמאל)",
+        "enable_rtl": "אפשר RTL",
+        "custom_audience_placeholder": "קהל מותאם אישית (שורה אחת)",
+        "audience_notes_placeholder": "הערות אופציונליות",
+        "select_service_placeholder": "בחר שירות",
+        "select_industry_first": "בחר תעשייה תחילה"
       },
       "actions": {
-        "log": {
-          "title": "רישום לוג",
-          "level": {
-            "label": "רמת לוג",
-            "description": "קובע את רמת החומרה שבה יירשם הלוג."
-          },
-
-          "message": {
-            "label": "הודעת לוג",
-            "description": "הטקסט שיירשם ביומן הפעילות של הזרימה.",
-            "placeholder": "הכנס הודעת לוג…"
-          },
-
-          "includeContext": {
-            "label": "כלול הקשר הרצה",
-            "description": "כאשר מופעל, נכללים בלוג נתוני הזרימה והקשר הריצה."
-          }
-        },
-        "done": {
-          "title": "סיום",
-          "hint": "סמן את סיום ביצוע הזרימה."
-        },
-        "decision": {
-          "title": "החלטה",
-          "hint": "בצע פיצול בזרימה על סמך תנאי.",
-          "condition": "תנאי"
-        },
-        "delay": {
-          "title": "השהייה",
-          "hint": "השהה את הזרימה למשך זמן מוגדר.",
-          "duration": "משך",
-          "unit": "יחידה"
-        },
-        "send_email": {
-          "title": "שליחת אימייל",
-          "hint": "שלח אימייל לנמען.",
-          "to": "אל",
-          "subject": "נושא",
-          "body": "תוכן ההודעה"
-        }
-      }
-    }
-  },
-  "workflows": {
-    "new": {
-      "title": "יצירת תהליך עבודה חדש",
-      "subtitle": "בנה תהליך עבודה חדש מאפס",
-      "sections": {
-        "basic": "פרטים בסיסיים",
-        "trigger": "טריגר"
+        "cancel": "ביטול",
+        "create": "צור",
+        "save": "שמור"
       },
-      "actions": {
-        "create": "צור תהליך עבודה"
+      "industry": {
+        "law_firm": "משרד עורכי דין",
+        "dental_clinic": "מרפאת שיניים",
+        "medical_clinic": "מרפאה רפואית",
+        "accounting": "רואה חשבון / הנהלת חשבונות",
+        "real_estate": "נדל\"ן",
+        "marketing_agency": "סוכנות שיווק",
+        "local_services": "שירותים מקומיים (אינסטלטור, חשמלאי וכו')",
+        "ecommerce": "מסחר אלקטרוני (E-commerce)",
+        "other": "אחר"
       },
-      "preview": {
-        "title": "תצוגה מקדימה",
-        "trigger": {
-          "manual": "תהליך עבודה זה מתחיל באופן ידני. יהיה עליך להפעיל אותו בעצמך מדף פרטי תהליך העבודה.",
-          "lead_added": "תהליך עבודה זה מתחיל כאשר ליד חדש מתווסף לסביבת העבודה שלך. ניתן לחדד אותו עוד יותר לפי מקור ועדיפות מינימלית.",
-          "inbound_reply": "תהליך עבודה זה מתחיל כאשר מתקבלת תגובה נכנסת. באפשרותך לציין איזו תיבת דואר נכנס לנטר ולסנן לפי מילות מפתח.",
-          "scheduled": "תהליך עבודה זה מתחיל בזמן מתוזמן בהתבסס על ביטוי Cron. לדוגמה, הוא יכול לרוץ מדי יום, שבוע או חודש."
+      "location": {
+        "IL": "ישראל",
+        "US": "ארצות הברית",
+        "GB": "בריטניה",
+        "AE": "איחוד האמירויות",
+        "SA": "ערב הסעודית",
+        "EG": "מצרים",
+        "JO": "ירדן",
+        "MA": "מרוקו",
+        "FR": "צרפת",
+        "DE": "גרמניה",
+        "CA": "קנדה"
+      },
+      "goals": {
+        "lead_generation_whatsapp": "יצירת לידים (וואטסאפ)",
+        "lead_generation_forms": "יצירת לידים (טפסים)",
+        "build_trust": "בניית אמון ואמינות",
+        "brand_awareness": "הגברת מודעות למותג",
+        "appointments": "הזמנת תורים אונליין",
+        "showcase_services": "הצגת תיק עבודות / שירותים",
+        "educate_market": "חינוך שוק (בלוג / תוכן)",
+        "seo_visibility": "נראות SEO",
+        "reviews": "ביקורות",
+        "multilingual": "רב לשוני",
+        "faster_response": "תגובה מהירה",
+        "reduce_noshows": "הפחתת ביטולים/אי-הגעה"
+      },
+      "languages": {
+        "en": "אנגלית",
+        "he": "עברית",
+        "ar": "ערבית"
+      },
+      "services": {
+        "legal_consultation": "ייעוץ משפטי",
+        "personal_injury": "נזיקין",
+        "family_law": "דיני משפחה",
+        "criminal_defense": "פלילי",
+        "real_estate_law": "דיני מקרקעין",
+        "immigration": "הגירה",
+        "corporate_law": "דיני חברות / מסחרי",
+        "general_dentistry": "רפואת שיניים כללית",
+        "dental_implants": "השתלות שיניים",
+        "orthodontics": "אורתודונטיה (יישור שיניים)",
+        "teeth_whitening": "הלבנת שיניים",
+        "cosmetic_dentistry": "רפואת שיניים אסתטית",
+        "emergency_dental": "טיפול שיניים חירום",
+        "primary_care": "רפואה ראשונית",
+        "dermatology": "רפואת עור",
+        "aesthetics": "אסתטיקה / קליניקה קוסמטית",
+        "physiotherapy": "פיזיותרפיה",
+        "pediatrics": "רפואת ילדים",
+        "gynecology": "גינקולוגיה",
+        "bookkeeping": "הנהלת חשבונות",
+        "tax_filing": "הגשת דוחות מס",
+        "payroll": "שירותי שכר",
+        "business_consulting": "ייעוץ עסקי",
+        "vat_compliance": "מע\"מ / תאימות",
+        "residential_sales": "מכירות למגורים",
+        "residential_rentals": "השכרות למגורים",
+        "commercial_real_estate": "נדל\"ן מסחרי",
+        "property_management": "ניהול נכסים",
+        "new_developments": "פרויקטים חדשים (יזמות)",
+        "websites_landing_pages": "אתרים / דפי נחיתה",
+        "seo": "קידום אתרים (SEO)",
+        "google_ads": "פרסום בגוגל (PPC)",
+        "social_ads": "פרסום במדיה חברתית",
+        "branding": "מיתוג",
+        "marketing_automation": "אוטומציה שיווקית",
+        "plumbing": "אינסטלציה",
+        "electrical": "חשמל",
+        "hvac": "מיזוג אוויר",
+        "cleaning": "שירותי ניקיון",
+        "moving": "שירותי הובלה",
+        "renovation": "שיפוצים",
+        "online_store": "חנות אונליין",
+        "subscription_products": "מוצרי מנוי",
+        "dropshipping": "דרופשיפינג",
+        "digital_products": "מוצרים דיגיטליים",
+        "brand_storefront": "חנות מותג",
+        "general_services": "שירותים כלליים",
+        "appointments_bookings": "תורים / הזמנות",
+        "courses_coaching": "קורסים / אימון",
+        "professional_profile": "פרופיל מקצועי"
+      },
+      "audience_presets": {
+        "local_smb_owners": {
+          "label": "בעלי עסקים קטנים ובינוניים (ברירת מחדל)",
+          "primary": "עסקים קטנים ובינוניים מקומיים (בעלים/מנהלים)",
+          "secondary": "אנשי מקצוע עסוקים המעדיפים פניות בוואטסאפ/טלפון"
+        },
+        "lawyers": {
+          "label": "עורכי דין / משרדי עורכי דין",
+          "primary": "עורכי דין ומשרדי עורכי דין",
+          "secondary": "אנשים המחפשים עזרה משפטית באזור המקומי"
+        },
+        "dentists": {
+          "label": "רופאי שיניים / מרפאות שיניים",
+          "primary": "מרפאות שיניים ורופאי שיניים",
+          "secondary": "מטופלים המחפשים טיפולים ותורים"
+        },
+        "clinics": {
+          "label": "מרפאות (רפואי)",
+          "primary": "מרפאות רפואיות ומטפלים",
+          "secondary": "מטופלים המחפשים ייעוץ והזמנת תורים"
+        },
+        "real_estate_agents": {
+          "label": "סוכני נדל\"ן",
+          "primary": "סוכני נדל\"ן ומשרדי תיווך",
+          "secondary": "קונים/שוכרים המחפשים נכסים"
+        },
+        "home_services": {
+          "label": "שירותים לבית",
+          "primary": "נותני שירותים מקומיים (אינסטלציה, חשמל וכו')",
+          "secondary": "בעלי בתים הזקוקים להצעות מחיר מהירות והזמנת שירות"
+        },
+        "ecommerce_owners": {
+          "label": "בעלי חנויות אונליין",
+          "primary": "בעלי מותגי מסחר אלקטרוני",
+          "secondary": "קונים אונליין ולקוחות חוזרים"
+        },
+        "custom": {
+          "label": "מותאם אישית (כתוב לבד)",
+          "primary": "",
+          "secondary": ""
         }
       }
-    },
-
-    "fields": {
-      "name": "שם",
-      "description": "תיאור",
-      "trigger_type": "סוג טריגר",
-      "name_placeholder": "הכנס שם לתהליך העבודה",
-      "description_placeholder": "הכנס תיאור לתהליך העבודה"
-    },
-    "trigger": {
-      "hint": "בחר מתי תהליך העבודה יופעל",
-      "manual": "ידני",
-      "lead_added": "ליד חדש נוסף",
-      "inbound_reply": "תשובה נכנסת",
-      "scheduled": "מתוזמן"
-    },
-    "tabs": {
-      "overview": "סקירה כללית",
-      "versions": "גרסאות",
-      "runs": "הרצות"
-    },
-    "overview": {
-      "no_description": "אין תיאור זמין."
-    },
-    "trust_note": "תהליכי עבודה פועלים עם ההרשאות שלך. הפעל רק תהליכי עבודה שאתה בוטח בהם.",
-    "stats": {
-      "latest_version": "גרסה אחרונה",
-      "published": "פורסם",
-      "total_runs": "סך הכל הרצות"
-    },
-    "status": {
-      "title": "סטטוס"
-    },
-    "trigger_type": "סוג טריגר",
-    "actions": {
-      "run_manual": "הרץ ידנית",
-      "open_editor": "פתח בעורך"
     }
   },
-  "app": {
-    "title": "Brandi",
-    "sidebar": {
-      "footer": "כלום לא נשלח בלי אישור."
-    }
-  },
-  "page": {
-    "title": "עורך תהליך עבודה"
-  },
-  "ui": {
-    "workflows": {
-      "editor": {
-        "v1": {
-          "ui": {
-            "header": {
-              "subtitle": "נהל וערוך את תהליך העבודה שלך"
-            }
-          },
-          "page": {
-            "title": "עורך תהליך עבודה"
-          },
-          "tabs": {
-            "designer": "עיצוב",
-            "runs": "הרצות",
-            "settings": "הגדרות"
-          }
-        }
-      }
-    },
+  "onboarding": {
+    "title": "בוא נבנה את אסטרטגיית המותג שלך",
+    "subtitle": "אעזור לך להגדיר את זהות העסק, קהל היעד והמטרות שלך.",
     "header": {
-      "subtitle": "בנו, חברו והריצו אוטומציות (עם אישור לפני שליחה)"
+      "tag": "אסטרטג מותג AI"
     },
-    "tabs": {
-      "items": {
-        "0": {
-          "label": "עיצוב"
-        },
-        "1": {
-          "label": "הרצות"
-        },
-        "2": {
-          "label": "הגדרות"
-        }
-      }
+    "step_counter": "שלב {step} מתוך 3",
+    "status": {
+      "generating": "מייצר...",
+      "ready": "מוכן"
     },
-    "inspector": {
-      "title": "מפקח נוד",
-      "noFields": "לנוד זה אין שדות להגדרה.",
-      "emptyState": {
-        "title": "לא נבחר נוד",
-        "description": "בחר נוד בקנבס כדי לערוך את המאפיינים שלו."
-      }
+    "default_lang": "ברירת מחדל",
+    "validation": {
+      "name_required": "שם העסק נדרש",
+      "desc_length": "התיאור חייב להכיל לפחות 10 תווים",
+      "lang_required": "בחר שפה אחת לפחות",
+      "goal_required": "בחר מטרה ראשית",
+      "incomplete": "נא להשלים את כל השדות הנדרשים",
+      "failed": "היצירה נכשלה"
     },
-    "canvas": {
-      "emptyCanvas": {
-        "title": "התחל עם Trigger"
-      }
+    "chat": {
+      "initial_message": "היי! אני ברנדי. מה שם העסק שלך?",
+      "describe_message": "מעולה! ספר לי קצת על מה העסק עושה.",
+      "options_message": "הבנתי. בוא נדייק כמה פרטים.",
+      "added_message": "נרשם.",
+      "saved_message": "נשמר.",
+      "generating_message": "מייצר את אסטרטגיית המותג שלך...",
+      "success_message": "סיימנו! מעביר אותך...",
+      "input_placeholder": "הקלד את תשובתך...",
+      "skip_to_options": "דלג לאפשרויות",
+      "okay_options": "בסדר, בוא נקפוץ ישר לאפשרויות."
     },
-    "palette": {
-      "title": "פלטת נודים",
-      "search": {
-        "placeholder": "חיפוש נוד…"
-      },
-      "groups": {
-        "0": {
-          "title": "טריגרים"
-        },
-        "1": {
-          "title": "הודעות"
-        },
-        "2": {
-          "title": "לוגיקה"
-        },
-        "3": {
-          "title": "פגישות"
-        }
-      }
+    "card": {
+      "industry": "תעשייה",
+      "industry_subtitle": "בחר את התעשייה שלך",
+      "languages": "שפות",
+      "languages_subtitle": "בחר שפות",
+      "goals": "מטרות",
+      "goals_subtitle": "בחר את המטרות שלך",
+      "pick_match": "בחר את ההתאמה הטובה ביותר",
+      "choose_lang": "בחר שפות",
+      "select_goals": "בחר את המטרות הראשיות שלך",
+      "done": "סיום"
     },
-    "settings": {
-      "fields": {
-        "0": {
-          "label": "שם"
-        },
-        "1": {
-          "label": "תיאור"
-        },
-        "2": {
-          "label": "סטטוס"
-        }
-      }
+    "details": {
+      "name": "שם:",
+      "default": "ברירת מחדל:",
+      "generate_btn": "צור אסטרטגיה"
+    },
+    "features": {
+      "rtl": "תמיכה ב-RTL",
+      "languages": "רב-לשוני",
+      "whatsapp": "אינטגרציית וואטסאפ",
+      "seo": "מוכן ל-SEO"
     }
   },
-  "actions": {
-    "workflow": {
-      "clear": {
-        "message": "למחוק את כל הנודים והקשרים?"
-      }
-    }
-  },
-  "page.title": "עורך תהליך עבודה",
-  "ui.header.subtitle": "בנו, חברו והריצו אוטומציות (עם אישור לפני שליחה)",
-  "ui.tabs.items.0.label": "עיצוב",
-  "ui.tabs.items.1.label": "הרצות",
-  "ui.tabs.items.2.label": "הגדרות",
-  "ui.inspector.title": "מפקח נוד",
-  "ui.inspector.emptyState.title": "לא נבחר נוד",
-  "ui.inspector.emptyState.description": "בחר נוד בקנבס כדי לערוך את המאפיינים שלו.",
-  "ui.canvas.emptyCanvas.title": "התחל עם Trigger",
-  "ui.palette.title": "פלטת נודים",
-  "ui.palette.search.placeholder": "חיפוש נוד…",
-  "ui.palette.groups.0.title": "טריגרים",
-  "ui.palette.groups.1.title": "הודעות",
-  "ui.palette.groups.2.title": "לוגיקה",
-  "ui.palette.groups.3.title": "פגישות",
-  "ui.settings.fields.0.label": "שם",
-  "ui.settings.fields.1.label": "תיאור",
-  "ui.settings.fields.2.label": "סטטוס",
-  "actions.workflow.clear.message": "למחוק את כל הנודים והקשרים?"
+  "generate": {
+    "agents": {
+      "research_agent_evidence": "מבצע מחקר לבניית האסטרטגיה"
+    },
+    "browser_search": "הסוכן מחפש ברשת",
+    "browser_visit": "הסוכן גולש ברשת"
+  }
 }

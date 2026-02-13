@@ -1,135 +1,158 @@
-import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
-import { createError, getQuery, getRouterParam, setResponseHeaders } from 'h3'
-import { resolveWorkspaceId } from '~~/server/utils/workspace'
-import { executeWorkflow } from '~~/server/utils/workflow/executor'
+// ✅ Updated run.ts to use the new class directly:
+//   new WorkflowExecutor(graph, { onEvent, signal, workflowId, ctxData, locale, ... }).execute(input)
+//
+// Notes:
+// - Keeps your SSE contract (started / node / ping / finished / error)
+// - Removes executeWorkflow util dependency
+// - Passes workflowId + ctxData (workspaceId/user) into node ctx
+// - Uses AbortController signal already wired to res.close
+
+import { serverSupabaseUser, serverSupabaseClient } from "#supabase/server";
+import { createError, getQuery, getRouterParam, setResponseHeaders } from "h3";
+import { resolveWorkspaceId } from "~~/server/utils/workspace";
+import { WorkflowExecutor, WorkflowExecutionError } from "~~/workflow/executOr"; // <-- adjust path to where you placed it
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-  const client = await serverSupabaseClient(event)
+  const user = await serverSupabaseUser(event);
+  const client = await serverSupabaseClient(event);
 
   if (!user) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+    throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
   }
 
-  const workspaceId = await resolveWorkspaceId(client, user)
-  const workflowId = getRouterParam(event, 'id')
+  const workspaceId = await resolveWorkspaceId(client, user);
+  const workflowId = getRouterParam(event, "id");
 
   if (!workflowId) {
-    throw createError({ statusCode: 400, statusMessage: 'Workflow ID is required.' })
+    throw createError({ statusCode: 400, statusMessage: "Workflow ID is required." });
   }
 
   // 1) Ensure workflow exists & is accessible (workspace isolation)
   const { data: workflow, error: wfErr } = await client
-    .from('workflows')
-    .select('id')
-    .eq('id', workflowId)
-    .eq('workspace_id', workspaceId)
-    .single()
+    .from("workflows")
+    .select("id")
+    .eq("id", workflowId)
+    .eq("workspace_id", workspaceId)
+    .single();
 
   if (wfErr) {
-    throw createError({ statusCode: 500, statusMessage: wfErr.message })
+    throw createError({ statusCode: 500, statusMessage: wfErr.message });
   }
 
   if (!workflow) {
-    throw createError({ statusCode: 404, statusMessage: 'Workflow not found or not accessible.' })
+    throw createError({ statusCode: 404, statusMessage: "Workflow not found or not accessible." });
   }
 
   // 2) Load latest workflow version graph
   const { data: version, error: vErr } = await client
-    .from('workflow_versions')
-    .select('id, graph, schema_version, created_at')
-    .eq('workflow_id', workflowId)
-    .order('created_at', { ascending: false })
+    .from("workflow_versions")
+    .select("id, graph, schema_version, created_at")
+    .eq("workflow_id", workflowId)
+    .order("created_at", { ascending: false })
     .limit(1)
-    .maybeSingle()
+    .maybeSingle();
 
   if (vErr) {
-    throw createError({ statusCode: 500, statusMessage: vErr.message })
+    throw createError({ statusCode: 500, statusMessage: vErr.message });
   }
 
   if (!version?.graph) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'No workflow version found to run.',
-    })
+    throw createError({ statusCode: 400, statusMessage: "No workflow version found to run." });
   }
 
-  const graph: any = version.graph
-  const nodes = Array.isArray(graph.nodes) ? graph.nodes : []
-  const edges = Array.isArray(graph.edges) ? graph.edges : []
+  const graph: any = version.graph;
+  const nodes = Array.isArray(graph.nodes) ? graph.nodes : [];
+  const edges = Array.isArray(graph.edges) ? graph.edges : [];
 
   if (nodes.length === 0) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Workflow version graph has no nodes.',
-    })
+    throw createError({ statusCode: 400, statusMessage: "Workflow version graph has no nodes." });
   }
 
   // 3) Parse input
-  const query = getQuery(event)
-  let input: Record<string, any> = {}
+  const query = getQuery(event);
+  let input: Record<string, any> = {};
 
-  if (typeof query.input === 'string' && query.input.trim()) {
+  if (typeof query.input === "string" && query.input.trim()) {
     try {
-      input = JSON.parse(query.input)
+      input = JSON.parse(query.input);
     } catch {
-      throw createError({ statusCode: 400, statusMessage: 'Invalid input JSON.' })
+      throw createError({ statusCode: 400, statusMessage: "Invalid input JSON." });
     }
   }
 
   // 4) SSE headers
   setResponseHeaders(event, {
-    'Content-Type': 'text/event-stream; charset=utf-8',
-    'Cache-Control': 'no-cache',
-    Connection: 'keep-alive',
-    'X-Accel-Buffering': 'no',
-  })
+    "Content-Type": "text/event-stream; charset=utf-8",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+    "X-Accel-Buffering": "no",
+  });
 
-  const res = event.node.res
-  res.flushHeaders?.()
+  const res = event.node.res;
+  res.flushHeaders?.();
 
-  const ac = new AbortController()
+  const ac = new AbortController();
 
   const writeEvent = (name: string, payload?: any) => {
-    if (res.writableEnded) return
-    res.write(`event: ${name}\n`)
-    if (payload !== undefined) res.write(`data: ${JSON.stringify(payload)}\n`)
-    res.write('\n')
-  }
+    if (res.writableEnded) return;
+    res.write(`event: ${name}\n`);
+    if (payload !== undefined) res.write(`data: ${JSON.stringify(payload)}\n`);
+    res.write("\n");
+  };
 
   const heartbeat = setInterval(() => {
-    writeEvent('ping', { ts: new Date().toISOString() })
-  }, 15000)
+    writeEvent("ping", { ts: new Date().toISOString() });
+  }, 15000);
 
-  res.on('close', () => {
-    clearInterval(heartbeat)
-    ac.abort()
-  })
+  res.on("close", () => {
+    clearInterval(heartbeat);
+    ac.abort();
+  });
 
-  writeEvent('started', {
+  writeEvent("started", {
     workflowId,
     workflowVersionId: version.id,
     schemaVersion: version.schema_version,
     startedAt: new Date().toISOString(),
-  })
+  });
 
   try {
-    const result = await executeWorkflow(
+    // ✅ NEW: use class
+    const executor = new WorkflowExecutor(
       { nodes, edges },
       {
-        input,
-        onEvent: (runEvent) => writeEvent('node', runEvent),
-        onLog: (logEvent) => writeEvent('log', logEvent),
+        workflowId,
+        locale: (typeof query.locale === "string" && query.locale) || undefined,
+        ctxData: {
+          workspaceId,
+          userId: user.id,
+        },
         signal: ac.signal,
+        debug: false,
+        // If your done schema type is exactly "done", you can omit this:
+        doneNodeTypes: ["done", "utility-done"],
+        onEvent: (runEvent) => writeEvent("node", runEvent),
       }
-    )
+    );
 
-    writeEvent('finished', result)
-  } catch (runError: any) {
-    const message = runError?.message || 'Workflow run failed.'
-    writeEvent('error', { message })
+    const result = await executor.execute(input);
+
+    writeEvent("finished", result);
+  } catch (err: any) {
+    const isWorkflowErr = err instanceof WorkflowExecutionError;
+
+    const statusCode = isWorkflowErr ? err.statusCode : 500;
+    const message = err?.message || "Workflow run failed.";
+
+    // keep SSE error event
+    writeEvent("error", {
+      message,
+      statusCode,
+      code: err?.code,
+      details: err?.details,
+    });
   } finally {
-    clearInterval(heartbeat)
-    res.end()
+    clearInterval(heartbeat);
+    res.end();
   }
-})
+});

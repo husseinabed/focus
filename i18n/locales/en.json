@@ -1,117 +1,226 @@
 {
-  "workflows": {
-    "new": {
-      "title": "New Workflow",
-      "subtitle": "Create a new automation workflow.",
-      "sections": {
-        "basic": "Basic Information",
-        "trigger": "Trigger Configuration"
-      },
-      "preview": {
-        "title": "Trigger Preview",
-        "trigger": {
-          "manual": "This workflow starts manually. You will need to trigger it yourself from the workflow details page.",
-          "lead_added": "This workflow starts when a new lead is added to your workspace. It can be further refined by source and minimum priority.",
-          "inbound_reply": "This workflow starts when an inbound reply is received. You can specify which inbox to monitor and filter by keywords.",
-          "scheduled": "This workflow starts at a scheduled time based on a cron expression. For example, it can run daily, weekly, or monthly."
-        }
-      },
-      "trust_note": "By creating this workflow, you agree to our terms of service and acknowledge that this workflow will consume credits based on its execution.",
-      "actions": {
-        "create": "Create Workflow"
-      }
-    },
-    "fields": {
-      "name": "Name",
-      "name_placeholder": "Enter workflow name",
-      "description": "Description",
-      "description_placeholder": "Describe your workflow (optional)",
-      "trigger_type": "Trigger Type"
-    },
-    "trigger": {
-      "hint": "Choose how this workflow will be activated.",
-      "manual": "Manual",
-      "lead_added": "Lead Added",
-      "inbound_reply": "Inbound Reply",
-      "scheduled": "Scheduled"
-    },
-    "nodes": {
-      "trigger": {
-        "manual": {
-          "title": "Manual Trigger",
-          "hint": "Manually start this workflow."
-        },
-        "lead_added": {
-          "title": "Lead Added Trigger",
-          "hint": "Triggers when a new lead is added to the workspace, optionally filtered by source or priority.",
-          "source": "Lead Source",
-          "source.all": "All Sources",
-          "source.manual": "Manual Entry",
-          "source.scrape": "Scraped",
-          "source.import": "Imported",
-          "min_priority": "Minimum Priority"
-        },
-        "inbound_reply": {
-          "title": "Inbound Reply Trigger",
-          "hint": "Triggers when an inbound reply is received, optionally filtered by inbox or keywords.",
-          "inbox_id": "Inbox ID",
-          "keywords": "Keywords (comma-separated)"
-        },
-        "scheduled": {
-          "title": "Scheduled Trigger",
-          "hint": "Triggers at a specific time or recurring schedule.",
-          "cron_expression": "Cron Expression"
-        }
-      },
-      "utility": {
-        "logging": {
-          "hint": "Log messages for debugging and tracking."
-        }
+  "projects": {
+    "form": {
+      "labels": {
+        "business_name": "Business Name",
+        "industry": "Industry",
+        "location": "Location / Market",
+        "main_service": "Main Service / Product",
+        "target_audience": "Target Audience",
+        "audience_details": "Audience Details",
+        "primary_goal": "Primary Goal",
+        "secondary_goals": "Secondary Goals",
+        "languages_needed": "Languages Needed",
+        "default_language": "Default Language",
+        "rtl_support": "RTL Support",
+        "enable_rtl": "Enable RTL",
+        "custom_audience_placeholder": "Custom audience (one line)",
+        "audience_notes_placeholder": "Optional notes",
+        "select_service_placeholder": "Select service",
+        "select_industry_first": "Select industry first"
       },
       "actions": {
-        "log": {
-          "title": "Log Message",
-          "level": "Level",
-          "message": "Message",
-          "includeContext": "Include Context"
+        "cancel": "Cancel",
+        "create": "Create",
+        "save": "Save"
+      },
+      "industry": {
+        "law_firm": "Law Firm",
+        "dental_clinic": "Dental Clinic",
+        "medical_clinic": "Medical Clinic",
+        "accounting": "Accounting / CPA",
+        "real_estate": "Real Estate",
+        "marketing_agency": "Marketing Agency",
+        "local_services": "Local Services (Plumber, Electrician, etc.)",
+        "ecommerce": "E-commerce Brand",
+        "other": "Other"
+      },
+      "location": {
+        "IL": "Israel",
+        "US": "United States",
+        "GB": "United Kingdom",
+        "AE": "United Arab Emirates",
+        "SA": "Saudi Arabia",
+        "EG": "Egypt",
+        "JO": "Jordan",
+        "MA": "Morocco",
+        "FR": "France",
+        "DE": "Germany",
+        "CA": "Canada"
+      },
+      "goals": {
+        "lead_generation_whatsapp": "Lead Generation (WhatsApp)",
+        "lead_generation_forms": "Lead Generation (Forms)",
+        "build_trust": "Build Trust & Credibility",
+        "brand_awareness": "Increase Brand Awareness",
+        "appointments": "Online Appointment Booking",
+        "showcase_services": "Showcase Portfolio / Services",
+        "educate_market": "Educate Market (Blog / Content)",
+        "seo_visibility": "SEO Visibility",
+        "reviews": "Reviews",
+        "multilingual": "Multilingual",
+        "faster_response": "Faster Response",
+        "reduce_noshows": "Reduce No-Shows"
+      },
+      "languages": {
+        "en": "English",
+        "he": "Hebrew",
+        "ar": "Arabic"
+      },
+      "services": {
+        "legal_consultation": "Legal Consultation",
+        "personal_injury": "Personal Injury",
+        "family_law": "Family Law",
+        "criminal_defense": "Criminal Defense",
+        "real_estate_law": "Real Estate Law",
+        "immigration": "Immigration",
+        "corporate_law": "Corporate / Commercial",
+        "general_dentistry": "General Dentistry",
+        "dental_implants": "Dental Implants",
+        "orthodontics": "Orthodontics",
+        "teeth_whitening": "Teeth Whitening",
+        "cosmetic_dentistry": "Cosmetic Dentistry",
+        "emergency_dental": "Emergency Dental Care",
+        "primary_care": "Primary Care",
+        "dermatology": "Dermatology",
+        "aesthetics": "Aesthetics / Cosmetic Clinic",
+        "physiotherapy": "Physiotherapy",
+        "pediatrics": "Pediatrics",
+        "gynecology": "Gynecology",
+        "bookkeeping": "Bookkeeping",
+        "tax_filing": "Tax Filing",
+        "payroll": "Payroll Services",
+        "business_consulting": "Business Consulting",
+        "vat_compliance": "VAT / Compliance",
+        "residential_sales": "Residential Sales",
+        "residential_rentals": "Residential Rentals",
+        "commercial_real_estate": "Commercial Real Estate",
+        "property_management": "Property Management",
+        "new_developments": "New Developments",
+        "websites_landing_pages": "Website / Landing Pages",
+        "seo": "SEO",
+        "google_ads": "Google Ads (PPC)",
+        "social_ads": "Social Media Ads",
+        "branding": "Branding",
+        "marketing_automation": "Marketing Automation",
+        "plumbing": "Plumbing",
+        "electrical": "Electrical",
+        "hvac": "HVAC / Air Conditioning",
+        "cleaning": "Cleaning Services",
+        "moving": "Moving Services",
+        "renovation": "Home Renovation",
+        "online_store": "Online Store",
+        "subscription_products": "Subscription Products",
+        "dropshipping": "Dropshipping",
+        "digital_products": "Digital Products",
+        "brand_storefront": "Brand Storefront",
+        "general_services": "General Services",
+        "appointments_bookings": "Appointments / Bookings",
+        "courses_coaching": "Courses / Coaching",
+        "professional_profile": "Professional Profile"
+      },
+      "audience_presets": {
+        "local_smb_owners": {
+          "label": "Local SMB owners (default)",
+          "primary": "Local small & medium businesses (owners/managers)",
+          "secondary": "Busy professionals who prefer WhatsApp/phone inquiries"
         },
-        "done": {
-          "title": "Done",
-          "hint": "Marks the end of the workflow execution."
+        "lawyers": {
+          "label": "Lawyers / Law offices",
+          "primary": "Lawyers & law firms",
+          "secondary": "People searching for legal help in the local area"
         },
-        "decision": {
-          "title": "Decision",
-          "hint": "Branch the flow based on a condition.",
-          "condition": "Condition"
+        "dentists": {
+          "label": "Dentists / Dental clinics",
+          "primary": "Dental clinics & dentists",
+          "secondary": "Patients looking for treatments and appointments"
         },
-        "delay": {
-          "title": "Delay",
-          "hint": "Pause the flow for a specified duration.",
-          "duration": "Duration",
-          "unit": "Unit"
+        "clinics": {
+          "label": "Clinics (medical)",
+          "primary": "Medical clinics & practitioners",
+          "secondary": "Patients seeking consultations and bookings"
         },
-        "send_email": {
-          "title": "Send Email",
-          "hint": "Send an email to a recipient.",
-          "to": "To",
-          "subject": "Subject",
-          "body": "Body"
+        "real_estate_agents": {
+          "label": "Real estate agents",
+          "primary": "Real estate agents & brokerages",
+          "secondary": "Buyers/renters looking for properties"
+        },
+        "home_services": {
+          "label": "Home services",
+          "primary": "Local service providers (plumbing, electrical, etc.)",
+          "secondary": "Homeowners needing quick quotes & bookings"
+        },
+        "ecommerce_owners": {
+          "label": "Online store owners",
+          "primary": "E-commerce brand owners",
+          "secondary": "Online shoppers and repeat customers"
+        },
+        "custom": {
+          "label": "Custom (write it)",
+          "primary": "",
+          "secondary": ""
         }
       }
     }
   },
-  "common": {
-    "back": "Back",
-    "cancel": "Cancel",
-    "error": "Error"
-  },
-  "ui": {
-    "inspector": {
-      "title": "Node Inspector",
-      "noFields": "This node has no configurable fields.",
-      "emptyState": {
-        "description": "Select a node on the canvas to inspect its properties."
-      }
+  "onboarding": {
+    "title": "Let's build your brand strategy",
+    "subtitle": "I'll help you define your business identity, target audience, and goals.",
+    "header": {
+      "tag": "AI Brand Strategist"
+    },
+    "step_counter": "Step {step} of 3",
+    "status": {
+      "generating": "Generating...",
+      "ready": "Ready"
+    },
+    "default_lang": "Default",
+    "validation": {
+      "name_required": "Business name is required",
+      "desc_length": "Description must be at least 10 characters",
+      "lang_required": "Select at least one language",
+      "goal_required": "Select a primary goal",
+      "incomplete": "Please complete all required fields",
+      "failed": "Generation failed"
+    },
+    "chat": {
+      "initial_message": "Hi! I'm Brandi. What's the name of your business?",
+      "describe_message": "Great! Tell me a bit about what you do.",
+      "options_message": "Got it. Let's fine-tune some details.",
+      "added_message": "Noted.",
+      "saved_message": "Saved.",
+      "generating_message": "Generating your brand strategy...",
+      "success_message": "All done! Redirecting...",
+      "input_placeholder": "Type your answer...",
+      "skip_to_options": "Skip to options",
+      "okay_options": "Okay, let's jump straight to the options."
+    },
+    "card": {
+      "industry": "Industry",
+      "industry_subtitle": "Select your industry",
+      "languages": "Languages",
+      "languages_subtitle": "Select languages",
+      "goals": "Goals",
+      "goals_subtitle": "Select your goals",
+      "pick_match": "Pick the best match",
+      "choose_lang": "Choose languages",
+      "select_goals": "Select your primary goals",
+      "done": "Done"
+    },
+    "details": {
+      "name": "Name:",
+      "default": "Default:",
+      "generate_btn": "Generate Strategy"
+    },
+    "features": {
+      "rtl": "RTL Support",
+      "languages": "Multi-language",
+      "whatsapp": "WhatsApp Integration",
+      "seo": "SEO Ready"
     }
+  },
+  "generate": {
+    "browser_search": "The agent is searching the web",
+    "browser_visit": "The agent is browsing the net"
   }
 }

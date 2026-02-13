@@ -1,159 +1,147 @@
 <template>
-  <div class="flex flex-col h-full">
-    <!-- Desktop Layout (Grid) -->
-    <div
-      class="grid h-full w-full max-lg:hidden"
-      :style="{
-        gridTemplateColumns: layout.desktop.columns,
-        gridTemplateRows: layout.desktop.rows,
-        gridTemplateAreas: gridTemplateAreas,
-      }"
-    >
-      <div class="list-header dark:bg-gray-950">
-        <InboxConversationList />
-      </div>
-      <div class="thread-header dark:bg-gray-950">
-        <InboxThreadHeader />
-      </div>
-      <div class="inspector-header dark:bg-gray-950">
-        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
-          <h3 class="text-xl font-semibold">{{ $t("inbox.inspector.lead_details") }}</h3>
+  <UMain>
+    <UContainer :dir="localeProperties.dir" class="flex gap-4">
+      <UCard class="flex-1">
+        <template #header>
+          <h2 class="text-xl font-semibold">{{ t('messageComposer.title') }}</h2>
+        </template>
+
+        <div class="flex flex-col gap-4">
+          <!-- Message Input -->
+          <UFormField :label="t('messageComposer.messageLabel')">
+            <UTextarea v-model="messageContent" :placeholder="t('messageComposer.messagePlaceholder')" />
+          </UFormField>
+
+          <!-- Attachment Handling -->
+          <UFormField :label="t('messageComposer.attachmentsLabel')">
+            <div class="border border-neutral-300 dark:border-neutral-700 rounded-md p-4">
+              <p>{{ t('messageComposer.attachmentsPlaceholder') }}</p>
+              <!-- Future attachment upload/preview components -->
+            </div>
+          </UFormField>
+
+          <!-- Language Override -->
+          <UFormField :label="t('messageComposer.replyLanguageLabel')">
+            <USelect v-model="replyLanguage" :items="availableLanguages" option-attribute="label" value-attribute="value" class="w-full" />
+          </UFormField>
+
+          <!-- Send Modes and Actions -->
+          <USeparator />
+
+          <div class="flex justify-between items-center">
+            <div class="flex gap-2">
+              <UDropdownMenu :items="sendModes" :popper="{ placement: 'top-start' }">
+                <UButton color="neutral" :label="currentSendModeLabel" trailing-icon="i-lucide-chevron-down" />
+              </UDropdownMenu>
+
+              <!-- Conditional 'Request Approval' / 'Send' button -->
+              <UButton v-if="showRequestApprovalButton" color="primary" :label="t('messageComposer.requestApproval')" @click="requestApproval" />
+              <UButton v-else color="primary" :label="t('messageComposer.sendNow')" @click="sendMessage" />
+            </div>
+
+            <!-- Other actions like schedule if currentSendMode is 'schedule' -->
+            <div v-if="selectedSendMode.value === 'schedule'" class="flex gap-2 items-center">
+              <UInput type="datetime-local" v-model="scheduledDateTime" />
+              <UButton color="neutral" :label="t('messageComposer.scheduleButton')" @click="scheduleMessage" />
+            </div>
+          </div>
         </div>
-      </div>
+      </UCard>
 
-      <!-- <div class="list-body overflow-y-auto">
-        <InboxConversationList />
-      </div> -->
-      <div class="thread-body overflow-y-auto">
-        <InboxThreadBody />
-      </div>
-      <div class="inspector-body overflow-y-auto">
-        <InboxInspector />
-      </div>
-
-      <div class="list-footer">
-        <!-- Optional: Footer content for list column -->
-      </div>
-      <div class="thread-footer">
-        <InboxComposer />
-      </div>
-      <div class="inspector-footer">
-        <!-- Optional: Footer content for inspector column -->
-      </div>
-    </div>
-
-    <!-- Mobile Layout (Stack) -->
-    <div class="lg:hidden flex flex-col h-full">
-      <div v-if="!inboxStore.currentConversation" class="flex-1">
-        <InboxConversationList />
-      </div>
-      <div v-else class="flex flex-col flex-1">
-        <InboxThreadHeader />
-        <InboxThreadBody class="flex-1" />
-        <InboxComposer />
-        <USlideover v-model="inboxStore.inspectorOpen">
-          <UCard class="flex flex-col flex-1" :ui="{ root: 'ring-0 divide-y divide-gray-100 dark:divide-gray-800', body: 'flex-1' }">
-            <template #header>
-              <div class="flex items-center justify-between">
-                <h3 class="text-xl font-semibold leading-6 text-gray-900 dark:text-white">
-                  {{ $t("inbox.inspector.lead_details") }}
-                </h3>
-                <UButton
-                  icon="i-heroicons-x-mark-20-solid"
-                  color="neutral"
-                  variant="ghost"
-                  @click="inboxStore.toggleInspector()"
-                />
-              </div>
-            </template>
-            <InboxInspector />
-          </UCard>
-        </USlideover>
-      </div>
-    </div>
-  </div>
+      <InboxInspector />
+    </UContainer>
+  </UMain>
 </template>
 
 <script setup lang="ts">
-import { useInboxStore } from "~/stores/inbox";
+import { ref, computed, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-const inboxStore = useInboxStore();
+const { t, localeProperties } = useI18n();
 
-definePageMeta({
-  layout: "app",
+// Reactive state for message content and settings
+const messageContent = ref('');
+const replyLanguage = ref('en'); // Default to English, will be auto-filled by lead.language
+const scheduledDateTime = ref('');
+
+// Example lead data (will be passed as a prop in a real scenario)
+const lead = ref({
+  language: 'en',
+  isAdmin: false,
 });
 
-const layout = {
-  desktop: {
-    columns: "340px minmax(520px,1fr) 360px",
-    rows: "64px 1fr auto",
-    areas: {
-      row1: ["listHeader", "threadHeader", "inspectorHeader"],
-      row2: ["listBody", "threadBody", "inspectorBody"],
-      row3: ["listFooter", "threadFooter", "inspectorFooter"],
-    },
-    behavior: {
-      thread_scroll: "only thread body scrolls",
-      sticky_headers: true,
-    },
-  },
-  mobile: {
-    pattern: "stack",
-    navigation: "left list becomes primary; thread opens as full screen route state; inspector is a slideover",
-    inspector: "USlideover on demand",
-  },
+// Example UI behaviors (will be fetched from global settings/store)
+const ui_behaviors = ref({
+  approvalPolicyEnabled: true,
+});
+
+// Available languages for override
+const availableLanguages = [
+  { label: t('languages.en'), value: 'en' },
+  { label: t('languages.ar'), value: 'ar' },
+  { label: t('languages.he'), value: 'he' },
+];
+
+// Send modes
+const sendModes = computed(() => [
+  [{
+    label: t('messageComposer.sendNow'),
+    icon: 'i-lucide-send',
+    value: 'send_now',
+    click: () => selectedSendMode.value = sendModes.value[0][0],
+  }],
+  [{
+    label: t('messageComposer.schedule'),
+    icon: 'i-lucide-calendar',
+    value: 'schedule',
+    click: () => selectedSendMode.value = sendModes.value[1][0],
+  }],
+  [{
+    label: t('messageComposer.requestApproval'),
+    icon: 'i-lucide-check-circle',
+    value: 'request_approval',
+    click: () => selectedSendMode.value = sendModes.value[2][0],
+  }],
+]);
+
+const selectedSendMode = ref(sendModes.value[0][0]); // Default to 'Send Now'
+
+const currentSendModeLabel = computed(() => selectedSendMode.value.label);
+
+// Logic for conditionally showing "Request approval" instead of "Send"
+const showRequestApprovalButton = computed(() => {
+  const isApprovalRequired = ui_behaviors.value.approvalPolicyEnabled;
+  const isUserNonAdmin = !lead.value.isAdmin; // Assuming lead.isAdmin indicates if the current user is an admin
+
+  return isApprovalRequired || isUserNonAdmin;
+});
+
+// Action functions
+const sendMessage = () => {
+  console.log('Sending message:', messageContent.value, 'Language:', replyLanguage.value);
+  // Implement actual send logic here
 };
 
-const gridTemplateAreas = computed(() => {
-  const areas = layout.desktop.areas;
-  return `\"${areas.row1.join(" ")}\" \"${areas.row2.join(" ")}\" \"${areas.row3.join(" ")}\"`;
-});
+const requestApproval = () => {
+  console.log('Requesting approval for message:', messageContent.value, 'Language:', replyLanguage.value);
+  // Implement actual request approval logic here
+};
 
-onMounted(() => {
-  inboxStore.fetchConversations();
+const scheduleMessage = () => {
+  console.log('Scheduling message for:', scheduledDateTime.value, 'Content:', messageContent.value, 'Language:', replyLanguage.value);
+  // Implement actual schedule logic here
+};
+
+// Initialize reply language from lead.language
+// This would typically happen when the component mounts or when a new lead is selected.
+// For now, let's simulate it.
+watchEffect(() => {
+  if (lead.value.language) {
+    replyLanguage.value = lead.value.language;
+  }
 });
 </script>
 
 <style scoped>
-.list-header {
-  grid-area: listHeader;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: var(--color-white);
-}
-.thread-header {
-  grid-area: threadHeader;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: var(--color-white);
-}
-.inspector-header {
-  grid-area: inspectorHeader;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: var(--color-white);
-}
-
-.list-body {
-  grid-area: listBody;
-}
-.thread-body {
-  grid-area: threadBody;
-}
-.inspector-body {
-  grid-area: inspectorBody;
-}
-
-.list-footer {
-  grid-area: listFooter;
-}
-.thread-footer {
-  grid-area: threadFooter;
-}
-.inspector-footer {
-  grid-area: inspectorFooter;
-}
+/* Add any component-specific styles here */
 </style>

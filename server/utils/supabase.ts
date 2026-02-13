@@ -10,7 +10,7 @@ export const useSupabaseServer = () => {
     throw new Error('Supabase URL and Service Key are required')
   }
 
-  return createClient(supabaseUrl, supabaseServiceKey, {
+  return createClient(supabaseUrl as string, supabaseServiceKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
